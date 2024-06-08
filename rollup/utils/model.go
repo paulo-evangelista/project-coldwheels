@@ -56,3 +56,8 @@ type AdvaceInputDTO struct {
 	Kind string `json:"kind"`
 	Payload string `json:"payload"`
 }
+
+type InspectInputDTO struct {
+	Kind string `json:"kind"`
+	Payload string `json:"payload"`
+}

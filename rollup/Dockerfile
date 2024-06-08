@@ -25,7 +25,7 @@ ENV CGO_ENABLED=1
 ENV CC=riscv64-linux-gnu-gcc
 ENV PATH=/usr/local/go/bin:${PATH}
 
-COPY src .
+COPY . .
 
 RUN make
 
@@ -53,7 +53,7 @@ EOF
 ENV PATH="/opt/cartesi/bin:${PATH}"
 
 WORKDIR /opt/cartesi/dapp
-COPY --from=build-stage /opt/build/dapp .
+COPY --from=build-stage /opt/build/coldwheels .
 
 ENV ROLLUP_HTTP_SERVER_URL="http://127.0.0.1:5004"
 

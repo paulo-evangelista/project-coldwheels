@@ -2,7 +2,7 @@ GO := go
 
 .PHONY: clean
 
-dapp: dapp.go
+dapp: main.go
 	$(GO) mod tidy
 	$(GO) build 
 
