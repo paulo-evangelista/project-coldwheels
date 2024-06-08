@@ -31,6 +31,7 @@ func (d *ColdWheels) Advance(
 	if err != nil {
 		return fmt.Errorf("failed to unmarshal input payload: %w", err)
 	}
+	env.Notice([]byte("hello world"))
   // log.Printf("Input: %v\n", input)
   return nil
 }
