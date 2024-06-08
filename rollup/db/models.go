@@ -10,9 +10,18 @@ type User struct {
 	gorm.Model
 	Name      string
 	Address   string
-	Role      int        // 1 - Admin, 2 - Affiliate, 3 - Trusted, 4 - User
+	Role      Role        // 1 - Admin, 2 - Affiliate, 3 - Trusted, 4 - RegularUser
 	Incidents []Incident `gorm:"foreignKey:UserId"`
 }
+
+type Role int
+
+const (
+	Admin Role = iota + 1
+	Affiliate
+	Trusted
+	RegularUser
+)
 
 type IncidentType struct {
 	gorm.Model

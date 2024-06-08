@@ -14,12 +14,12 @@ func GetUserRole(dbClient *gorm.DB, userID string) (int, error) {
 		return 0, err
 	}
 
-	if user.Role < 1 || user.Role > 4 {
+	if user.Role < db.Admin || user.Role > db.RegularUser {
 		fmt.Println("invalid role from database")
 		return 0, nil
 	}
 
-	return user.Role, nil
+	return int(user.Role), nil
 }
 
 func OnlyOwner(msgSender string) error {
