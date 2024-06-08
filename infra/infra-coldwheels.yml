@@ -1,0 +1,82 @@
+Description: Coldwheels Infrastructure as Code (IaC)
+
+Parameters:
+  EnvironmentType:
+    Description: "Specify the Environment type of the stack."
+    Type: String
+    Default: dev
+    AllowedValues:
+      - dev
+      - uat
+      - prod
+  AmiID:
+    Type: AWS::SSM::Parameter::Value<AWS::EC2::Image::Id>
+    Description: "The ID of the AMI."
+    Default: /aws/service/canonical/ubuntu/server/focal/stable/current/amd64/hvm/ebs-gp2/ami-id
+  KeyPairName:
+    Type: String
+    Description: The name of an existing Amazon EC2 key pair in this region to use to SSH into the Amazon EC2 instances.
+    Default: KP-DEPLOY
+
+Mappings:
+  EnvironmentToInstanceType:
+    dev:
+      InstanceType: t2.micro
+    uat:
+      InstanceType: t2.micro
+    prod:
+      InstanceType: t2.micro
+
+Resources:
+  ColdWheelsInstance:
+    Type: AWS::EC2::Instance
+    Properties:
+      ImageId: !Ref AmiID
+      InstanceType:
+        !FindInMap [
+          EnvironmentToInstanceType,
+          !Ref EnvironmentType,
+          InstanceType,
+        ]
+      KeyName: !Ref KeyPairName
+      SecurityGroupIds:
+        - !Ref WebAppSecurityGroup
+      UserData:
+        Fn::Base64: !Sub |
+          #!/bin/bash
+          # Defines the log file
+          LOG_FILE="/var/log/userdata_execution.log"
+
+          # Updates the package list and upgrades the packages
+          sudo apt update -y &>> $LOG_FILE
+          sudo apt upgrade -y &>> $LOG_FILE
+
+          # Install and enable Docker
+          sudo apt install -y docker.io &>> $LOG_FILE
+          sudo systemctl enable docker &>> $LOG_FILE
+          sudo systemctl start docker &>> $LOG_FILE
+
+          # Install npm
+          sudo apt install -y npm &>> $LOG_FILE
+      Tags:
+        - Key: Name
+          Value: !Join ["-", [coldwheels-instance, !Ref EnvironmentType]]
+
+  ColdWheelsSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupName: !Join ["-", [coldwheels-security-group, dev]]
+      GroupDescription: "Allow HTTP/HTTPS and SSH inbound and outbound traffic"
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: 80
+          ToPort: 80
+          CidrIp: 0.0.0.0/0
+        - IpProtocol: tcp
+          FromPort: 22
+          ToPort: 22
+          CidrIp: 0.0.0.0/0
+        - IpProtocol: tcp
+          FromPort: 8080
+          ToPort: 8080
+          CidrIp: 0.0.0.0/0
