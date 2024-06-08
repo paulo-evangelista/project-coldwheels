@@ -7,23 +7,20 @@ import (
 	"gorm.io/gorm"
 )
 
-func GetUserRole(dbClient *gorm.DB, userID string) (int, error) {
+//  Validates if user exists and can access the system.
+//  If user doen't exist, creates it. 
+func ValidateUser(dbClient *gorm.DB, msgSender string) (uint, uint, error)  {
+	
 	var user db.User
-	err := dbClient.Where("id = ?", userID).First(&user).Error
-	if err != nil {
-		return 0, err
+	tx := dbClient.Where("address = ?", msgSender).First(&user)
+	if tx.Error != nil {
+		return 0, 0, err
 	}
 
 	if user.Role < db.Admin || user.Role > db.RegularUser {
 		fmt.Println("invalid role from database")
-		return 0, nil
+		return 0,0, nil
 	}
 
-	return int(user.Role), nil
-}
-
-func OnlyOwner(msgSender string) error {
-	// check if the user is the owner of the vehicle
-	// if not, throw an error
-	return nil
+	return user.Role, user.ID, nil
 }

@@ -23,7 +23,7 @@ func NewColdWheels(db *gorm.DB) *ColdWheels {
 	return &ColdWheels{db}
 }
 
-func (d *ColdWheels) Advance(
+func (dapp *ColdWheels) Advance(
 	env rollmelette.Env,
 	metadata rollmelette.Metadata,
 	deposit rollmelette.Deposit,
@@ -37,16 +37,12 @@ func (d *ColdWheels) Advance(
 		return fmt.Errorf("failed to unmarshal input payload: %w", err)
 	}
 
-	if err := mw.OnlyOwner(metadata.MsgSender.String()); err != nil {
-		return fmt.Errorf("failed to check owner: %w", err)
-	}
-
-	userRole, err := mw.GetUserRole(d.db, "test")
-	if err != nil {
+	userRole, userId, err := mw.ValidateUser(dapp.db, metadata.MsgSender.String())
+	if err != nil && input.Kind != "register" {
 		return fmt.Errorf("failed to get user role: %w", err)
 	}
 
-	err = router.Advance(d.db, userRole, input)
+	err = router.Advance(dapp.db, userRole, input)
 	if err != nil {
 		return fmt.Errorf("failed to advance: %w", err)
 	}
