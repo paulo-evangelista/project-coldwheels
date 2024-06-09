@@ -2,6 +2,15 @@ import Input from "./input";
 import { useState } from "react";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { useAccount } from "wagmi";
+import styled from "styled-components";
+
+const Container = styled.div`
+  text-align: center;
+`;
+
+const InputContainer = styled.div`
+  margin-top: 20px;
+`;
 
 export const Network = () => {
     const { address, isConnected } = useAccount();
@@ -9,10 +18,10 @@ export const Network = () => {
         "0xab7528bb862fb57e8a2bcd567a2e929a0be56a5e"
     );
     return (
-        <div style={{ textAlign: 'center' }}>
+        <Container>
             <ConnectButton />
             {isConnected && address && (
-                <div>
+                <InputContainer>
                     <div>
                         Dapp Address: <input
                             type="text"
@@ -22,8 +31,8 @@ export const Network = () => {
                         <br /><br />
                     </div>
                     <Input dappAddress={dappAddress} />
-                </div>
+                </InputContainer>
             )}
-        </div >
+        </Container>
     );
 };
