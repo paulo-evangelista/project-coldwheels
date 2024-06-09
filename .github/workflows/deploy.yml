@@ -46,5 +46,3 @@ jobs:
           # Install Cartesi CLI
           npm install -g @cartesi/cli
         EOF
-    
-  

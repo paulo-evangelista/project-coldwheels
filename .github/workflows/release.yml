@@ -1,0 +1,51 @@
+name: Release - ColdWheels
+
+on:
+  workflow_dispatch:
+
+jobs:
+  create-github-release:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout Repo
+      uses: actions/checkout@v2
+
+    - name: Install GitHub CLI
+      run: |
+        curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg | sudo dd of=/usr/share/keyrings/githubcli-archive-keyring.gpg
+        sudo chmod go+r /usr/share/keyrings/githubcli-archive-keyring.gpg
+        echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" | sudo tee /etc/apt/sources.list.d/github-cli.list > /dev/null
+        sudo apt update
+        sudo apt install gh -y
+
+    - name: Authenticate GitHub CLI
+      run: |
+        echo "${{ secrets.PERSONAL_ACCESS_TOKEN }}" | gh auth login --with-token
+
+    - name: Set Release Tag and Name
+      id: set-release
+      run: |
+        DATE=$(date +'%Y-%m-%d')
+        VERSION=1
+        TAG="release-${DATE}-${VERSION}"
+        
+        # Check if the tag already exists e increment the version number if necessary
+        while gh release view $TAG > /dev/null 2>&1; do
+          VERSION=$((VERSION + 1))
+          TAG="release-${DATE}-${VERSION}"
+        done
+
+        echo "RELEASE_TAG=$TAG" >> $GITHUB_ENV
+        echo "RELEASE_NAME=Release ColdWheels $DATE-${VERSION}" >> $GITHUB_ENV
+
+    - name: Create GitHub Release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+      with:
+        tag_name: ${{ env.RELEASE_TAG }}
+        release_name: ${{ env.RELEASE_NAME }}
+        draft: false
+        prerelease: false
+        body: "New release for ${{ env.RELEASE_NAME }}"
