@@ -1,45 +1,17 @@
 'use client'
 import React, { useState } from "react";
-import { ConnectButton } from '@rainbow-me/rainbowkit';
-import type { NextPage } from 'next';
 import { ethers } from 'ethers';
-import { useWallets } from "@web3-onboard/react";
 import { advanceDAppRelay, advanceInput } from 'cartesi-client';
-import { init } from "@web3-onboard/react";
-import configFile from "./config.json";
-import injectedModule from "@web3-onboard/injected-wallets";
-
-const injected = injectedModule();
-init({
-  wallets: [injected],
-  chains: Object.entries(configFile).map(([k, v]: [string, any], i) => ({
-    id: k,
-    token: v.token,
-    label: v.label,
-    rpcUrl: v.rpcUrl,
-  })),
-  appMetadata: {
-    name: "DecentraAds",
-    icon: "<svg><svg/>",
-    description: "Decentralized Marketplace for Adspaces",
-    recommendedInjectedWallets: [
-      { name: "MetaMask", url: "https://metamask.io" },
-    ],
-  },
-});
-
 interface IInputProps {
   dappAddress: string
 }
 
-const Input: NextPage<IInputProps> = (props) => {
-  const [connectedWallet] = useWallets();
+const Input: React.FC<IInputProps> = (props) => {
   const [input, setInput] = useState<string>("");
   const provider = new ethers.providers.Web3Provider(window.ethereum);
   const [hexInput, setHexInput] = useState<boolean>(false);
-
   const dappAddress = props.dappAddress;
-  console.log("dapp address is:", dappAddress);
+
   const addInput = async () => {
       console.log("adding input", input);
       const signer = await provider.getSigner();
@@ -54,9 +26,8 @@ const Input: NextPage<IInputProps> = (props) => {
   }
 
   return (
-    <div>
+    <div style={{ textAlign: 'center' }}>
       <main>
-        <ConnectButton />
           <div>
             Send Address (send relay dapp address) <br />
             <button onClick={() => sendAddress()} >
