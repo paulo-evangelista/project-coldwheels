@@ -2,6 +2,7 @@
 import React from "react";
 import styled from "styled-components";
 import { Network } from "./network";
+import { Inspect } from "./inspect";
 
 const CenteredDiv = styled.div`
   display: flex;
@@ -23,6 +24,7 @@ const Login = () => {
     <CenteredDiv>
       <Main>
         <Network></Network>
+        <Inspect></Inspect>
       </Main>
     </CenteredDiv>
   );
