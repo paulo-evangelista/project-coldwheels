@@ -37,12 +37,12 @@ func (dapp *ColdWheels) Advance(
 		return fmt.Errorf("failed to unmarshal input payload: %w", err)
 	}
 
-	userRole, userId, err := mw.ValidateUser(dapp.db, metadata.MsgSender.String())
+	userRole, _, err := mw.ValidateUser(dapp.db, metadata.MsgSender.String())
 	if err != nil && input.Kind != "register" {
 		return fmt.Errorf("failed to get user role: %w", err)
 	}
 
-	err = router.Advance(dapp.db, userRole, input)
+	err = router.Advance(dapp.db, int(userRole), input)
 	if err != nil {
 		return fmt.Errorf("failed to advance: %w", err)
 	}
@@ -51,24 +51,8 @@ func (dapp *ColdWheels) Advance(
 }
 
 func (d *ColdWheels) Inspect(env rollmelette.EnvInspector, payload []byte) error {
-	fmt.Println("Inspecting: ", payload)
-
-	var input *rollups.InspectInputDTO
-	err := json.Unmarshal(payload, &input)
-	if err != nil {
-		return fmt.Errorf("failed to unmarshal input payload: %w", err)
-	}
-
-	userRole, err := mw.GetUserRole(d.db, "test")
-	if err != nil {
-		return fmt.Errorf("failed to get user role: %w", err)
-	}
-
-	err = router.Inspect(d.db, userRole, input)
-	if err != nil {
-		return fmt.Errorf("failed to inspect: %w", err)
-	}
-
+	
+	env.Report([]byte("Inspecting..."))
 	return nil
 }
 
@@ -77,6 +61,8 @@ func main() {
 
 	ctx := context.Background()
 	opts := rollmelette.NewRunOpts()
+	opts.RollupURL = "http://127.0.0.1:5004"
+	
 	app := NewColdWheels(client)
 	err := rollmelette.Run(ctx, opts, app)
 	if err != nil {
