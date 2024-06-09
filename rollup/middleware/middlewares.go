@@ -9,12 +9,12 @@ import (
 
 //  Validates if user exists and can access the system.
 //  If user doen't exist, creates it. 
-func ValidateUser(dbClient *gorm.DB, msgSender string) (uint, uint, error)  {
+func ValidateUser(dbClient *gorm.DB, msgSender string) (db.Role, uint, error)  {
 	
 	var user db.User
 	tx := dbClient.Where("address = ?", msgSender).First(&user)
 	if tx.Error != nil {
-		return 0, 0, err
+		return 0, 0, tx.Error
 	}
 
 	if user.Role < db.Admin || user.Role > db.RegularUser {

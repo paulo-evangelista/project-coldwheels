@@ -2,7 +2,6 @@ package db
 
 import (
 	"time"
-
 	"gorm.io/gorm"
 )
 

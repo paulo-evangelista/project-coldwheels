@@ -33,10 +33,10 @@ func Setup() *gorm.DB {
 
 func PopulateDB(db *gorm.DB) error {
 	users := []User{
-		{Name: "admin", Address: "0x00000000000000000001", Role: 1},
-		{Name: "user", Address: "0x00000000000000000002", Role: 2},
-		{Name: "user2", Address: "0x00000000000000000003", Role: 3},
-		{Name: "user3", Address: "0x00000000000000000004", Role: 4},
+		{Name: "Admin", Address: "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266", Role: 1},
+		{Name: "Porto Seguro", Address: "0x70997970C51812dc3A010C7d01b50e0d17dc79C8", Role: 2},
+		{Name: "Oficina autorizada Porto", Address: "0x3C44CdDdB6a900fa2b585dd299e03d12FA4293BC", Role: 3},
+		{Name: "Oficina do Joaquim", Address: "0x90F79bf6EB2c4f870365E785982E1f101E93b906", Role: 4},
 	}
 
 	for i := range users {
