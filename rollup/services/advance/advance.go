@@ -6,7 +6,7 @@ import (
 )
 
 type FuncArguments struct {
-	Env     rollmelette.EnvInspector
+	Env     rollmelette.Env
 	DB      *gorm.DB
 	Payload any
 }
