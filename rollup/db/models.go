@@ -2,15 +2,16 @@ package db
 
 import (
 	"time"
+
 	"gorm.io/gorm"
 )
 
-type User struct {
+type Company struct {
 	gorm.Model
 	Name      string
 	Address   string
-	Role      Role        // 1 - Admin, 2 - Affiliate, 3 - Trusted, 4 - RegularUser
-	Incidents []Incident `gorm:"foreignKey:UserId"`
+	Role      Role // 1 - Admin, 2 - Affiliate, 3 - Trusted, 4 - RegularCompany
+	Incidents []Incident
 }
 
 type Role int
@@ -19,7 +20,7 @@ const (
 	Admin Role = iota + 1
 	Affiliate
 	Trusted
-	RegularUser
+	Untrusted
 )
 
 type IncidentType struct {
@@ -33,16 +34,14 @@ type Incident struct {
 	IncidentType   IncidentType `gorm:"foreignKey:IncidentTypeId"`
 	Description    string
 	IncidentDate   time.Time
-	UserId         uint
-	User           User `gorm:"foreignKey:UserId"`
+	CompanyId      uint
+	Company        Company `gorm:"foreignKey:CompanyId"`
 	VehicleId      uint
 	Vehicle        Vehicle `gorm:"foreignKey:VehicleId"`
 }
 
 type Vehicle struct {
 	gorm.Model
-	OwnerId   uint `gorm:"index"`
-	Owner     User `gorm:"foreignKey:OwnerId"`
 	Plate     string
 	Year      string
 	Incidents []Incident `gorm:"foreignKey:VehicleId"`

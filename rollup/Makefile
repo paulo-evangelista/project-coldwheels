@@ -1,10 +1,10 @@
 GO := go
 wallet := 0
-.PHONY: clean dev send
+.PHONY: clean dev send send_test
 
-dapp: main.go
+dapp: cmd/rollup/main.go
 	$(GO) mod tidy
-	$(GO) build 
+	$(GO) build -o coldwheels cmd/rollup/main.go
 
 clean:
 	@rm -rf dapp
@@ -12,11 +12,10 @@ clean:
 dev:
 	@nonodo -- air
 
-send:
-	@cartesi send generic \
-    --dapp=0xab7528bb862fb57e8a2bcd567a2e929a0be56a5e \
-    --chain-id=31337 \
-    --rpc-url=http://127.0.0.1:8545 \
-    --mnemonic-passphrase='test test test test test test test test test test test junk' \
-	--mnemonic-index=$(wallet) \
-    --input="$(input)"
+inspect:
+	@curl -s --request POST \
+	  --url http://localhost:8080/inspect \
+	  --header 'Content-Type: application/json' \
+	  --header 'accept: application/json' \
+	  --data '{"kind": "$(kind)", "payload": $(payload)}' | \
+	jq -r '.reports[0].payload' | xxd -r -p

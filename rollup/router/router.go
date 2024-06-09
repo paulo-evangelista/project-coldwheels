@@ -1,44 +1,60 @@
 package router
 
 import (
-	rollups "coldwheels/utils"
+	"coldwheels/db"
+	"coldwheels/services/advance"
+	"coldwheels/services/inspect"
+	"coldwheels/utils"
 	"fmt"
-
+	"github.com/rollmelette/rollmelette"
 	"gorm.io/gorm"
 )
 
-func Advance(db *gorm.DB, userRole int, input *rollups.AdvaceInputDTO) error {
-	kind := input.Kind
-	inputPayload := input.Payload
+func Advance(env rollmelette.Env, DB *gorm.DB, company *db.Company, input *utils.AdvaceInputDTO) error {
+	kind, payload := input.Kind, input.Payload
 
-	switch kind {
-	case "test":
-		fmt.Println("test: ", inputPayload)
-		// test
-	case "all_users":
-		users := db.Exec("SELECT * FROM users")
-		fmt.Println(users)
-		fmt.Println("all_users: ", inputPayload)
-		// all_users
+	arguments := advance.FuncArguments{
+		Env:     env,
+		DB:      DB,
+		Payload: payload,
 	}
 
-	return nil
+	switch kind {
+
+	case "test_report":
+		fmt.Println("[ROUTER] Test report hit")
+		arguments.Env.Report([]byte("report is working"))
+		return nil
+	
+	case "test_notice":
+		fmt.Println("[ROUTER] Test notice hit")
+		arguments.Env.Notice([]byte("notice is working"))
+		return nil
+
+	case "register_company":
+		return advance.RegisterCompany(arguments)
+
+	case "update_company":
+		return advance.UpdateCompany(arguments)
+
+	case "create_incident":
+		return advance.CreateIncident(arguments)
+
+	default:
+		return fmt.Errorf("unknown kind: %s", kind)
+
+	}
 }
 
-func Inspect(db *gorm.DB, userRole int, input *rollups.InspectInputDTO) error {
-	kind := input.Kind
-	inputPayload := input.Payload
+func Inspect(env rollmelette.EnvInspector, DB *gorm.DB, input *utils.InspectInputDTO) error {
+	fmt.Println("[ROUTER] Inspecting: ", input.Kind)
 
-	switch kind {
-	case "test":
-		fmt.Println("test: ", inputPayload)
-		// test
-	case "all_users":
-		users := db.Exec("SELECT * FROM users")
-		fmt.Println(users)
-		fmt.Println("all_users: ", inputPayload)
-		// all_users
+	switch input.Kind {
+	case "all_companies":
+		return inspect.AllCompanies(env, DB)
+
+	default:
+		return fmt.Errorf("unknown kind: %s", input.Kind)
+
 	}
-
-	return nil
 }
