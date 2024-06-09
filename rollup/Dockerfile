@@ -29,6 +29,7 @@ COPY . .
 
 RUN make
 
+#------------------------------------------------------------------------------
 # runtime stage: produces final image that will be executed
 FROM --platform=linux/riscv64 riscv64/ubuntu:22.04
 
@@ -53,9 +54,10 @@ EOF
 ENV PATH="/opt/cartesi/bin:${PATH}"
 
 WORKDIR /opt/cartesi/dapp
+
 COPY --from=build-stage /opt/build/coldwheels .
 
 ENV ROLLUP_HTTP_SERVER_URL="http://127.0.0.1:5004"
 
 ENTRYPOINT ["rollup-init"]
-CMD ["/opt/cartesi/dapp/dapp"]
+CMD ["/opt/cartesi/dapp/coldwheels"]
