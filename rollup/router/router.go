@@ -6,6 +6,7 @@ import (
 	"coldwheels/services/inspect"
 	"coldwheels/utils"
 	"fmt"
+
 	"github.com/rollmelette/rollmelette"
 	"gorm.io/gorm"
 )
@@ -20,15 +21,14 @@ func Advance(env rollmelette.Env, DB *gorm.DB, company *db.Company, input *utils
 	}
 
 	switch kind {
-
 	case "test_report":
 		fmt.Println("[ROUTER] Test report hit")
-		arguments.Env.Report([]byte("report is working"))
+		// arguments.Env.Report([]byte("report is working"))
 		return nil
-	
+
 	case "test_notice":
 		fmt.Println("[ROUTER] Test notice hit")
-		arguments.Env.Notice([]byte("notice is working"))
+		// arguments.Env.Notice([]byte("notice is working"))
 		return nil
 
 	case "register_company":
@@ -46,7 +46,7 @@ func Advance(env rollmelette.Env, DB *gorm.DB, company *db.Company, input *utils
 	}
 }
 
-func Inspect(env rollmelette.EnvInspector, DB *gorm.DB, input *utils.InspectInputDTO) error {
+func Inspect(env rollmelette.Env, DB *gorm.DB, input *utils.InspectInputDTO) error {
 	fmt.Println("[ROUTER] Inspecting: ", input.Kind)
 
 	switch input.Kind {

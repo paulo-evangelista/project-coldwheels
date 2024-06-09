@@ -9,18 +9,19 @@ import (
 	"gorm.io/gorm"
 )
 
-func AllCompanies(env rollmelette.EnvInspector, DB *gorm.DB) error {
+func AllCompanies(env rollmelette.Env, DB *gorm.DB) error {
 	var company []db.Company
 	DB.Find(&company)
-	
+
 	jsoncompany, err := json.Marshal(company)
 	if err != nil {
 		return fmt.Errorf("error marshaling json: %+v", err)
 	}
 	jsonString := string(jsoncompany)
 	report := fmt.Sprintf("company: %s", jsonString)
-	
-	env.Report([]byte(report))
+	fmt.Println(report)
+
+	env.Notice([]byte(report))
 
 	return nil
 }
