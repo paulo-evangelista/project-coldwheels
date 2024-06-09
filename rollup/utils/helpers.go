@@ -1,11 +1,12 @@
-package rollups
+package utils
 
 import (
-	"encoding/json"
-	"encoding/hex"
-	"net/http"
 	"bytes"
-  "os"
+	"encoding/hex"
+	"encoding/json"
+	"fmt"
+	"net/http"
+	"os"
 )
 
 var rollup_server = os.Getenv("ROLLUP_HTTP_SERVER_URL")
@@ -76,4 +77,18 @@ func Hex2Str(hx string) (string, error) {
 func Str2Hex(str string) string {
   hx := hex.EncodeToString([]byte(str))
   return "0x"+string(hx)
+}
+
+func PrintNewAdvance(payload string){
+  fmt.Println("==== NEW ADVANCE ====")
+  fmt.Println("DATA: ", payload)
+  fmt.Print("==V==V==V==V==V==V==V==V==V==V==V==V\n\n")
+
+}
+
+func PrintNewInspect(payload string){
+  fmt.Println("\n\n====== INCOMING INSPECT ======")
+  fmt.Println("DATA: ", payload)
+  fmt.Print("==V==V==V==V==V==V==V==V==V==V==V==V\n\n")
+
 }

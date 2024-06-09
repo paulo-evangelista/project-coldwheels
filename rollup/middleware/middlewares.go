@@ -7,20 +7,24 @@ import (
 	"gorm.io/gorm"
 )
 
-//  Validates if user exists and can access the system.
-//  If user doen't exist, creates it. 
-func ValidateUser(dbClient *gorm.DB, msgSender string) (db.Role, uint, error)  {
-	
-	var user db.User
-	tx := dbClient.Where("address = ?", msgSender).First(&user)
+// Validates if company exists and can access the system.
+// If company doen't exist, creates it.
+func ValidateCompany(dbClient *gorm.DB, msgSender string) (*db.Company, error) {
+
+	var company db.Company
+	tx := dbClient.Where("address = ?", msgSender).First(&company)
 	if tx.Error != nil {
-		return 0, 0, tx.Error
+		return &company, tx.Error
 	}
 
-	if user.Role < db.Admin || user.Role > db.RegularUser {
-		fmt.Println("invalid role from database")
-		return 0,0, nil
+	if tx.RowsAffected == 0 {
+		return &company, fmt.Errorf("company not found")
 	}
 
-	return user.Role, user.ID, nil
+	if company.Role < db.Admin || company.Role > db.Untrusted {
+
+		return &company, fmt.Errorf("User role out of range")
+	}
+
+	return &company, nil
 }

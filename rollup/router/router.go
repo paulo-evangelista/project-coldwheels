@@ -2,47 +2,50 @@ package router
 
 import (
 	"coldwheels/db"
-	rollups "coldwheels/utils"
-	"encoding/json"
+	"coldwheels/services/advance"
+	"coldwheels/services/inspect"
+	"coldwheels/utils"
 	"fmt"
 
 	"github.com/rollmelette/rollmelette"
 	"gorm.io/gorm"
 )
 
-func Advance(env rollmelette.EnvInspector, DB *gorm.DB, userRole int, input *rollups.AdvaceInputDTO) error {
-	kind := input.Kind
-	inputPayload := input.Payload
+func Advance(env rollmelette.EnvInspector, DB *gorm.DB, company *db.Company, input *utils.AdvaceInputDTO) error {
+	kind, payload := input.Kind, input.Payload
 
-	// Check if inputPayload is a valid JSON string
-	var js map[string]interface{}
-	if err := json.Unmarshal([]byte(inputPayload), &js); err != nil {
-		return fmt.Errorf("failed to unmarshal input payload: %w", err)
+	arguments := advance.FuncArguments{
+		Env:     env,
+		DB:      DB,
+		Payload: payload,
 	}
 
 	switch kind {
-	case "test":
-		fmt.Println("test: ", inputPayload)
-		// test
-	}
 
-	return nil
+	case "register_company":
+		return advance.RegisterCompany(arguments)
+
+	case "update_company":
+		return advance.UpdateCompany(arguments)
+
+	case "create_incident":
+		return advance.CreateIncident(arguments)
+
+	default:
+		return fmt.Errorf("unknown kind: %s", kind)
+
+	}
 }
 
-func Inspect(env rollmelette.EnvInspector, DB *gorm.DB, userRole int, kind string) error {
-	fmt.Println("[ROUTER] Inspecting: ", kind)
+func Inspect(env rollmelette.EnvInspector, DB *gorm.DB, input *utils.InspectInputDTO) error {
+	fmt.Println("[ROUTER] Inspecting: ", input.Kind)
 
-	switch kind {
-	case "all_users":
-		var users []db.User
-		DB.Find(&users)
+	switch input.Kind {
+	case "all_companies":
+		return inspect.AllCompanies(env, DB)
 
-		fmt.Println("Users: ", users)
-		env.Report([]byte("Users: " + fmt.Sprint(users)))
-		// all_users
+	default:
+		return fmt.Errorf("unknown kind: %s", input.Kind)
+
 	}
-
-	fmt.Println("[ROUTER] Inspected: ", kind)
-
-	return nil
 }
