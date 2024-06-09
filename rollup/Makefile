@@ -1,5 +1,5 @@
 GO := go
-
+wallet := 0
 .PHONY: clean dev send
 
 dapp: main.go
@@ -18,4 +18,5 @@ send:
     --chain-id=31337 \
     --rpc-url=http://127.0.0.1:8545 \
     --mnemonic-passphrase='test test test test test test test test test test test junk' \
+	--mnemonic-index=$(wallet) \
     --input="$(input)"
