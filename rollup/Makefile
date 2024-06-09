@@ -19,4 +19,4 @@ send:
     --rpc-url=http://127.0.0.1:8545 \
     --mnemonic-passphrase='test test test test test test test test test test test junk' \
 	--mnemonic-index=$(wallet) \
-    --input="$(input)"
+    --input=$(input)

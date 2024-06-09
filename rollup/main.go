@@ -29,7 +29,7 @@ func (dapp *ColdWheels) Advance(
 	deposit rollmelette.Deposit,
 	payload []byte,
 ) error {
-	fmt.Println("Advancing: ", payload)
+	fmt.Println("Advancing: ", string(payload)) // Convert payload to string for printing
 
 	var input *rollups.AdvaceInputDTO
 	err := json.Unmarshal(payload, &input)
@@ -42,7 +42,7 @@ func (dapp *ColdWheels) Advance(
 		return fmt.Errorf("failed to get user role: %w", err)
 	}
 
-	err = router.Advance(dapp.db, int(userRole), input)
+	err = router.Advance(env, dapp.db, int(userRole), input)
 	if err != nil {
 		return fmt.Errorf("failed to advance: %w", err)
 	}
@@ -50,9 +50,14 @@ func (dapp *ColdWheels) Advance(
 	return nil
 }
 
-func (d *ColdWheels) Inspect(env rollmelette.EnvInspector, payload []byte) error {
-	
-	env.Report([]byte("Inspecting..."))
+func (dapp *ColdWheels) Inspect(env rollmelette.EnvInspector, kind []byte) error {
+	fmt.Println("Inspecting: ", string(kind))
+
+	err := router.Inspect(env, dapp.db, 1, string(kind))
+	if err != nil {
+		return fmt.Errorf("failed to inspect: %w", err)
+	}
+
 	return nil
 }
 
@@ -62,7 +67,7 @@ func main() {
 	ctx := context.Background()
 	opts := rollmelette.NewRunOpts()
 	opts.RollupURL = "http://127.0.0.1:5004"
-	
+
 	app := NewColdWheels(client)
 	err := rollmelette.Run(ctx, opts, app)
 	if err != nil {

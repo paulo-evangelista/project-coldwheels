@@ -1,44 +1,48 @@
 package router
 
 import (
+	"coldwheels/db"
 	rollups "coldwheels/utils"
+	"encoding/json"
 	"fmt"
 
+	"github.com/rollmelette/rollmelette"
 	"gorm.io/gorm"
 )
 
-func Advance(db *gorm.DB, userRole int, input *rollups.AdvaceInputDTO) error {
+func Advance(env rollmelette.EnvInspector, DB *gorm.DB, userRole int, input *rollups.AdvaceInputDTO) error {
 	kind := input.Kind
 	inputPayload := input.Payload
+
+	// Check if inputPayload is a valid JSON string
+	var js map[string]interface{}
+	if err := json.Unmarshal([]byte(inputPayload), &js); err != nil {
+		return fmt.Errorf("failed to unmarshal input payload: %w", err)
+	}
 
 	switch kind {
 	case "test":
 		fmt.Println("test: ", inputPayload)
 		// test
-	case "all_users":
-		users := db.Exec("SELECT * FROM users")
-		fmt.Println(users)
-		fmt.Println("all_users: ", inputPayload)
-		// all_users
 	}
 
 	return nil
 }
 
-func Inspect(db *gorm.DB, userRole int, input *rollups.InspectInputDTO) error {
-	kind := input.Kind
-	inputPayload := input.Payload
+func Inspect(env rollmelette.EnvInspector, DB *gorm.DB, userRole int, kind string) error {
+	fmt.Println("[ROUTER] Inspecting: ", kind)
 
 	switch kind {
-	case "test":
-		fmt.Println("test: ", inputPayload)
-		// test
 	case "all_users":
-		users := db.Exec("SELECT * FROM users")
-		fmt.Println(users)
-		fmt.Println("all_users: ", inputPayload)
+		var users []db.User
+		DB.Find(&users)
+
+		fmt.Println("Users: ", users)
+		env.Report([]byte("Users: " + fmt.Sprint(users)))
 		// all_users
 	}
+
+	fmt.Println("[ROUTER] Inspected: ", kind)
 
 	return nil
 }
