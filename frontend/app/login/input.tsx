@@ -35,14 +35,9 @@ const InputField = styled.input`
   margin-right: 10px;
 `;
 
-const Checkbox = styled.input`
-  margin-left: 10px;
-`;
-
 const Input: React.FC<IInputProps> = (props) => {
   const [input, setInput] = useState<string>("");
   const provider = new ethers.providers.Web3Provider(window.ethereum);
-  const [hexInput, setHexInput] = useState<boolean>(false);
   const dappAddress = props.dappAddress;
 
   const addInput = async () => {
@@ -75,14 +70,7 @@ const Input: React.FC<IInputProps> = (props) => {
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
             />
-            <Checkbox
-                type="checkbox"
-                checked={hexInput}
-                onChange={(e) => setHexInput(!hexInput)}
-            />
-            <span>Raw Hex </span>
             <Button onClick={() => addInput()}>Send</Button>
-
           </div>
       </Main>
     </div>

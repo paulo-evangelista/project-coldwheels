@@ -1,64 +1,37 @@
-import React from "react";
-import { useSetChain } from "@web3-onboard/react";
-import { useState } from "react";
-import { _fetchData } from "ethers/lib/utils";
+import React, { useState } from "react";
+import axios from "axios";
 import { ethers } from "ethers";
+
 export const Inspect: React.FC = () => {
-    const [{ connectedChain }] = useSetChain();
     const [inspectData, setInspectData] = useState<string>("");
     const [reports, setReports] = useState<string[]>([]);
     const [metadata, setMetadata] = useState<any>({});
-    const [hexData, setHexData] = useState<boolean>(false);
-    const [postData, setPostData] = useState<boolean>(false);
 
-
-    // const rollups = useRollups();
     const inspectCall = async (str: string) => {
-        let payload = str;
-        if (hexData) {
-            const uint8array = ethers.utils.arrayify(str);
-            payload = new TextDecoder().decode(uint8array);
-        }
-        if (!connectedChain) {
-            return;
-        }
+        let apiURL = "http://localhost:8080/inspect";
 
-        let apiURL = ""
+        try {
+            let response;
+            response = await axios.post(apiURL, inspectData);
 
-        if (config[connectedChain.id]?.inspectAPIURL) {
-            console.log(config[connectedChain.id]?.inspectAPIURL)
-            apiURL = `${config[connectedChain.id].inspectAPIURL}/inspect`;
-        } else {
-            console.error(`No inspect interface defined for chain ${connectedChain.id}`);
-            return;
+            const data = response.data;
+            setReports(data.reports);
+            setMetadata({ metadata: data.metadata, status: data.status, exception_payload: data.exception_payload });
+        } catch (error) {
+            console.error("Error fetching data:", error);
         }
-
-        let fetchData: Promise<Response>;
-        if (postData) {
-            const payloadBlob = new TextEncoder().encode(payload);
-            fetchData = fetch(`${apiURL}`, { method: 'POST', body: payloadBlob });
-        } else {
-            fetchData = fetch(`${apiURL}/${payload}`);
-        }
-        fetchData
-            .then(response => response.json())
-            .then(data => {
-                setReports(data.reports);
-                setMetadata({ metadata: data.metadata, status: data.status, exception_payload: data.exception_payload });
-            });
     };
+
     return (
         <div>
             <div>
                 <h1>INSPECT</h1>
-                <br></br>
+                <br />
                 <input
                     type="text"
                     value={inspectData}
                     onChange={(e) => setInspectData(e.target.value)}
                 />
-                <input type="checkbox" checked={hexData} onChange={(e) => setHexData(!hexData)} /><span>Raw Hex </span>
-                <input type="checkbox" checked={postData} onChange={(e) => setPostData(!postData)} /><span>POST </span>
                 <button onClick={() => inspectCall(inspectData)}>
                     Send
                 </button>
@@ -99,4 +72,4 @@ export const Inspect: React.FC = () => {
             </table>
         </div>
     );
-}
+};
