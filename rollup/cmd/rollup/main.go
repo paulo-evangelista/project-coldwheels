@@ -77,7 +77,7 @@ func main() {
 	opts.RollupURL = "http://127.0.0.1:5004"
 
 	app := NewColdWheels(client)
-	fmt.Println(" -> Running framework...")
+	fmt.Println(" -> Started framework, waiting for input...")
 	err := rollmelette.Run(ctx, opts, app)
 	if err != nil {
 		slog.Error("application error", "error", err)

@@ -18,10 +18,8 @@ func ValidateCompany(dbClient *gorm.DB, msgSender string) (*db.Company, error) {
 		return &company, fmt.Errorf("company not found")
 	}
 
-	fmt.Print(company.Role)
-
-	if company.Role > db.Untrusted || company.Role < db.Admin {
-		return &company, fmt.Errorf("user role out of range")
+	if company.Role < db.Untrusted || company.Role > db.Admin {
+		return &company, fmt.Errorf("user role out of range. (This should never happen)")
 	}
 
 	return &company, nil

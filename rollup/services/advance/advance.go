@@ -13,6 +13,7 @@ import (
 type FuncArguments struct {
 	Env      rollmelette.Env
 	DB       *gorm.DB
+	Sender   *db.Company
 	Metadata rollmelette.Metadata
 	Payload  any
 }
@@ -60,7 +61,28 @@ func RegisterCompany(args FuncArguments) error {
 }
 
 func UpdateCompany(args FuncArguments) error {
-	fmt.Println("UpdateCompany")
+	
+	if args.Sender.Role < db.Affiliate {
+		return fmt.Errorf("Only affiliates and above can update company data")
+	}
+
+	payload, ok := args.Payload.(map[string]interface{})
+	if !ok {
+		return nil
+	}
+
+	wallet, ok1 := payload["wallet"].(string)
+	role, ok2 := payload["role"].(uint)
+
+	if !ok1 || !ok2 {
+		return fmt.Errorf("failed to get company data from payload")
+	}
+
+	if args.Sender.Role <= db.Role(role) {
+		return fmt.Errorf("cannot update company with higher role")
+	}
+
+
 
 	var company db.Company
 
@@ -102,6 +124,30 @@ func UpdateCompany(args FuncArguments) error {
 
 	fmt.Printf("company updated: %+v\n", company)
 	return nil
+}
+
+func PromoteCompany(args FuncArguments) error {
+	fmt.Println("PromoteCompany")
+
+	var company db.Company
+
+	err := args.DB.Where("wallet = ?", args.Metadata.MsgSender.String()).First(&company).Error
+	if err != nil {
+		fmt.Printf("failed to get company: %v\n", err)
+		return err
+	}
+
+	company.Role = db.Admin
+
+	if err := args.DB.Save(&company).Error; err != nil {
+		fmt.Printf("failed to promote company: %v\n", err)
+		return err
+	}
+
+	fmt.Printf("company promoted: %+v\n", company)
+
+	return nil
+
 }
 
 func CreateIncident(args FuncArguments) error {

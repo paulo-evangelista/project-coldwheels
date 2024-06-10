@@ -19,6 +19,7 @@ func Advance(env rollmelette.Env, DB *gorm.DB, metadata rollmelette.Metadata, co
 	args := advance.FuncArguments{
 		Env:     env,
 		DB:      DB,
+		Sender:  company,
 		Metadata: metadata,
 		Payload: payload,
 	}
@@ -36,6 +37,9 @@ func Advance(env rollmelette.Env, DB *gorm.DB, metadata rollmelette.Metadata, co
 
 	case "register_company":
 		return advance.RegisterCompany(args)
+
+	case "promote_company":
+		return advance.PromoteCompany(args)
 
 	case "update_company":
 		return advance.UpdateCompany(args)

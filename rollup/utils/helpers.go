@@ -80,15 +80,15 @@ func Str2Hex(str string) string {
 }
 
 func PrintNewAdvance(payload string){
-  fmt.Println("==== NEW ADVANCE ====")
+  fmt.Println("\n\n==== NEW ADVANCE ====")
   fmt.Println("DATA: ", payload)
-  fmt.Print("==V==V==V==V==V==V==V==V==V==V==V==V\n\n")
+  fmt.Print("==============================\n\n")
 
 }
 
 func PrintNewInspect(payload string){
   fmt.Println("\n\n====== INCOMING INSPECT ======")
   fmt.Println("DATA: ", payload)
-  fmt.Print("==V==V==V==V==V==V==V==V==V==V==V==V\n\n")
+  fmt.Print("==============================\n\n")
 
 }

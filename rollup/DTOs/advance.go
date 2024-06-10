@@ -20,3 +20,8 @@ type CreateIncidentInput struct {
 	CompanyID      uint            `json:"company_id"`
 	VehicleID      uint            `json:"vehicle_id"`
 }
+
+type PromoteCompanyInput struct {
+	Wallet string `json:"wallet"`
+	Role uint `json:"role"`
+}

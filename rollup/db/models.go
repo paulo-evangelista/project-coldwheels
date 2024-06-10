@@ -13,17 +13,17 @@ type Company struct {
 	Description string
 	Wallet      string `gorm:"unique"`
 	Address     string
-	Role        Role `gorm:"default:4"`// 1 - Admin, 2 - Affiliate, 3 - Trusted, 4 - RegularCompany
+	Role        Role `gorm:"default:1"`// 1 - Admin, 2 - Affiliate, 3 - Trusted, 4 - RegularCompany
 	Incidents   []Incident
 }
 
 type Role int
 
 const (
-	Admin Role = iota + 1
-	Affiliate
+	Untrusted Role = iota + 1
 	Trusted
-	Untrusted
+	Affiliate
+	Admin
 )
 
 type IncidentType struct {
