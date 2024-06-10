@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import { ethers } from 'ethers';
 import { advanceDAppRelay, advanceInput } from 'cartesi-client';
-import { Main, Button, InputField } from './style';
+
 interface IInputProps {
   dappAddress: string
 }
@@ -26,25 +26,24 @@ const Input: React.FC<IInputProps> = (props) => {
   }
 
   return (
-    <div style={{ textAlign: 'center' }}>
-      <Main>
+    <div className="text-center">
+      <main className="bg-white p-5 rounded-lg shadow-md mt-5">
           <div>
-            Send Address (send relay dapp address) <br />
-            <Button onClick={() => sendAddress()} >
-                Send
-            </Button>
-          </div>
-          <div>
-            Send Input <br />
             Input:{" "}
-            <InputField
+            <input
                 type="text"
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
+                className="p-2 rounded border border-gray-300 mr-2 ml-2"
             />
-            <Button onClick={() => addInput()}>Send</Button>
+            <button
+              onClick={() => addInput()}
+              className="py-2 px-5 my-2 mx-2 border-none rounded bg-black text-white cursor-pointer hover:bg-gray-500"
+            >
+              Send Advance
+            </button>
           </div>
-      </Main>
+      </main>
     </div>
   );
 };

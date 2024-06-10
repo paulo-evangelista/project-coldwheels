@@ -1,8 +1,7 @@
-import Input from "../Input";
+import Input from "../Input/Input";
 import { useState } from "react";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { useAccount } from "wagmi";
-import { Container, InputContainer } from "./style";
 
 export const Network = () => {
     const { address, isConnected } = useAccount();
@@ -10,21 +9,23 @@ export const Network = () => {
         "0xab7528bb862fb57e8a2bcd567a2e929a0be56a5e"
     );
     return (
-        <Container>
+        <div className="text-center">
             <ConnectButton />
             {isConnected && address && (
-                <InputContainer>
+                <div className="mt-5">
                     <div>
-                        Dapp Address: <input
+                        Dapp Address:
+                        <input
                             type="text"
                             value={dappAddress}
                             onChange={(e) => setDappAddress(e.target.value)}
+                            className="ml-2 p-2 border border-gray-300 rounded"
                         />
                         <br /><br />
                     </div>
                     <Input dappAddress={dappAddress} />
-                </InputContainer>
+                </div>
             )}
-        </Container>
+        </div>
     );
 };
