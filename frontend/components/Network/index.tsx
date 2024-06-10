@@ -1,16 +1,8 @@
-import Input from "./input";
+import Input from "../Input";
 import { useState } from "react";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { useAccount } from "wagmi";
-import styled from "styled-components";
-
-const Container = styled.div`
-  text-align: center;
-`;
-
-const InputContainer = styled.div`
-  margin-top: 20px;
-`;
+import { Container, InputContainer } from "./style";
 
 export const Network = () => {
     const { address, isConnected } = useAccount();

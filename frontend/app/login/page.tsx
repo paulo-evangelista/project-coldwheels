@@ -1,9 +1,10 @@
 'use client'
 import React from "react";
 import styled from "styled-components";
-import { Network } from "./network";
-import { Inspect } from "./inspect";
-import { Report } from "./reports";
+import { Network } from "../../components/Network";
+import { Inspect } from "../../components/Inspect";
+import { Report } from "../../components/Report";
+import { Notice } from "../../components/Notice";
 
 const CenteredDiv = styled.div`
   display: flex;
@@ -25,8 +26,9 @@ const Login = () => {
     <CenteredDiv>
       <Main>
         <Network></Network>
-        <Inspect></Inspect>
+        {/* <Inspect></Inspect> */}
         <Report></Report>
+        <Notice></Notice>
       </Main>
     </CenteredDiv>
   );
