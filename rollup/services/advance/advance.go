@@ -71,7 +71,7 @@ func UpdateCompany(args FuncArguments) error {
 		return nil
 	}
 
-	wallet, ok1 := payload["wallet"].(string)
+	_, ok1 := payload["wallet"].(string)
 	role, ok2 := payload["role"].(uint)
 
 	if !ok1 || !ok2 {
