@@ -1,25 +1,19 @@
 'use client'
-import React from "react";
-import { Network } from "../../components/Network/Network";
-import { Inspect } from "../../components/Inspect/Inspect";
-import { Report } from "../../components/Report/Report";
-import { Notice } from "../../components/Notice/Notice";
+import React, { useState } from "react";
+import LoginForm from "../../components/LoginForm/LoginForm";
 
 const Login = () => {
-  return (
-    <div className="flex justify-center items-center h-screen bg-gray-100">
-      <div className="grid grid-cols-2 gap-4 p-5">
-        <div className="bg-white p-5 rounded-lg shadow-md">
-          <Network />
-          <Report />
-          <Notice />
+    const [dappAddress, setDappAddress] = useState<string>(
+        "0xab7528bb862fb57e8a2bcd567a2e929a0be56a5e"
+    );
+    
+    return (
+        <div className="flex justify-center items-center h-screen bg-gray-100 shadow-md">
+            <div className="bg-gray-100 p-5 rounded-lg">
+            <LoginForm dappAddress={dappAddress} />
+            </div>
         </div>
-        <div className="bg-white p-5 rounded-lg shadow-md">
-          <Inspect />
-        </div>
-      </div>
-    </div>
-  );
+    );
 };
 
 export default Login;
