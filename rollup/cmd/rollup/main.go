@@ -1,10 +1,10 @@
 package main
 
 import (
-	"coldwheels/db"
-	mw "coldwheels/middleware"
-	"coldwheels/router"
-	"coldwheels/utils"
+	"coldwheels/internal/db"
+	mw "coldwheels/internal/middleware"
+	"coldwheels/internal/router"
+	"coldwheels/internal/utils"
 
 	"github.com/rollmelette/rollmelette"
 	"gorm.io/gorm"
@@ -27,8 +27,7 @@ func (dapp *ColdWheels) Advance(
 	env rollmelette.Env,
 	metadata rollmelette.Metadata,
 	deposit rollmelette.Deposit,
-	payload []byte,
-) error {
+	payload []byte) error {
 	utils.PrintNewAdvance(string(payload))
 
 	var input *utils.AdvaceInputDTO
@@ -38,28 +37,28 @@ func (dapp *ColdWheels) Advance(
 	}
 
 	company, err := mw.ValidateCompany(dapp.db, metadata.MsgSender.String())
-	if err != nil && input.Kind != "register" {
+	if err != nil && input.Kind != "register_company" {
 		return fmt.Errorf("failed to get company role: %w", err)
 	}
 
-	err = router.Advance(env, dapp.db, company, input)
+	err = router.Advance(env, dapp.db, metadata, company, input)
 	if err != nil {
 		return fmt.Errorf("failed to advance: %w", err)
 	}
 
-// {"kind":"register","payload":""}"
-
 	return nil
 }
 
-func (dapp *ColdWheels) Inspect(env rollmelette.EnvInspector, kind []byte) error {
-	utils.PrintNewInspect(string(kind))
+func (dapp *ColdWheels) Inspect(env rollmelette.EnvInspector, payload []byte) error {
+	utils.PrintNewInspect(string(payload))
 
 	var input *utils.InspectInputDTO
-	err := json.Unmarshal(kind, &input)
+	err := json.Unmarshal(payload, &input)
 	if err != nil {
 		return fmt.Errorf("failed to unmarshal input kind: %w", err)
 	}
+
+	fmt.Println(input)
 
 	err = router.Inspect(env, dapp.db, input)
 	if err != nil {
@@ -77,7 +76,7 @@ func main() {
 	opts.RollupURL = "http://127.0.0.1:5004"
 
 	app := NewColdWheels(client)
-	fmt.Println(" -> Running framework...")
+	fmt.Println(" -> Started framework, waiting for input...")
 	err := rollmelette.Run(ctx, opts, app)
 	if err != nil {
 		slog.Error("application error", "error", err)
