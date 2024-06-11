@@ -17,11 +17,11 @@ func Advance(env rollmelette.Env, DB *gorm.DB, metadata rollmelette.Metadata, co
 	kind, payload := input.Kind, input.Payload
 
 	args := advance.FuncArguments{
-		Env:     env,
-		DB:      DB,
-		Sender:  company,
+		Env:      env,
+		DB:       DB,
+		Sender:   company,
 		Metadata: metadata,
-		Payload: payload,
+		Payload:  payload,
 	}
 
 	switch kind {
@@ -44,6 +44,9 @@ func Advance(env rollmelette.Env, DB *gorm.DB, metadata rollmelette.Metadata, co
 
 	case "update_company":
 		return advance.UpdateCompany(args)
+
+	case "favorite_vehicle":
+		return advance.FavoriteVehicle(args)
 
 	// case "create_incident":
 	// 	return advance.CreateIncident(args)
@@ -70,6 +73,12 @@ func Inspect(env rollmelette.EnvInspector, DB *gorm.DB, input *utils.InspectInpu
 
 	case "company":
 		return inspect.Company(args)
+
+	case "get_vehicle_by_plate":
+		return inspect.GetVehicleByPlate(args)
+
+	case "get_favorites":
+		return inspect.Favorites(args)
 
 	default:
 		return fmt.Errorf("unknown kind: %s", input.Kind)

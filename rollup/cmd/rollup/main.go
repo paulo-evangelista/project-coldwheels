@@ -27,7 +27,7 @@ func (dapp *ColdWheels) Advance(
 	env rollmelette.Env,
 	metadata rollmelette.Metadata,
 	deposit rollmelette.Deposit,
-	payload []byte ) error {
+	payload []byte) error {
 	utils.PrintNewAdvance(string(payload))
 
 	var input *utils.AdvaceInputDTO
@@ -40,8 +40,6 @@ func (dapp *ColdWheels) Advance(
 	if err != nil && input.Kind != "register_company" {
 		return fmt.Errorf("failed to get company role: %w", err)
 	}
-	 
-	fmt.Println("Company: ", company)
 
 	err = router.Advance(env, dapp.db, metadata, company, input)
 	if err != nil {

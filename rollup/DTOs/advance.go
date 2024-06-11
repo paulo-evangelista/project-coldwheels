@@ -25,3 +25,7 @@ type PromoteCompanyInput struct {
 	Wallet string `json:"wallet"`
 	Role uint `json:"role"`
 }
+
+type FavoriteVehicleInput struct {
+	Plate string
+}

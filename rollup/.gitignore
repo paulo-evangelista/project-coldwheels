@@ -4,3 +4,4 @@ main
 coldwheels
 tmp
 cmd/rollup/tmp
+.tmp

@@ -3,6 +3,7 @@ package advance
 import (
 	dtos "coldwheels/DTOs"
 	"coldwheels/db"
+	"encoding/json"
 	"fmt"
 	"time"
 
@@ -61,7 +62,6 @@ func RegisterCompany(args FuncArguments) error {
 }
 
 func UpdateCompany(args FuncArguments) error {
-
 	payload, ok := args.Payload.(map[string]interface{})
 	if !ok {
 		return nil
@@ -101,7 +101,6 @@ func UpdateCompany(args FuncArguments) error {
 func PromoteCompany(args FuncArguments) error {
 	fmt.Println("PromoteCompany")
 
-		
 	if args.Sender.Role < db.Affiliate {
 		return fmt.Errorf("only affiliates and above can update company data")
 	}
@@ -140,7 +139,6 @@ func PromoteCompany(args FuncArguments) error {
 	fmt.Printf("company promoted: %+v\n", company)
 
 	return nil
-
 }
 
 func CreateIncident(args FuncArguments) error {
@@ -186,6 +184,50 @@ func CreateIncident(args FuncArguments) error {
 	}
 
 	fmt.Printf("incident created: %+v\n", incident)
+
+	return nil
+}
+
+func FavoriteVehicle(args FuncArguments) error {
+	fmt.Println("FavoriteVehicle: Toggles a vehicle as a favorite for a company.")
+
+	payloadStr, ok := args.Payload.(string)
+	if !ok {
+		fmt.Println("failed to make payload into string")
+		return nil
+	}
+
+	var payload map[string]interface{}
+	err := json.Unmarshal([]byte(payloadStr), &payload)
+	if err != nil {
+		fmt.Println("failed to unmarshal payload into map")
+		return err
+	}
+
+	vehiclePlate, ok1 := payload["plate"].(string)
+
+	if !ok1 {
+		fmt.Println("failed to get vehicle plate from payload")
+		return fmt.Errorf("failed to get company data from payload")
+	}
+
+	var vehicle db.Vehicle
+	tx := args.DB.Where("plate = ?", vehiclePlate).First(&vehicle)
+	if tx.Error != nil {
+		fmt.Printf("failed to get vehicle: %v\n", tx.Error)
+		return tx.Error
+	}
+
+	company, err := db.GetCompanyByWallet(args.DB, args.Sender.Wallet)
+	if err != nil {
+		fmt.Printf("failed to get company: %v\n", err)
+		return err
+	}
+
+	if err := args.DB.Model(&company).Association("Favorites").Append(&vehicle); err != nil {
+		fmt.Printf("failed to append favorite vehicle: %v\n", err)
+		return err
+	}
 
 	return nil
 }
