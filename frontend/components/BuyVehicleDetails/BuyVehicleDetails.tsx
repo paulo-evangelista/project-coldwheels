@@ -4,9 +4,9 @@ import { ShieldCheck } from "lucide-react";
 
 import VehicleInfoBox from "./VehicleInfoBox";
 
-export default function () {
+export default function ({ width = "w-5/12" }) {
     return (
-        <div className="w-5/12 pb-10 h-full flex flex-col justify-between ">
+        <div className={`${width} pb-10 h-full flex flex-col justify-between `}>
             <div className="">
                 <h1 className="font-bold text-3xl">
                     Renegade 1.3 Turbo T270 4X2
@@ -30,14 +30,14 @@ export default function () {
 
                 <div className="flex space-between items-center">
                     <div className="w-6/12 flex items-center justify-start">
-                        <div className="h-16 inline-flex justify-between items-center px-10 py-2 my-8 bg-[#EA580C] rounded-lg">
+                        <div className="h-16 flex justify-between items-center px-10 py-2 my-8 bg-[#EA580C] rounded-lg">
                             <ShieldCheck />
                             <p className="font-bold">Veículo verificado</p>
                         </div>
                     </div>
 
                     <div className="w-6/12 flex items-center justify-end">
-                        <div className="h-16 inline-block justify-center items-center px-10 py-2 my-8 bg-[#EA580C] rounded-lg">
+                        <div className="h-16 flex flex-col justify-center items-center px-8 py-2 my-8 bg-[#EA580C] rounded-lg">
                             <p className="font-bold">
                                 Inscrição:0x478a91245...
                             </p>

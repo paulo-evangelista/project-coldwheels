@@ -5,8 +5,16 @@ import { Input } from "@/components/ui/input";
 import CarCarousel from "../components/CarouselCars/CarouselCars";
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
+import { useRouter } from "next/navigation";
+import BuyVehicleEvents from "@/components/BuyVehicleEvents/BuyVehicleEvents";
+import BuyVehicleDetails from "@/components/BuyVehicleDetails/BuyVehicleDetails";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 const Home = () => {
+    const router = useRouter();
+
+    const [inputValue, setInputValue] = useState("");
+
     const [isVisible, setIsVisible] = useState(false);
 
     const [scrollY, setScrollY] = useState(0);
@@ -87,6 +95,13 @@ const Home = () => {
         return 1 + 5 * progress;
     };
 
+    //navigate to /buy/what was insert
+    const submitPlate = () => {
+        if (inputValue.trim()) {
+            router.push(`/buy/${inputValue}`);
+        }
+    };
+
     return (
         <div className="w-full max-w-full flex flex-col justify-center">
             {/* div com imagem do carro */}
@@ -123,6 +138,7 @@ const Home = () => {
                     style={{
                         left: calculateLeft("left", cardAnimationProgress),
                         transform: `translate(0%, -50%)`,
+                        display: displayWhiteDiv ? "none" : "block",
                     }}
                 >
                     <h1 className="text-3xl font-bold text-white text-center mb-8">
@@ -139,6 +155,7 @@ const Home = () => {
                     style={{
                         left: calculateLeft("center", cardAnimationProgress),
                         transform: `translate(0%, -50%)`,
+                        display: displayWhiteDiv ? "none" : "block",
                     }}
                 >
                     <h1 className="text-3xl font-bold text-white text-center mb-8">
@@ -155,6 +172,7 @@ const Home = () => {
                     style={{
                         left: calculateLeft("right", cardAnimationProgress),
                         transform: `translate(0%, -50%)`,
+                        display: displayWhiteDiv ? "none" : "block",
                     }}
                 >
                     <h1 className="text-3xl font-bold text-white text-center mb-8">
@@ -175,7 +193,16 @@ const Home = () => {
                         display: displayWhiteDiv ? "block" : "none",
                         scale: getScale(whiteDivAnimationProgress),
                     }}
-                ></div>
+                >
+                    <div
+                        className="w-full h-full bg-hash-pattern bg-hash-size bg-repeat border-black border-solid border-[1px]"
+                        style={{
+                            transform: `rotate(-${
+                                1260 * whiteDivAnimationProgress
+                            }deg)`,
+                        }}
+                    ></div>
+                </div>
             </div>
 
             {/* invisivel para usar scroll */}
@@ -188,21 +215,55 @@ const Home = () => {
                 <h1 className="text-white">invisible to use scroll</h1>
             </div>
 
-            {/* div de testar agora */}
-            <div className="sticky top-0 left-0 flex flex-col items-center justify-center h-screen bg-white px-96 z-30">
-                <h1 className="text-6xl font-bold text-black transition-all duration-1000 mb-14">
-                    Take your proof
-                </h1>
-                <h2 className="text-4xl font-bold text-black transition-all duration-1000 mb-14">
-                    Insert the vehicle plate and discover it's history
-                </h2>
-                <Input
-                    placeholder="Vehicle Identification"
-                    className="w-full h-16 pl-10 rounded-lg bg-[#F3F3F3] border-none"
-                />
-                <Button className="w-full h-16 mt-4 rounded-lg bg-[#EA580C] text-white">
-                    Search
-                </Button>
+            {/* div de complete tracking */}
+            <div className="sticky top-0 left-0 flex items-center justify-center h-screen bg-custom-radial-offset  z-30">
+                <div className="w-1/2 h-full text-white text-9xl font-semibold flex items-center justify-center">
+                    Complete
+                    <br />
+                    tracking
+                </div>
+                <div className="w-1/2 h-full flex items-center justify-center">
+                    <BuyVehicleEvents width="w-5/6" />
+                </div>
+            </div>
+
+            {/* div de fully decentralized */}
+            <div className="sticky top-0 left-0 flex items-center justify-center h-screen bg-custom-radial-offset z-40">
+                <div className="w-1/2 h-full flex items-center justify-center">
+                    <Card className="px-5 py-10">
+                        <BuyVehicleDetails width="w-full" />
+                    </Card>
+                </div>
+
+                <div className="w-1/2 h-full text-white text-8xl font-semibold flex items-center justify-center text-center p-8">
+                    Fully
+                    <br />
+                    decentralized
+                </div>
+            </div>
+
+            {/* div try now */}
+            <div className="sticky top-0 left-0 flex items-center justify-center h-screen bg-[url('/background/bg-pattern.jpg')] bg-cover z-50">
+                <div className="w-1/2 h-full text-white text-8xl font-semibold flex items-center justify-center text-center p-8">
+                    Take your
+                    <br />
+                    proof
+                </div>
+                <div className="w-1/2 h-full flex items-center justify-center">
+                    <Card className="w-1/2 h-2/6 px-5 py-10 flex flex-col items-center justify-between ">
+                        <CardTitle>Insert any car plate</CardTitle>
+
+                        <Input
+                            placeholder="Plate here"
+                            value={inputValue}
+                            onChange={(e) => setInputValue(e.target.value)}
+                            className="w-full h-16 pl-10 rounded-lg bg-[#F3F3F3] border-none"
+                        />
+                        <Button className="w-full" onClick={submitPlate}>
+                            Submit
+                        </Button>
+                    </Card>
+                </div>
             </div>
         </div>
     );

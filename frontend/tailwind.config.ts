@@ -76,7 +76,17 @@ const config = {
             backgroundImage: {
                 wireframe: "url('/assets/wireframe.svg')",
                 wireframeH: "url('/assets/wireframeH.svg')",
+                "custom-radial-offset":
+                    "radial-gradient(circle at -20% 30%, rgba(255,142,57,1) 0%, rgba(11,6,0,1) 100%)",
+                "custom-radial-offset-reversed":
+                    "radial-gradient(circle at 120% 30%, rgba(255,142,57,1) 0%, rgba(11,6,0,1) 100%)",
+                "hash-pattern": `linear-gradient(to right, black 7%, transparent 7%),
+                         linear-gradient(to bottom, black 7%, transparent 7%)`,
             },
+            backgroundSize: {
+                "hash-size": "5% 5%",
+            },
+
             animation: {
                 "accordion-down": "accordion-down 0.2s ease-out",
                 "accordion-up": "accordion-up 0.2s ease-out",
