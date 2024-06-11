@@ -27,8 +27,7 @@ func (dapp *ColdWheels) Advance(
 	env rollmelette.Env,
 	metadata rollmelette.Metadata,
 	deposit rollmelette.Deposit,
-	payload []byte,
-) error {
+	payload []byte ) error {
 	utils.PrintNewAdvance(string(payload))
 
 	var input *utils.AdvaceInputDTO
@@ -52,14 +51,16 @@ func (dapp *ColdWheels) Advance(
 	return nil
 }
 
-func (dapp *ColdWheels) Inspect(env rollmelette.EnvInspector, kind []byte) error {
-	utils.PrintNewInspect(string(kind))
+func (dapp *ColdWheels) Inspect(env rollmelette.EnvInspector, payload []byte) error {
+	utils.PrintNewInspect(string(payload))
 
 	var input *utils.InspectInputDTO
-	err := json.Unmarshal(kind, &input)
+	err := json.Unmarshal(payload, &input)
 	if err != nil {
 		return fmt.Errorf("failed to unmarshal input kind: %w", err)
 	}
+
+	fmt.Println(input)
 
 	err = router.Inspect(env, dapp.db, input)
 	if err != nil {

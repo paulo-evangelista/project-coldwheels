@@ -61,41 +61,13 @@ func RegisterCompany(args FuncArguments) error {
 }
 
 func UpdateCompany(args FuncArguments) error {
-	
-	if args.Sender.Role < db.Affiliate {
-		return fmt.Errorf("Only affiliates and above can update company data")
-	}
 
 	payload, ok := args.Payload.(map[string]interface{})
 	if !ok {
 		return nil
 	}
-
-	_, ok1 := payload["wallet"].(string)
-	role, ok2 := payload["role"].(uint)
-
-	if !ok1 || !ok2 {
-		return fmt.Errorf("failed to get company data from payload")
-	}
-
-	if args.Sender.Role <= db.Role(role) {
-		return fmt.Errorf("cannot update company with higher role")
-	}
-
-
 
 	var company db.Company
-
-	err := args.DB.Where("wallet = ?", args.Metadata.MsgSender.String()).First(&company).Error
-	if err != nil {
-		fmt.Printf("failed to get company: %v\n", err)
-		return err
-	}
-
-	payload, ok := args.Payload.(map[string]interface{})
-	if !ok {
-		return nil
-	}
 
 	name, ok := payload["name"].(string)
 	if ok {
@@ -129,15 +101,36 @@ func UpdateCompany(args FuncArguments) error {
 func PromoteCompany(args FuncArguments) error {
 	fmt.Println("PromoteCompany")
 
+		
+	if args.Sender.Role < db.Affiliate {
+		return fmt.Errorf("only affiliates and above can update company data")
+	}
+
+	payload, ok := args.Payload.(map[string]interface{})
+	if !ok {
+		return nil
+	}
+
+	wallet, ok1 := payload["wallet"].(string)
+	role, ok2 := payload["role"].(uint)
+
+	if !ok1 || !ok2 {
+		return fmt.Errorf("failed to get company data from payload")
+	}
+
+	if args.Sender.Role <= db.Role(role) {
+		return fmt.Errorf("cannot update company with higher role")
+	}
+
 	var company db.Company
 
-	err := args.DB.Where("wallet = ?", args.Metadata.MsgSender.String()).First(&company).Error
+	err := args.DB.Where("wallet = ?", wallet).First(&company).Error
 	if err != nil {
 		fmt.Printf("failed to get company: %v\n", err)
 		return err
 	}
 
-	company.Role = db.Admin
+	company.Role = db.Role(role)
 
 	if err := args.DB.Save(&company).Error; err != nil {
 		fmt.Printf("failed to promote company: %v\n", err)
@@ -166,7 +159,7 @@ func CreateIncident(args FuncArguments) error {
 	vehicleID, ok6 := payload["vehicle_id"].(uint)
 
 	if !ok1 || !ok2 || !ok3 || !ok4 || !ok5 || !ok6 {
-		return fmt.Errorf("Failed getting incident data")
+		return fmt.Errorf("failed getting incident data")
 	}
 
 	input := dtos.CreateIncidentInput{

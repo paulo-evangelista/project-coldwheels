@@ -33,6 +33,7 @@ func Advance(env rollmelette.Env, DB *gorm.DB, metadata rollmelette.Metadata, co
 	case "test_notice":
 		fmt.Println("[ROUTER] Test notice hit")
 		args.Env.Notice([]byte("notice is working"))
+		args.Env.Notice([]byte("notice is working 2"))
 		return nil
 
 	case "register_company":
@@ -44,8 +45,8 @@ func Advance(env rollmelette.Env, DB *gorm.DB, metadata rollmelette.Metadata, co
 	case "update_company":
 		return advance.UpdateCompany(args)
 
-	case "create_incident":
-		return advance.CreateIncident(args)
+	// case "create_incident":
+	// 	return advance.CreateIncident(args)
 
 	default:
 		return fmt.Errorf("unknown kind: %s", kind)
@@ -54,11 +55,21 @@ func Advance(env rollmelette.Env, DB *gorm.DB, metadata rollmelette.Metadata, co
 }
 
 func Inspect(env rollmelette.EnvInspector, DB *gorm.DB, input *utils.InspectInputDTO) error {
+
+	var args = inspect.FuncArguments{
+		Env:     env,
+		Db:      DB,
+		Payload: input.Payload,
+	}
+
 	fmt.Println("[ROUTER] Inspecting: ", input.Kind)
 
 	switch input.Kind {
 	case "all_companies":
-		return inspect.AllCompanies(env, DB)
+		return inspect.AllCompanies(args)
+
+	case "company":
+		return inspect.Company(args)
 
 	default:
 		return fmt.Errorf("unknown kind: %s", input.Kind)
