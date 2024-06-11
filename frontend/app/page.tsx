@@ -78,7 +78,7 @@ const Home = () => {
     const getRotate = (progress: any) => {
         if (!displayWhiteDiv) return;
 
-        return `rotate(${1980 * progress}deg)`;
+        return `rotate(${1260 * progress}deg)`;
     };
 
     const getScale = (progress: any) => {
@@ -117,7 +117,7 @@ const Home = () => {
             </div>
 
             {/* div 3 cards */}
-            <div className="sticky top-0 left-0 flex items-center justify-between h-screen max-h-screen bg-black rounded-3xl px-96 z-20 relative overflow-x-hidden">
+            <div className="sticky top-0 left-0 flex items-center justify-between h-screen max-h-screen bg-black rounded-3xl px-96 z-20 relative overflow-hidden">
                 <div
                     className="w-[20%] h-[50%] bg-[#212121] absolute top-1/2 flex flex-col items-center justify-between px-8 py-24 rounded-3xl"
                     style={{
@@ -179,7 +179,7 @@ const Home = () => {
             </div>
 
             {/* invisivel para usar scroll */}
-            <div className="sticky flex items-center justify-center h-screen bg-black rounded-3xl z-10">
+            <div className="sticky flex items-center justify-center h-screen bg-black z-10">
                 <h1 className="text-white">invisible to use scroll</h1>
             </div>
 
@@ -189,7 +189,7 @@ const Home = () => {
             </div>
 
             {/* div de testar agora */}
-            <div className="sticky top-0 left-0 flex flex-col items-center justify-center h-screen bg-white px-96 rounded-3xl z-30">
+            <div className="sticky top-0 left-0 flex flex-col items-center justify-center h-screen bg-white px-96 z-30">
                 <h1 className="text-6xl font-bold text-black transition-all duration-1000 mb-14">
                     Take your proof
                 </h1>
