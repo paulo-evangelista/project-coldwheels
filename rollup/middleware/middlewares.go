@@ -7,12 +7,9 @@ import (
 	"gorm.io/gorm"
 )
 
-// Validates if company exists and can access the system.
-// If company doen't exist, creates it.
 func ValidateCompany(dbClient *gorm.DB, msgSender string) (*db.Company, error) {
-
 	var company db.Company
-	tx := dbClient.Where("address = ?", msgSender).First(&company)
+	tx := dbClient.Where("wallet = ?", msgSender).First(&company)
 	if tx.Error != nil {
 		return &company, tx.Error
 	}
@@ -21,9 +18,8 @@ func ValidateCompany(dbClient *gorm.DB, msgSender string) (*db.Company, error) {
 		return &company, fmt.Errorf("company not found")
 	}
 
-	if company.Role < db.Admin || company.Role > db.Untrusted {
-
-		return &company, fmt.Errorf("User role out of range")
+	if company.Role < db.Untrusted || company.Role > db.Admin {
+		return &company, fmt.Errorf("user role out of range. (This should never happen)")
 	}
 
 	return &company, nil

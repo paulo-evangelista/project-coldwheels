@@ -8,19 +8,22 @@ import (
 
 type Company struct {
 	gorm.Model
-	Name      string
-	Address   string
-	Role      Role // 1 - Admin, 2 - Affiliate, 3 - Trusted, 4 - RegularCompany
-	Incidents []Incident
+	Name        string
+	Kind        string
+	Description string
+	Wallet      string `gorm:"unique"`
+	Address     string
+	Role        Role `gorm:"default:1"`// 1 - Admin, 2 - Affiliate, 3 - Trusted, 4 - RegularCompany
+	Incidents   []Incident
 }
 
 type Role int
 
 const (
-	Admin Role = iota + 1
-	Affiliate
+	Untrusted Role = iota + 1
 	Trusted
-	Untrusted
+	Affiliate
+	Admin
 )
 
 type IncidentType struct {
@@ -30,19 +33,19 @@ type IncidentType struct {
 
 type Incident struct {
 	gorm.Model
-	IncidentTypeId uint
-	IncidentType   IncidentType `gorm:"foreignKey:IncidentTypeId"`
+	IncidentTypeID uint
+	IncidentType   IncidentType `gorm:"foreignKey:IncidentTypeID"`
 	Description    string
 	IncidentDate   time.Time
-	CompanyId      uint
-	Company        Company `gorm:"foreignKey:CompanyId"`
-	VehicleId      uint
-	Vehicle        Vehicle `gorm:"foreignKey:VehicleId"`
+	CompanyID      uint
+	Company        Company `gorm:"foreignKey:CompanyID"`
+	VehicleID      uint
+	Vehicle        Vehicle `gorm:"foreignKey:VehicleID"`
 }
 
 type Vehicle struct {
 	gorm.Model
 	Plate     string
 	Year      string
-	Incidents []Incident `gorm:"foreignKey:VehicleId"`
+	Incidents []Incident `gorm:"foreignKey:VehicleID"`
 }
