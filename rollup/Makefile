@@ -17,5 +17,4 @@ inspect:
 	  --url http://localhost:8080/inspect \
 	  --header 'Content-Type: application/json' \
 	  --header 'accept: application/json' \
-	  --data '{"kind": "$(kind)", "payload": $(payload)}' | \
-	jq -r '.reports[0].payload' | xxd -r -p
+	  --data '{"kind": "$(kind)", "payload": $(payload)}'  

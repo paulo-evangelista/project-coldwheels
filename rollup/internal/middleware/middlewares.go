@@ -1,7 +1,7 @@
 package middleware
 
 import (
-	"coldwheels/db"
+	"coldwheels/internal/db"
 	"fmt"
 
 	"gorm.io/gorm"

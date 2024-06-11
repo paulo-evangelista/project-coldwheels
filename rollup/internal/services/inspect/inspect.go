@@ -1,7 +1,8 @@
 package inspect
 
 import (
-	"coldwheels/db"
+	"coldwheels/internal/db"
+	u "coldwheels/internal/utils"
 	"encoding/json"
 	"fmt"
 
@@ -24,11 +25,10 @@ func AllCompanies(args FuncArguments) error {
 
 	jsoncompanies, err := json.Marshal(companies)
 	if err != nil {
-		return fmt.Errorf("error marshaling json: %+v", err)
+		return u.InspectError(args.Env, err, "error marshaling json")
 	}
 
-	args.Env.Report(jsoncompanies)
-
+	u.InspectSuccess(args.Env, string(jsoncompanies))
 	return nil
 }
 
@@ -37,27 +37,25 @@ func Company(args FuncArguments) error {
 
 	payload, ok := args.Payload.(map[string]interface{})
 	if !ok {
-		return fmt.Errorf("failed to make payload into map")
+		return u.InspectError(args.Env, nil, "failed to make payload into map")
 	}
 
 	wallet, ok1 := payload["wallet"].(string)
 	if !ok1 {
-		return fmt.Errorf("failed to get company wallet from payload")
+		return u.InspectError(args.Env, nil, "failed to get company wallet from payload")
 	}
 
 	company, err := db.GetCompanyByWallet(args.Db, wallet)
 	if err != nil {
-		args.Env.Report([]byte("{error: company not found}"))
-		return err
+		return u.InspectError(args.Env, err, "company not found")
 	}
 
 	jsoncompany, err := json.Marshal(company)
 	if err != nil {
-		return fmt.Errorf("error marshaling json: %+v", err)
+		return u.InspectError(args.Env, err, "error marshaling json")
 	}
 
-	args.Env.Report(jsoncompany)
-
+	u.InspectSuccess(args.Env, string(jsoncompany))
 	return nil
 }
 
@@ -66,24 +64,28 @@ func Favorites(args FuncArguments) error {
 
 	payload, ok := args.Payload.(map[string]interface{})
 	if !ok {
-		return fmt.Errorf("failed to make payload into map %v", args.Payload)
+		return u.InspectError(args.Env, nil, "failed to make payload into map")
 	}
 
 	wallet, ok1 := payload["wallet"].(string)
 	if !ok1 {
-		return fmt.Errorf("failed to get company wallet from payload")
+		return u.InspectError(args.Env, nil, "failed to get company wallet from payload")
 	}
 
 	var company db.Company
 	tx := args.Db.Where("wallet = ?", wallet).Preload("Favorites").First(&company)
 	if tx.Error != nil {
-		args.Env.Report([]byte("{error: company not found}"))
-		return tx.Error
+		return u.InspectError(args.Env, tx.Error, "company not found")
 	}
 
 	fmt.Printf("Favorites: %+v for %v", company.Favorites, company.Wallet)
-	args.Env.Report([]byte(fmt.Sprintf("%v", company.Favorites)))
 
+	jsonfavorites, err := json.Marshal(company.Favorites)
+	if err != nil {
+		return u.InspectError(args.Env, err, "error marshaling json")
+	}
+
+	u.InspectSuccess(args.Env, string(jsonfavorites))
 	return nil
 }
 
@@ -111,7 +113,7 @@ func GetVehicleByPlate(args FuncArguments) error {
 	if err != nil {
 		return fmt.Errorf("error marshaling json: %+v", err)
 	}
-	args.Env.Report(jsonvehicle)
 
+	args.Env.Report(jsonvehicle)
 	return nil
 }

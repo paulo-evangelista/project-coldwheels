@@ -1,10 +1,10 @@
 package main
 
 import (
-	"coldwheels/db"
-	mw "coldwheels/middleware"
-	"coldwheels/router"
-	"coldwheels/utils"
+	"coldwheels/internal/db"
+	mw "coldwheels/internal/middleware"
+	"coldwheels/internal/router"
+	"coldwheels/internal/utils"
 
 	"github.com/rollmelette/rollmelette"
 	"gorm.io/gorm"
