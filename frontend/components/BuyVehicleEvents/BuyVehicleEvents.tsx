@@ -9,45 +9,36 @@ import {
 
 import EventCard from "./EventCard";
 
-export default function BuyVehicleEvents({ width = "w-6/12" }) {
+export default function BuyVehicleEvents({ width = "w-4/12" }) {
     return (
         <div className={`${width} pb-10`}>
-            <div className="w-16 h-16 flex justify-center items-center bg-[#EA580C] rounded-full absolute top-1/2 transform -translate-y-1/2 -translate-x-1/2">
-                <ArrowLeft size={38} />
-            </div>
-
-            <div className=" bg-[#F3F3F3] h-full rounded-lg p-10">
+            <div className=" bg-white shadow-lg h-full rounded-lg p-10">
                 <div className="relative before:content-[''] before:absolute before:left-[40px] before:top-0 before:bottom-0 before:rounded-full before:w-[10px] before:bg-[#000] timeline">
                     <EventCard
-                        title="Aquisição"
-                        description="Adquirido na concessionária"
+                        title="Acquisition"
+                        description="Purchased from dealership"
                         date="13/06/2003"
-                        icon={<KeySquare size={24} color="#EA580C" />}
+                        icon={<KeySquare size={24} color="black" />}
                     />
                     <EventCard
-                        title="Blindagem"
-                        description="Blindagem aplicada tipo A-III"
+                        title="Shield"
+                        description="Shield type A-III applied"
                         date="22/06/2003"
-                        icon={<KeySquare size={24} color="#EA580C" />}
+                        icon={<KeySquare size={24} color="black" />}
                     />
                     <EventCard
-                        title="Revisão blindagem"
-                        description="Realizada na autorizada"
+                        title="Review"
+                        description="Reviewed from dealership"
                         date="22/06/2003"
-                        icon={<KeySquare size={24} color="#EA580C" />}
+                        icon={<KeySquare size={24} color="black" />}
                     />
                     <EventCard
-                        title="Revisão"
-                        description="Blindagem aplicada tipo A-III"
+                        title="Shield Review"
+                        description="Reviewed from dealership"
                         date="22/06/2003"
-                        icon={<KeySquare size={24} color="#EA580C" />}
+                        icon={<KeySquare size={24} color="black" />}
                     />
-                    <EventCard
-                        title="Revisão"
-                        description="Blindagem aplicada tipo A-III"
-                        date="22/06/2003"
-                        icon={<KeySquare size={24} color="#EA580C" />}
-                    />
+
                 </div>
             </div>
         </div>
