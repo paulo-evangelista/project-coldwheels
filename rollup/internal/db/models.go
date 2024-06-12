@@ -83,7 +83,6 @@ type Incident struct {
 type Vehicle struct {
 	gorm.Model
 	Plate      string
-	Year       string
 	Incidents  []Incident 
 	Kind 	VehicleKind
 	KindID uint

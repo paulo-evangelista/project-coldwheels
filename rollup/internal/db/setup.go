@@ -71,8 +71,24 @@ func PopulateDB(db *gorm.DB) error {
 		}
 	}
 
+
+    vehicles := []Vehicle{
+        {Plate: "ABC1234", KindID: 1},
+        {Plate: "AG1AA34", KindID: 1},
+        {Plate: "ADC12T4", KindID: 2},
+        {Plate: "AAC12HG", KindID: 4},
+        {Plate: "BFC1SS4", KindID: 3},
+    }
+
+	for i := range vehicles {
+		if err := db.Create(&vehicles[i]).Error; err != nil {
+			return err
+		}
+	}
+
+
 	incidents := []Incident{
-		{IncidentTypeID: 1, Description: "Roubo de veículo", IncidentDate: time.Now(), CompanyID: 1, VehicleID: 1},
+		{IncidentTypeID: 4, Description: "Realizada na concessionaria FFA1242", IncidentDate: time.Now(), CompanyID: 4, VehicleID: 1},
 		{IncidentTypeID: 1, Description: "Roubo de veículo", IncidentDate: time.Now(), CompanyID: 1, VehicleID: 1},
 		{IncidentTypeID: 2, Description: "Furto de veículo", IncidentDate: time.Now(), CompanyID: 2, VehicleID: 2},
 		{IncidentTypeID: 3, Description: "Acidente de veículo", IncidentDate: time.Now(), CompanyID: 3, VehicleID: 3},
@@ -81,15 +97,6 @@ func PopulateDB(db *gorm.DB) error {
 	for _, incident := range incidents {
 		if err := db.Create(&incident).Error; err != nil {
 			return err
-		}
-	}
-
-	// Add favorite vehicles to companies
-	for i, company := range companies {
-		if i < len(vehicles) { // Ensure the index exists in vehicles slice
-			if err := db.Model(&company).Association("Favorites").Append(&vehicles[i]); err != nil {
-				return fmt.Errorf("failed to append favorite vehicle: %w", err)
-			}
 		}
 	}
 
