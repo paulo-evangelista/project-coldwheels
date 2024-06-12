@@ -33,7 +33,7 @@ func AllCompanies(args FuncArguments) error {
 }
 
 func Company(args FuncArguments) error {
-	fmt.Println(args.Payload)
+	fmt.Printf("Payload received: %+v\n", args.Payload)
 
 	payload, ok := args.Payload.(map[string]interface{})
 	if !ok {

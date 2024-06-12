@@ -51,7 +51,7 @@ func Advance(env rollmelette.Env, DB *gorm.DB, metadata rollmelette.Metadata, co
 
 func Inspect(env rollmelette.EnvInspector, DB *gorm.DB, input *utils.InspectInputDTO) error {
 	fmt.Println("[ROUTER] Inspecting: ", input.Kind)
-	
+
 	var args = inspect.FuncArguments{
 		Env:     env,
 		Db:      DB,
@@ -62,6 +62,7 @@ func Inspect(env rollmelette.EnvInspector, DB *gorm.DB, input *utils.InspectInpu
 	case "all_companies":
 		return inspect.AllCompanies(args)
 	case "company":
+		fmt.Printf("Payload received: %+v\n", args.Payload)	
 		return inspect.Company(args)
 	case "get_vehicle_by_plate":
 		return inspect.GetVehicleByPlate(args)
