@@ -94,28 +94,28 @@ func GetVehicleByPlate(args FuncArguments) error {
 
 	payload, ok := args.Payload.(map[string]interface{})
 	if !ok {
-		return fmt.Errorf("failed to make payload into map")
+		return u.InspectError(args.Env, fmt.Errorf("failed to make payload into map"), "failed to make payload into map")
 	}
 
 	plate, ok1 := payload["plate"].(string)
 	if !ok1 {
-		return fmt.Errorf("failed to get vehicle plate from payload")
+		return u.InspectError(args.Env,fmt.Errorf("failed to get vehicle plate from payload"), "failed to get vehicle plate from payload")
 	}
 
 	var vehicle db.Vehicle
 	tx := args.Db.Where("plate = ?", plate).First(&vehicle)
 	if tx.Error != nil {
-		args.Env.Report([]byte("{error: vehicle not found}"))
-		return tx.Error
+		return u.InspectError(args.Env, tx.Error, `"vehicle not found"`)
+		
 	}
 
 	jsonvehicle, err := json.Marshal(vehicle)
 	if err != nil {
-		return fmt.Errorf("error marshaling json: %+v", err)
+		return u.InspectError(args.Env,fmt.Errorf("error marshaling json: %+v", err), "error marshaling json")
 	}
 
 	args.Env.Report(jsonvehicle)
-	return nil
+	return u.InspectSuccess(args.Env, string(jsonvehicle))
 }
 
 func GetAllVehicleKinds(args FuncArguments) error {
