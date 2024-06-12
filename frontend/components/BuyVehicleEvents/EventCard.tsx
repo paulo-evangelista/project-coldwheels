@@ -24,22 +24,22 @@ interface props {
 
 export default function EventCard({ title, description, date, icon }: props) {
     return (
-        <div className="relative flex justify-end z-10 mb-[50px] last:mb-0">
-            <div className="absolute left-0 top-0 w-[90px] h-[90px] bg-black rounded-full flex items-center justify-center z-10">
+                <div className="relative flex justify-end z-10 mb-[50px] last:mb-0">
+            <div className="absolute left-0 top-0 w-[60px] h-[60px] bg-[#FF9900] rounded-full flex items-center justify-center z-10">
                 {icon}
             </div>
 
-            <Card className="w-10/12 h-[90px] px-6 py-2 bg-[#F3F3F3] border-2 border-[#D8D8D8] flex justify-between items-center">
+            <Card className="w-10/12 h-[120px] px-6 py-2 bg-white border border-[#D8D8D8] flex justify-between items-center pl-[80px]">
                 <div className="h-full flex flex-col justify-evenly">
                     <CardTitle>{title}</CardTitle>
                     <CardDescription>{description}</CardDescription>
+                    <p className="text-gray-400">{date}</p>
                 </div>
                 <div className="h-full flex flex-col justify-evenly items-end">
-                    <p>{date}</p>
                     <Drawer>
                         <DrawerTrigger asChild>
                             <Button variant="link" className="p-0">
-                                Ver mais informações
+                                More info
                             </Button>
                         </DrawerTrigger>
                         <DrawerContent>
@@ -49,7 +49,6 @@ export default function EventCard({ title, description, date, icon }: props) {
                                         {title}
                                     </DrawerTitle>
                                     <p className="text-xl">{description}</p>
-                                    <p className="text-gray-400">{date}</p>
                                 </DrawerHeader>
                                 <DrawerDescription>
                                     <p>asdasdasd</p>
