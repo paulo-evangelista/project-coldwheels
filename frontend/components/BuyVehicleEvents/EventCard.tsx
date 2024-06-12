@@ -24,8 +24,8 @@ interface props {
 
 export default function EventCard({ title, description, date, icon }: props) {
     return (
-                <div className="relative flex justify-end z-10 mb-[50px] last:mb-0">
-            <div className="absolute left-0 top-0 w-[60px] h-[60px] bg-[#FF9900] rounded-full flex items-center justify-center z-10">
+        <div className="relative flex justify-end items-center z-10 mb-[50px] last:mb-0">
+            <div className="absolute left-[15px] top-1/2 -translate-y-1/2 w-[60px] h-[60px] bg-[#FF9900] rounded-full flex items-center justify-center z-10">
                 {icon}
             </div>
 

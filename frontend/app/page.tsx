@@ -2,13 +2,11 @@
 
 import { useState, useEffect } from "react";
 import { Input } from "@/components/ui/input";
-import CarCarousel from "../components/CarouselCars/CarouselCars";
 import { Button } from "@/components/ui/button";
-import { motion } from "framer-motion";
-import { useRouter } from "next/navigation";
 import BuyVehicleEvents from "@/components/BuyVehicleEvents/BuyVehicleEvents";
 import BuyVehicleDetails from "@/components/BuyVehicleDetails/BuyVehicleDetails";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { useRouter } from "next/navigation";
 
 const Home = () => {
     const router = useRouter();
@@ -97,9 +95,9 @@ const Home = () => {
 
     //navigate to /buy/what was insert
     const submitPlate = () => {
-        if (inputValue.trim()) {
-            router.push(`/buy/${inputValue}`);
-        }
+        if (inputValue.trim() === "") return;
+
+        router.push(`/buy/${inputValue}`);
     };
 
     return (

@@ -46,8 +46,8 @@ func PopulateDB(db *gorm.DB) error {
 	}
 
 	vehicleKinds := []VehicleKind{
-		{ FipeID: "1233-432", FipePrice: 121320.20, Brand: "Ford", ShortName: "Mustang", Name: "Mustang V8 5.0 Ti-VCT GT Premium SelectShift", Year: "2019/1019"},
-		{ FipeID: "1233-433", FipePrice: 171330.46, Brand: "Ford", ShortName: "Mustang", Name: "Mustang V8 5.0 Ti-VCT GT Premium SelectShift", Year: "2017/2018"},
+		{ FipeID: "1234-123", FipePrice: 121320.20, Brand: "Ford", ShortName: "Mustang", Name: "Mustang V8 5.0 Ti-VCT GT Premium SelectShift", Year: "2019/1019"},
+		{ FipeID: "1234-234", FipePrice: 171330.46, Brand: "Ford", ShortName: "Mustang", Name: "Mustang V8 5.0 Ti-VCT GT Premium SelectShift", Year: "2017/2018"},
 		{ FipeID: "1245-332", FipePrice: 60142.67, Brand: "Toyota", ShortName: "Corolla", Name: "Corolla Altis TG-A 1.4T", Year: "2014/2014"},
 		{ FipeID: "1233-432", FipePrice: 80320.10, Brand: "Chevrolet", ShortName: "Onix", Name: "Onix LTZ 1.0T", Year: "2024/2024"},
 	}

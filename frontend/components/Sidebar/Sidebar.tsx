@@ -1,10 +1,10 @@
-import Link from 'next/link';
+import Link from "next/link";
 import Logo from "../../assets/icons/Logo";
 import Home from "../../assets/icons/Home";
 import Search from "../../assets/icons/Search";
 import Star from "../../assets/icons/Star";
-import { usePathname } from 'next/navigation';
-import React from 'react';
+import { usePathname } from "next/navigation";
+import React from "react";
 
 // Updating IconType to accept all SVGProps for SVGSVGElement
 type IconType = React.FunctionComponent<React.SVGProps<SVGSVGElement>>;
@@ -16,7 +16,13 @@ interface NavLinkProps {
 }
 
 const NavLink = ({ href, icon: Icon, children }: NavLinkProps) => (
-    <li className={`flex items-center p-2 ${usePathname() === href ? 'bg-gray-200 rounded text-gray-900 border' : 'text-gray-600 hover:bg-gray-100'} transition-all duration-200`}>
+    <li
+        className={`flex items-center p-2 ${
+            usePathname() === href
+                ? "bg-gray-200 rounded-xl text-gray-900 border"
+                : "text-gray-600 hover:bg-gray-100 rouded-xl"
+        } transition-all duration-200`}
+    >
         <Link href={href} className="flex items-center w-full">
             <div className="mr-2">
                 <Icon width="20" height="20" />
@@ -28,10 +34,10 @@ const NavLink = ({ href, icon: Icon, children }: NavLinkProps) => (
 
 const Sidebar = () => {
     return (
-        <div className="w-64 bg-white p-6 shadow-lg rounded-r-lg">
+        <div className="w-64 bg-white p-6 shadow-lg rounded-lg mb-8">
             <div className="w-full">
                 <div className="mb-6">
-                    <Link href='/'>
+                    <Link href="/">
                         <Logo />
                     </Link>
                 </div>
@@ -41,8 +47,12 @@ const Sidebar = () => {
                 <nav>
                     <p className="pb-4 font-bold">Vehicle Finder</p>
                     <ul className="">
-                        <NavLink href="/home" icon={Search}>Find Vehicle</NavLink>
-                        <NavLink href="/favorites" icon={Star}>Favorites</NavLink>
+                        <NavLink href="/home" icon={Search}>
+                            Find Vehicle
+                        </NavLink>
+                        <NavLink href="/favorites" icon={Star}>
+                            Favorites
+                        </NavLink>
                     </ul>
                 </nav>
 
@@ -51,7 +61,9 @@ const Sidebar = () => {
                 <nav>
                     <p className="pb-4 font-bold">Company</p>
                     <ul className="">
-                        <NavLink href="/login" icon={Home}>Dashboard</NavLink>
+                        <NavLink href="/login" icon={Home}>
+                            Dashboard
+                        </NavLink>
                     </ul>
                 </nav>
             </div>

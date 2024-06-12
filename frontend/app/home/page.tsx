@@ -1,4 +1,4 @@
-'use client'
+"use client";
 import Header from "../../components/BuyVehicleHeader/BuyVehicleHeader";
 import Details from "../../components/BuyVehicleDetails/BuyVehicleDetails";
 import VehicleEvents from "../../components/BuyVehicleEvents/BuyVehicleEvents";
@@ -7,9 +7,8 @@ import axios from "axios";
 import { useRouter } from "next/router";
 import { useAccount } from "wagmi";
 import { useEffect, useState } from "react";
-import { toast } from "react-toastify";
 
-export default function BuyVehiclePage({ }) {
+export default function BuyVehiclePage({}) {
     const [isChecking, setIsChecking] = useState<boolean>(true);
     const { address: wallet, isConnected } = useAccount();
     // const router = useRouter();
@@ -49,13 +48,14 @@ export default function BuyVehiclePage({ }) {
     // }, [isConnected]);
 
     return (
-        <div className="h-screen px-14 flex flex-col">
+        <div className="h-screen px-14 flex flex-col bg-slate-200">
             {/* <div className="flex h-screen bg-white"> */}
-            {/* <Sidebar /> */}
+            {/*  */}
             <div className="flex-shrink-0">
                 <Header />
             </div>
             <div className="flex justify-between flex-grow overflow-hidden">
+                <Sidebar />
                 <Details />
                 <VehicleEvents />
             </div>

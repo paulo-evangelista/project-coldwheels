@@ -7,13 +7,14 @@ import {
     Copy,
 } from "lucide-react";
 
+import { ScrollArea } from "../ui/scroll-area";
 import EventCard from "./EventCard";
 
-export default function BuyVehicleEvents({ width = "w-4/12" }) {
+export default function BuyVehicleEvents({ width = "w-[37%]" }) {
     return (
         <div className={`${width} pb-10`}>
-            <div className=" bg-white shadow-lg h-full rounded-lg p-10">
-                <div className="relative before:content-[''] before:absolute before:left-[40px] before:top-0 before:bottom-0 before:rounded-full before:w-[10px] before:bg-[#000] timeline">
+            <ScrollArea className="bg-white shadow-lg h-full rounded-xl px-6 py-4">
+                <div className="relative before:content-[''] before:absolute before:left-[40px] before:top-[35px] before:rounded-full before:w-[10px] before:bg-[#000] timeline">
                     <EventCard
                         title="Acquisition"
                         description="Purchased from dealership"
@@ -38,9 +39,14 @@ export default function BuyVehicleEvents({ width = "w-4/12" }) {
                         date="22/06/2003"
                         icon={<KeySquare size={24} color="black" />}
                     />
-
+                    <EventCard
+                        title="Shield Review"
+                        description="Reviewed from dealership"
+                        date="22/06/2003"
+                        icon={<KeySquare size={24} color="black" />}
+                    />
                 </div>
-            </div>
+            </ScrollArea>
         </div>
     );
 }
