@@ -67,6 +67,8 @@ func Inspect(env rollmelette.EnvInspector, DB *gorm.DB, input *utils.InspectInpu
 		return inspect.GetVehicleByPlate(args)
 	case "get_favorites":
 		return inspect.Favorites(args)
+	case "get_vehicle_kinds":
+		return inspect.GetAllVehicleKinds(args)
 	default:
 		return fmt.Errorf("unknown kind: %s", input.Kind)
 	}

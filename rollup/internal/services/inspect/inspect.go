@@ -117,3 +117,20 @@ func GetVehicleByPlate(args FuncArguments) error {
 	args.Env.Report(jsonvehicle)
 	return nil
 }
+
+func GetAllVehicleKinds(args FuncArguments) error {
+	
+	var kinds []db.VehicleKind
+
+	err :=args.Db.Find(&kinds).Error
+	if err != nil {
+		return u.InspectError(args.Env, err, "error getting vehicle kinds")
+	}
+
+	jsonkinds, err := json.Marshal(kinds)
+	if err != nil {
+		return u.InspectError(args.Env, err, "error marshaling json")
+	}
+
+	return u.InspectSuccess(args.Env, string(jsonkinds))
+}

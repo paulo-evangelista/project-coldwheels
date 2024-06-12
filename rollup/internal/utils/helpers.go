@@ -51,7 +51,7 @@ func InspectError(env rollmelette.EnvInspector, err error, message string) error
 }
 
 func InspectSuccess(env rollmelette.EnvInspector, message string) error {
-	env.Report([]byte(fmt.Sprintf(`{"status": "success", "message": "%s"}`, message)))
+	env.Report([]byte(fmt.Sprintf(`{"status": "success", "message": %s}`, message)))
 	fmt.Println("inspect success")
 
 	return nil
