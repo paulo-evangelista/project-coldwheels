@@ -10,7 +10,7 @@ import (
 	"gorm.io/gorm"
 )
 
-type FuncArguments struct {
+type AdvanceFuncArguments struct {
 	Env      rollmelette.Env
 	DB       *gorm.DB
 	Sender   *db.Company
@@ -18,7 +18,7 @@ type FuncArguments struct {
 	Payload  any
 }
 
-func RegisterCompany(args FuncArguments) error {
+func RegisterCompany(args AdvanceFuncArguments) error {
 
 	payload, err := u.ParsePayload(args.Payload)
 	if err != nil {
@@ -49,7 +49,7 @@ func RegisterCompany(args FuncArguments) error {
 	return u.AdvanceSuccess(args.Env, fmt.Sprintf(`{"status": "success", "message": "success creating company with address %s"}`, company.Wallet))
 }
 
-func UpdateCompany(args FuncArguments) error {
+func UpdateCompany(args AdvanceFuncArguments) error {
 	payload, err := u.ParsePayload(args.Payload)
 	if err != nil {
 		return u.AdvanceError(args.Env, err, "payload malformed")
@@ -77,7 +77,7 @@ func UpdateCompany(args FuncArguments) error {
 	return u.AdvanceSuccess(args.Env, fmt.Sprintf("company with wallet %s updated", args.Sender.Wallet))
 }
 
-func PromoteCompany(args FuncArguments) error {
+func PromoteCompany(args AdvanceFuncArguments) error {
 	if args.Sender.Role < db.Affiliate {
 		return u.AdvanceError(args.Env, fmt.Errorf("only affiliates and above can update company data"), "only affiliates and above can update company data")
 	}
@@ -113,7 +113,7 @@ func PromoteCompany(args FuncArguments) error {
 	return u.AdvanceSuccess(args.Env, fmt.Sprintf("company with wallet %s updated", args.Sender.Wallet))
 }
 
-func CreateIncident(args FuncArguments) error {
+func CreateIncident(args AdvanceFuncArguments) error {
 
 	payload, err := u.ParsePayload(args.Payload)
 	if err != nil {

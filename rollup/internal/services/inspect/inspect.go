@@ -10,13 +10,13 @@ import (
 	"gorm.io/gorm"
 )
 
-type FuncArguments struct {
+type InspectFuncArguments struct {
 	Env     rollmelette.EnvInspector
 	Db      *gorm.DB
 	Payload any
 }
 
-func AllCompanies(args FuncArguments) error {
+func AllCompanies(args InspectFuncArguments) error {
 	companies, err := db.GetAllCompanies(args.Db)
 	if err != nil {
 		args.Env.Report([]byte("{error: failed to get companies}"))
@@ -32,7 +32,7 @@ func AllCompanies(args FuncArguments) error {
 	return nil
 }
 
-func Company(args FuncArguments) error {
+func Company(args InspectFuncArguments) error {
 	fmt.Println(args.Payload)
 
 	payload, ok := args.Payload.(map[string]interface{})
@@ -59,7 +59,7 @@ func Company(args FuncArguments) error {
 	return nil
 }
 
-func Favorites(args FuncArguments) error {
+func Favorites(args InspectFuncArguments) error {
 	fmt.Println(args.Payload)
 
 	payload, ok := args.Payload.(map[string]interface{})
@@ -89,7 +89,7 @@ func Favorites(args FuncArguments) error {
 	return nil
 }
 
-func GetVehicleByPlate(args FuncArguments) error {
+func GetVehicleByPlate(args InspectFuncArguments) error {
 	fmt.Println(args.Payload)
 
 	payload, ok := args.Payload.(map[string]interface{})
