@@ -95,7 +95,7 @@ type VehicleKind struct {
 	FipePrice float64
 	Brand string
 	ShortName string
-	Name string `gorm:"unique"`
+	Name string
 	Year string
 	
 }
