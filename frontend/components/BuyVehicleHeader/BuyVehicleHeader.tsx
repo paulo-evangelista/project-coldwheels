@@ -1,26 +1,22 @@
 import { Search } from "lucide-react";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
+import Logo from "../../assets/icons/Logo"
 
 export default function BuyVehicleHeader() {
     return (
         <div className="w-full py-6 flex items-center justify-between">
-            <div className="w-2/12 text-3xl font-bold flex items-center">
-                <span className="text-[#EA580C]">Car</span>Tracker
-            </div>
-
-            <div className="w-8/12">
-                <div className="relative">
+            <div className="flex items-center justify-end w-full">
+                <div className="relative w-full max-w-lg">
                     <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
                     <Input
-                        placeholder="Digite a placa do veículo"
-                        className="w-full h-16 pl-10 rounded-lg bg-[#F3F3F3] border-none"
+                        placeholder="Search by plate"
+                        className="w-full h-12 pl-12 rounded-l-lg bg-[#F3F3F3] border-none"
                     />
                 </div>
-            </div>
-
-            <div className="w-2/12 h-16 flex items-center justify-end">
-                <Button className="w-8/12 h-16">Pesquisar</Button>
+                <Button className="bg-[#1F91E3] w-32 h-12 rounded-r-lg shadow-lg hover:bg-[#0577C9] text-white font-semibold ml-8">
+                    Search
+                </Button>
             </div>
         </div>
     );

@@ -32,6 +32,7 @@
         "react": "^18",
         "react-dom": "^18",
         "react-scrollmagic": "^2.3.0",
+        "react-toastify": "^10.0.5",
         "sharp": "^0.33.4",
         "styled-components": "^6.1.11",
         "tailwind-merge": "^2.3.0",
@@ -50,5 +51,6 @@
         "postcss": "^8",
         "tailwindcss": "^3.4.1",
         "typescript": "^5"
-    }
+    },
+    "packageManager": "pnpm@9.1.1+sha256.9551e803dcb7a1839fdf5416153a844060c7bce013218ce823410532504ac10b"
 }

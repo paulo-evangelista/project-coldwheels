@@ -1,19 +1,16 @@
 'use client'
-import React, { useState } from "react";
-import LoginForm from "../../components/LoginForm/LoginForm";
+import Sidebar from '../../components/Sidebar/Sidebar';
+import CompanyRegistrationForm from '../../components/CompanyRegistrationForm/CompanyRegistrationForm';
 
-const Login = () => {
-    const [dappAddress, setDappAddress] = useState<string>(
-        "0xab7528bb862fb57e8a2bcd567a2e929a0be56a5e"
-    );
-    
-    return (
-        <div className="flex justify-center items-center h-screen bg-gray-100 shadow-md">
-            <div className="bg-gray-100 p-5 rounded-lg">
-            <LoginForm dappAddress={dappAddress} />
-            </div>
-        </div>
-    );
-};
+export default function Home() {
+  return (
+    <div className="flex h-screen bg-white">
+      <Sidebar />
+      <div className="flex-1 flex items-center justify-center bg-gray-0">
+        <CompanyRegistrationForm />
+      </div>
+    </div>
+  );
+}
 
-export default Login;
+
