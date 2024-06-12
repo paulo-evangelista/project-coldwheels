@@ -103,7 +103,7 @@ func GetVehicleByPlate(args FuncArguments) error {
 	}
 
 	var vehicle db.Vehicle
-	tx := args.Db.Where("plate = ?", plate).First(&vehicle)
+	tx := args.Db.Preload("incidents").Where("plate = ?", plate).First(&vehicle)
 	if tx.Error != nil {
 		return u.InspectError(args.Env, tx.Error, `"vehicle not found"`)
 		
