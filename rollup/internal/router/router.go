@@ -12,7 +12,7 @@ import (
 )
 
 func Advance(env rollmelette.Env, DB *gorm.DB, metadata rollmelette.Metadata, company *db.Company, input *utils.AdvaceInputDTO) error {
-	fmt.Println("[ROUTER] Advancing: ", input.Kind)
+	fmt.Println("[ROUTER] Advancing for kind ->", input.Kind)
 
 	kind, payload := input.Kind, input.Payload
 
@@ -26,13 +26,9 @@ func Advance(env rollmelette.Env, DB *gorm.DB, metadata rollmelette.Metadata, co
 
 	switch kind {
 	case "test_report":
-		fmt.Println("[ROUTER] Test report hit")
-		args.Env.Report([]byte("report is working"))
-		return nil
+		return utils.AdvanceSuccess(env, "test report hit")
 	case "test_notice":
-		fmt.Println("[ROUTER] Test notice hit")
 		args.Env.Notice([]byte("notice is working"))
-		args.Env.Notice([]byte("notice is working 2"))
 		return nil
 	case "register_company":
 		return advance.RegisterCompany(args)
@@ -44,13 +40,17 @@ func Advance(env rollmelette.Env, DB *gorm.DB, metadata rollmelette.Metadata, co
 	// 	return advance.FavoriteVehicle(args)
 	case "create_incident":
 		return advance.CreateIncident(args)
+	//////////////////////////// VEHICLES/FIPE ///////////////////////////
+	case "add_vehicle_kind":
+		return advance.AddVehicleKind(args)
+
 	default:
 		return fmt.Errorf("unknown kind: %s", kind)
 	}
 }
 
 func Inspect(env rollmelette.EnvInspector, DB *gorm.DB, input *utils.InspectInputDTO) error {
-	fmt.Println("[ROUTER] Inspecting: ", input.Kind)
+	fmt.Println("[ROUTER] Inspecting -> ", input.Kind)
 	
 	var args = inspect.FuncArguments{
 		Env:     env,
@@ -71,3 +71,6 @@ func Inspect(env rollmelette.EnvInspector, DB *gorm.DB, input *utils.InspectInpu
 		return fmt.Errorf("unknown kind: %s", input.Kind)
 	}
 }
+
+
+

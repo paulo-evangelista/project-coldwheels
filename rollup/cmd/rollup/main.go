@@ -33,17 +33,17 @@ func (dapp *ColdWheels) Advance(
 	var input *utils.AdvaceInputDTO
 	err := json.Unmarshal(payload, &input)
 	if err != nil {
-		return fmt.Errorf("failed to unmarshal input payload: %w", err)
+		return utils.AdvanceError(env, err, "failed to unmarshal input payload")
 	}
 
 	company, err := mw.ValidateCompany(dapp.db, metadata.MsgSender.String())
 	if err != nil && input.Kind != "register_company" {
-		return fmt.Errorf("failed to get company role: %w", err)
+		return utils.AdvanceError(env, err, fmt.Sprintf("failed to get company role: %s", err.Error()))
 	}
 
 	err = router.Advance(env, dapp.db, metadata, company, input)
 	if err != nil {
-		return fmt.Errorf("failed to advance: %w", err)
+		return fmt.Errorf("ADVANCE FAILED: %w", err)
 	}
 
 	return nil

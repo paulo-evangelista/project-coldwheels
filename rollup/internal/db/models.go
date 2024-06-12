@@ -70,20 +70,33 @@ type IncidentType struct {
 
 type Incident struct {
 	gorm.Model
-	IncidentTypeID uint         `json:"incident_type_id"`
 	IncidentType   IncidentType `gorm:"foreignKey:IncidentTypeID" json:"incident_type"`
+	IncidentTypeID uint         `json:"incident_type_id"`
 	Description    string
 	IncidentDate   time.Time `json:"incident_date"`
-	CompanyID      uint      `json:"company_id"`
 	Company        Company   `gorm:"foreignKey:CompanyID"`
-	VehicleID      uint      `json:"vehicle_id"`
+	CompanyID      uint      `json:"company_id"`
 	Vehicle        Vehicle   `gorm:"foreignKey:VehicleID"`
+	VehicleID      uint      `json:"vehicle_id"`
 }
 
 type Vehicle struct {
 	gorm.Model
 	Plate      string
 	Year       string
-	Incidents  []Incident `gorm:"foreignKey:VehicleID"`
-	FavoriteBy []Company  `gorm:"many2many:company_vehicles;"`
+	Incidents  []Incident 
+	Kind 	VehicleKind
+	KindID uint
+	PredictedPrice float32
+}
+
+type VehicleKind struct {
+	gorm.Model
+	FipeID string `gorm:"unique"`
+	FipePrice float64
+	Brand string
+	ShortName string
+	Name string `gorm:"unique"`
+	Year string
+	
 }

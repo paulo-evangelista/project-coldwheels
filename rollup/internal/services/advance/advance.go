@@ -31,7 +31,7 @@ func RegisterCompany(args FuncArguments) error {
 	address, ok4 := payload["address"].(string)
 
 	if !ok1 || !ok2 || !ok3 || !ok4 {
-		return u.AdvanceError(args.Env, err, "failed to get company data from payload")
+		return u.AdvanceError(args.Env, fmt.Errorf("failed to get company data from payload"), "failed to get company data from payload")
 	}
 
 	company := db.Company{
