@@ -18,9 +18,8 @@ interface NavLinkProps {
 const NavLink = ({ href, icon: Icon, children }: NavLinkProps) => (
     <li className={`flex items-center p-2 ${usePathname() === href ? 'bg-gray-200 rounded text-gray-900 border' : 'text-gray-600 hover:bg-gray-100'} transition-all duration-200`}>
         <Link href={href} className="flex items-center w-full">
-            <div className="h-5 w-5 mr-4">
-                {/* Render Icon with SVGProps */}
-                <Icon width="24" height="24" />
+            <div className="mr-2">
+                <Icon width="20" height="20" />
             </div>
             {children}
         </Link>
