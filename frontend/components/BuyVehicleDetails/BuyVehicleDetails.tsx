@@ -8,22 +8,22 @@ import Truck from "../../assets/icons/Truck";
 
 import VehicleInfoBox from "./VehicleInfoBox";
 
-export default function ({ width = "w-5/12" }) {
+export default function ({ width = "w-5/12", carData }: any) {
     return (
         <div className={`${width} pb-10 h-full flex flex-col justify-between`}>
             <div className="shadow-lg pb-6 rounded-xl bg-[#fff]">
                 <div className="flex justify-between">
                     <div className="flex flex-col">
                         <h1 className="font-bold pt-4 pl-4 text-3xl">
-                            Jeep Renegade
+                            {carData.Kind.ShortName}
                         </h1>
                         <h1 className="font-bold text-lg pl-5 text-[#9A9A9A]">
-                            1.3 Turbo T270 4X2
+                            {carData.Kind.Name}
                         </h1>
                     </div>
                     <div className="flex flex-col text-right">
                         <h1 className="font-bold text-3xl pr-10 pt-4">
-                            R$ 86.000
+                            {carData.PredictedPrice}
                         </h1>
                         <h1 className="font-bold text-lg pr-11 text-[#9A9A9A]">
                             Suggested Price
@@ -32,7 +32,9 @@ export default function ({ width = "w-5/12" }) {
                 </div>
                 <div className="flex justify-center pt-10">
                     <Image
-                        src={Renegade}
+                        src={
+                            "https://ipfs.io/ipfs/" + carData.Images[0].IPFSURL
+                        }
                         alt="Renegade"
                         width={450}
                         height={200}
@@ -45,13 +47,13 @@ export default function ({ width = "w-5/12" }) {
                 <div className="flex justify-between">
                     <VehicleInfoBox
                         label="Year"
-                        value="2003"
+                        value={carData.Kind.Year}
                         color="blue"
                         icon={<Year width="24" height="24" />}
                     />
                     <VehicleInfoBox
                         label="Plate"
-                        value="DSC-1461"
+                        value={carData.Plate}
                         color="green"
                         icon={<Plate width="24" height="24" />}
                     />

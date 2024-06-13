@@ -18,11 +18,13 @@ import { useState } from "react";
 interface BuyVehicleEventsProps {
     width?: string;
     carPlate: any;
+    carData: any;
 }
 
 export default function BuyVehicleEvents({
     width = "w-[37%]",
     carPlate,
+    carData,
 }: BuyVehicleEventsProps) {
     const [reload, setReload] = useState(false);
 

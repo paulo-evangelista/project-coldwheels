@@ -9,10 +9,158 @@ import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import axios from "axios";
 
+const mockCarData = {
+    status: "success",
+    message: {
+        ID: 1,
+        CreatedAt: "2024-06-13T14:28:33.691828-03:00",
+        UpdatedAt: "2024-06-13T14:28:33.691828-03:00",
+        DeletedAt: null,
+        Plate: "ABC1234",
+        Incidents: [
+            {
+                ID: 1,
+                CreatedAt: "2024-06-13T14:28:33.69211-03:00",
+                UpdatedAt: "2024-06-13T14:28:33.69211-03:00",
+                DeletedAt: null,
+                incident_type: {
+                    ID: 0,
+                    CreatedAt: "0001-01-01T00:00:00Z",
+                    UpdatedAt: "0001-01-01T00:00:00Z",
+                    DeletedAt: null,
+                    Name: "",
+                },
+                incident_type_id: 4,
+                Description: "Realizada na concessionaria FFA1242",
+                incident_date: "2024-06-13T14:28:33.692104-03:00",
+                Company: {
+                    ID: 0,
+                    CreatedAt: "0001-01-01T00:00:00Z",
+                    UpdatedAt: "0001-01-01T00:00:00Z",
+                    DeletedAt: null,
+                    Name: "",
+                    Kind: "",
+                    Description: "",
+                    Wallet: "",
+                    Address: "",
+                    Role: 0,
+                    Incidents: null,
+                    Favorites: null,
+                },
+                company_id: 4,
+                Vehicle: {
+                    ID: 0,
+                    CreatedAt: "0001-01-01T00:00:00Z",
+                    UpdatedAt: "0001-01-01T00:00:00Z",
+                    DeletedAt: null,
+                    Plate: "",
+                    Incidents: null,
+                    Images: null,
+                    Kind: {
+                        ID: 0,
+                        CreatedAt: "0001-01-01T00:00:00Z",
+                        UpdatedAt: "0001-01-01T00:00:00Z",
+                        DeletedAt: null,
+                        FipeID: "",
+                        FipePrice: 0,
+                        Brand: "",
+                        ShortName: "",
+                        Name: "",
+                        Year: "",
+                    },
+                    KindID: 0,
+                    PredictedPrice: 0,
+                },
+                vehicle_id: 1,
+            },
+            {
+                ID: 2,
+                CreatedAt: "2024-06-13T14:28:33.69215-03:00",
+                UpdatedAt: "2024-06-13T14:28:33.69215-03:00",
+                DeletedAt: null,
+                incident_type: {
+                    ID: 0,
+                    CreatedAt: "0001-01-01T00:00:00Z",
+                    UpdatedAt: "0001-01-01T00:00:00Z",
+                    DeletedAt: null,
+                    Name: "",
+                },
+                incident_type_id: 1,
+                Description: "Roubo de veÃ­culo",
+                incident_date: "2024-06-13T14:28:33.692104-03:00",
+                Company: {
+                    ID: 0,
+                    CreatedAt: "0001-01-01T00:00:00Z",
+                    UpdatedAt: "0001-01-01T00:00:00Z",
+                    DeletedAt: null,
+                    Name: "",
+                    Kind: "",
+                    Description: "",
+                    Wallet: "",
+                    Address: "",
+                    Role: 0,
+                    Incidents: null,
+                    Favorites: null,
+                },
+                company_id: 1,
+                Vehicle: {
+                    ID: 0,
+                    CreatedAt: "0001-01-01T00:00:00Z",
+                    UpdatedAt: "0001-01-01T00:00:00Z",
+                    DeletedAt: null,
+                    Plate: "",
+                    Incidents: null,
+                    Images: null,
+                    Kind: {
+                        ID: 0,
+                        CreatedAt: "0001-01-01T00:00:00Z",
+                        UpdatedAt: "0001-01-01T00:00:00Z",
+                        DeletedAt: null,
+                        FipeID: "",
+                        FipePrice: 0,
+                        Brand: "",
+                        ShortName: "",
+                        Name: "",
+                        Year: "",
+                    },
+                    KindID: 0,
+                    PredictedPrice: 0,
+                },
+                vehicle_id: 1,
+            },
+        ],
+        Images: [
+            {
+                ID: 1,
+                CreatedAt: "2024-06-13T14:28:33.691867-03:00",
+                UpdatedAt: "2024-06-13T14:28:33.691867-03:00",
+                DeletedAt: null,
+                VehicleID: 1,
+                IPFSURL: "QmSPUyR9fwdKpZnybRTAC2WnPHnPtM46KA1BhSir6KQ5ev",
+            },
+        ],
+        Kind: {
+            ID: 0,
+            CreatedAt: "0001-01-01T00:00:00Z",
+            UpdatedAt: "0001-01-01T00:00:00Z",
+            DeletedAt: null,
+            FipeID: "",
+            FipePrice: 0,
+            Brand: "Jeep",
+            ShortName: "Jeep Renegade",
+            Name: "Jeep Renegade Turbo flamengo arrascaeta",
+            Year: "2022",
+        },
+        KindID: 1,
+        PredictedPrice: 10000,
+    },
+};
+
 export default function BuyVehiclePage({}) {
     const { carplate } = useParams();
 
-    const [carData, setCarData] = useState(null);
+    const [carData, setCarData] = useState<any>(null);
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         // const promise = axios.post("http://localhost:8080/inspect", {
@@ -29,6 +177,11 @@ export default function BuyVehiclePage({}) {
         //         JSON.parse(Buffer.from(payload, "hex").toString("utf-8"))
         //     );
         // });
+
+        setTimeout(() => {
+            setCarData(mockCarData.message);
+            setLoading(false);
+        }, 1000);
     }, []);
 
     function hexToString(hex: any) {
@@ -42,8 +195,14 @@ export default function BuyVehiclePage({}) {
             </div>
             <div className="flex justify-between flex-grow overflow-hidden">
                 <Sidebar />
-                <Details />
-                <VehicleEvents carPlate={carplate} />
+                {loading ? (
+                    <></>
+                ) : (
+                    <>
+                        <Details carData={carData} />
+                        <VehicleEvents carPlate={carplate} carData={carData} />
+                    </>
+                )}
             </div>
         </div>
     );
