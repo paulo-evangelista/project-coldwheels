@@ -72,10 +72,10 @@ func PopulateDB(db *gorm.DB) error {
 	}
 
 	vehicles := []Vehicle{
-		{Plate: "ABC1234", KindID: 1, Images: []Image{{IpfsURL: "QmSPUyR9fwdKpZnybRTAC2WnPHnPtM46KA1BhSir6KQ5ev"}}, Odometer: 10000, Color: "Red"},
-		{Plate: "ADC12T4", KindID: 2, Images: []Image{{IpfsURL: "QmSPUyR9fwdKpZnybRTAC2WnPHnPtM46KA1BhSir6KQ5ev"}}, Odometer: 20000, Color: "Blue"},
-		{Plate: "BFC1SS4", KindID: 3, Images: []Image{{IpfsURL: "QmSPUyR9fwdKpZnybRTAC2WnPHnPtM46KA1BhSir6KQ5ev"}}, Odometer: 30000, Color: "Black"},
-		{Plate: "AAC12HG", KindID: 4, Images: []Image{{IpfsURL: "QmSPUyR9fwdKpZnybRTAC2WnPHnPtM46KA1BhSir6KQ5ev"}}, Odometer: 40000, Color: "White"},
+		{Plate: "ABC1234", KindID: 1, Images: []Image{{IpfsURL: "QmSPUyR9fwdKpZnybRTAC2WnPHnPtM46KA1BhSir6KQ5ev"}}, Odometer: 10000, Color: "Red", Location: "Maringá, PR"},
+		{Plate: "ADC12T4", KindID: 2, Images: []Image{{IpfsURL: "QmSPUyR9fwdKpZnybRTAC2WnPHnPtM46KA1BhSir6KQ5ev"}}, Odometer: 20000, Color: "Blue", Location: "Porto Seguro, BA"},
+		{Plate: "BFC1SS4", KindID: 3, Images: []Image{{IpfsURL: "QmSPUyR9fwdKpZnybRTAC2WnPHnPtM46KA1BhSir6KQ5ev"}}, Odometer: 30000, Color: "Black", Location: "Juiz de Fora, MG"},
+		{Plate: "AAC12HG", KindID: 4, Images: []Image{{IpfsURL: "QmSPUyR9fwdKpZnybRTAC2WnPHnPtM46KA1BhSir6KQ5ev"}}, Odometer: 40000, Color: "White", Location: "Xique Xique, Bahia"},
 	}
 
 	for _, vehicle := range vehicles {
