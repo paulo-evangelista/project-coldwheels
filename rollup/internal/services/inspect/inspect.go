@@ -103,16 +103,18 @@ func GetVehicleByPlate(args FuncArguments) error {
 	}
 
 	var vehicle db.Vehicle
-	tx := args.Db.Preload("Incidents").Preload("Images").Where("plate = ?", plate).First(&vehicle)
-	if tx.Error != nil {
-		fmt.Printf("erro ao buscar veículo: %w\n", tx.Error)
-		return u.InspectError(args.Env, tx.Error, `"vehicle not found"`)
+	if err := args.Db.Preload("Incidents.IncidentType").
+		Preload("Incidents.Company").
+		Preload("Images").
+		Preload("Kind").
+		First(&vehicle).Where("plate = ?", plate).Error; err != nil {
+		return u.InspectError(args.Env, err, `"vehicle not found"`)
 	} else {
 		fmt.Printf("veículo encontrado: %+v\n", vehicle)
 	}
 
 	for _, img := range vehicle.Images {
-		fmt.Printf("imagem carregada: %s\n", img.IPFSURL)
+		fmt.Printf("imagem carregada: %s\n", img.IpfsURL)
 	}
 
 	jsonvehicle, err := json.Marshal(vehicle)
