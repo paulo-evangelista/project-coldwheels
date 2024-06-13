@@ -108,17 +108,61 @@ export default function BuyVehicleEvents({
                     )}
                 </div>
                 <div className="relative before:content-[''] before:absolute before:left-[40px] before:top-[35px] before:rounded-full before:w-[10px] before:bg-[#000] timeline">
-                    {carData.Incidents.map((incident: any, index: number) => {
-                        return (
+                    {carData ? (
+                        carData.Incidents.map(
+                            (incident: any, index: number) => {
+                                return (
+                                    <EventCard
+                                        key={index}
+                                        title={incident.incident_type.Name}
+                                        description={incident.Description}
+                                        date={formatDate(
+                                            incident.incident_date
+                                        )}
+                                        icon={
+                                            <KeySquare
+                                                size={24}
+                                                color="black"
+                                            />
+                                        }
+                                    />
+                                );
+                            }
+                        )
+                    ) : (
+                        <>
                             <EventCard
-                                key={index}
-                                title={incident.incident_type.Name}
-                                description={incident.Description}
-                                date={formatDate(incident.incident_date)}
+                                title="Acquisition"
+                                description="Purchased from dealership"
+                                date="13/06/2003"
                                 icon={<KeySquare size={24} color="black" />}
                             />
-                        );
-                    })}
+                            <EventCard
+                                title="Shield"
+                                description="Shield type A-III applied"
+                                date="22/06/2003"
+                                icon={<KeySquare size={24} color="black" />}
+                            />
+                            <EventCard
+                                title="Review"
+                                description="Reviewed from dealership"
+                                date="22/06/2003"
+                                icon={<KeySquare size={24} color="black" />}
+                            />
+                            <EventCard
+                                title="Shield Review"
+                                description="Reviewed from dealership"
+                                date="22/06/2003"
+                                icon={<KeySquare size={24} color="black" />}
+                            />
+                            <EventCard
+                                title="Shield Review"
+                                description="Reviewed from dealership"
+                                date="22/06/2003"
+                                icon={<KeySquare size={24} color="black" />}
+                            />
+                        </>
+                    )}
                 </div>
             </ScrollArea>
         </div>
