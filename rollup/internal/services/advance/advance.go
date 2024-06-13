@@ -19,7 +19,6 @@ type FuncArguments struct {
 }
 
 func RegisterCompany(args FuncArguments) error {
-
 	payload, err := u.ParsePayload(args.Payload)
 	if err != nil {
 		return u.AdvanceError(args.Env, err, "payload malformed")
@@ -121,14 +120,22 @@ func CreateIncident(args FuncArguments) error {
 	}
 
 	incidentTypeID, ok1 := payload["incident_type_id"].(uint)
-	incidentType, ok2 := payload["incident_type"].(db.IncidentType)
-	description, ok3 := payload["description"].(string)
-	incidentDate, ok4 := payload["incident_date"].(time.Time)
-	companyID, ok5 := payload["company_id"].(uint)
-	vehicleID, ok6 := payload["vehicle_id"].(uint)
+	description, ok2 := payload["description"].(string)
+	incidentDate, ok3 := payload["incident_date"].(time.Time)
+	vehicleID, ok4 := payload["vehicle_id"].(uint)
 
-	if !ok1 || !ok2 || !ok3 || !ok4 || !ok5 || !ok6 {
+	if !ok1 || !ok2 || !ok3 || !ok4 {
 		return u.AdvanceError(args.Env, fmt.Errorf("failed getting incident data"), "failed getting incident data")
+	}
+
+	var incidentType db.IncidentType
+	if err := args.DB.First(&incidentType, incidentTypeID).Error; err != nil {
+		return u.AdvanceError(args.Env, fmt.Errorf("invalid incident_type_id"), "invalid incident_type_id")
+	}
+
+	var vehicle db.Vehicle
+	if err := args.DB.First(&vehicle, vehicleID).Error; err != nil {
+		return u.AdvanceError(args.Env, fmt.Errorf("invalid vehicle_id"), "invalid vehicle_id")
 	}
 
 	incident := db.Incident{
@@ -136,8 +143,8 @@ func CreateIncident(args FuncArguments) error {
 		IncidentType:   incidentType,
 		Description:    description,
 		IncidentDate:   incidentDate,
-		CompanyID:      companyID,
 		VehicleID:      vehicleID,
+		Vehicle:        vehicle,
 	}
 
 	if err := args.DB.Create(&incident).Error; err != nil {
