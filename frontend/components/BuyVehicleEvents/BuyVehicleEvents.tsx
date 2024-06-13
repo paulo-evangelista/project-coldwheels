@@ -65,6 +65,19 @@ export default function BuyVehicleEvents({
         return false;
     };
 
+    function formatDate(timestamp: any) {
+        // Create a new Date object from the timestamp string
+        const date = new Date(timestamp);
+
+        // Get the day, month, and year from the date object
+        const day = date.getDate().toString().padStart(2, "0");
+        const month = (date.getMonth() + 1).toString().padStart(2, "0");
+        const year = date.getFullYear().toString().substr(-2);
+
+        // Return the formatted string
+        return `${day}/${month}/${year}`;
+    }
+
     return (
         <div className={`${width} pb-10`}>
             <ScrollArea className="bg-white shadow-lg w-full h-full rounded-xl px-6 py-4">
@@ -95,36 +108,17 @@ export default function BuyVehicleEvents({
                     )}
                 </div>
                 <div className="relative before:content-[''] before:absolute before:left-[40px] before:top-[35px] before:rounded-full before:w-[10px] before:bg-[#000] timeline">
-                    <EventCard
-                        title="Acquisition"
-                        description="Purchased from dealership"
-                        date="13/06/2003"
-                        icon={<KeySquare size={24} color="black" />}
-                    />
-                    <EventCard
-                        title="Shield"
-                        description="Shield type A-III applied"
-                        date="22/06/2003"
-                        icon={<KeySquare size={24} color="black" />}
-                    />
-                    <EventCard
-                        title="Review"
-                        description="Reviewed from dealership"
-                        date="22/06/2003"
-                        icon={<KeySquare size={24} color="black" />}
-                    />
-                    <EventCard
-                        title="Shield Review"
-                        description="Reviewed from dealership"
-                        date="22/06/2003"
-                        icon={<KeySquare size={24} color="black" />}
-                    />
-                    <EventCard
-                        title="Shield Review"
-                        description="Reviewed from dealership"
-                        date="22/06/2003"
-                        icon={<KeySquare size={24} color="black" />}
-                    />
+                    {carData.Incidents.map((incident: any, index: number) => {
+                        return (
+                            <EventCard
+                                key={index}
+                                title={incident.incident_type.Name}
+                                description={incident.Description}
+                                date={formatDate(incident.incident_date)}
+                                icon={<KeySquare size={24} color="black" />}
+                            />
+                        );
+                    })}
                 </div>
             </ScrollArea>
         </div>

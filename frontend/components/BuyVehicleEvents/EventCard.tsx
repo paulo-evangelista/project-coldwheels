@@ -32,7 +32,9 @@ export default function EventCard({ title, description, date, icon }: props) {
             <Card className="w-10/12 h-[120px] px-6 py-2 bg-white border border-[#D8D8D8] flex justify-between items-center pl-[80px]">
                 <div className="h-full flex flex-col justify-evenly">
                     <CardTitle>{title}</CardTitle>
-                    <CardDescription>{description}</CardDescription>
+                    <CardDescription className="text-ellipsis">
+                        {description}
+                    </CardDescription>
                     <p className="text-gray-400">{date}</p>
                 </div>
                 <div className="h-full flex flex-col justify-evenly items-end">
@@ -48,14 +50,9 @@ export default function EventCard({ title, description, date, icon }: props) {
                                     <DrawerTitle className="text-4xl">
                                         {title}
                                     </DrawerTitle>
-                                    <p className="text-xl">{description}</p>
                                 </DrawerHeader>
                                 <DrawerDescription>
-                                    <p>asdasdasd</p>
-                                    <p>asdasdasd</p>
-                                    <p>asdasdasd</p>
-                                    <p>asdasdasd</p>
-                                    <p>asdasdasd</p>
+                                    {description}
                                 </DrawerDescription>
                                 <DrawerFooter>
                                     <DrawerClose asChild>

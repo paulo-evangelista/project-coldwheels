@@ -9,6 +9,13 @@ import Truck from "../../assets/icons/Truck";
 import VehicleInfoBox from "./VehicleInfoBox";
 
 export default function ({ width = "w-5/12", carData }: any) {
+    function formatCurrencyBRL(value: number): string {
+        return new Intl.NumberFormat("pt-BR", {
+            style: "currency",
+            currency: "BRL",
+        }).format(value);
+    }
+
     return (
         <div className={`${width} pb-10 h-full flex flex-col justify-between`}>
             <div className="shadow-lg pb-6 rounded-xl bg-[#fff]">
@@ -23,7 +30,7 @@ export default function ({ width = "w-5/12", carData }: any) {
                     </div>
                     <div className="flex flex-col text-right">
                         <h1 className="font-bold text-3xl pr-10 pt-4">
-                            {carData.PredictedPrice}
+                            {formatCurrencyBRL(carData.PredictedPrice)}
                         </h1>
                         <h1 className="font-bold text-lg pr-11 text-[#9A9A9A]">
                             Suggested Price

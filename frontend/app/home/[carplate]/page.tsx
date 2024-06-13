@@ -7,6 +7,7 @@ import Sidebar from "@/components/Sidebar/Sidebar";
 
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
+import { Bars } from "react-loader-spinner";
 import axios from "axios";
 
 const mockCarData = {
@@ -28,7 +29,7 @@ const mockCarData = {
                     CreatedAt: "0001-01-01T00:00:00Z",
                     UpdatedAt: "0001-01-01T00:00:00Z",
                     DeletedAt: null,
-                    Name: "",
+                    Name: "aaaaaaaaa",
                 },
                 incident_type_id: 4,
                 Description: "Realizada na concessionaria FFA1242",
@@ -83,7 +84,62 @@ const mockCarData = {
                     CreatedAt: "0001-01-01T00:00:00Z",
                     UpdatedAt: "0001-01-01T00:00:00Z",
                     DeletedAt: null,
+                    Name: "bbbbbbb",
+                },
+                incident_type_id: 1,
+                Description: "Roubo de veÃ­culo",
+                incident_date: "2024-06-13T14:28:33.692104-03:00",
+                Company: {
+                    ID: 0,
+                    CreatedAt: "0001-01-01T00:00:00Z",
+                    UpdatedAt: "0001-01-01T00:00:00Z",
+                    DeletedAt: null,
                     Name: "",
+                    Kind: "",
+                    Description: "",
+                    Wallet: "",
+                    Address: "",
+                    Role: 0,
+                    Incidents: null,
+                    Favorites: null,
+                },
+                company_id: 1,
+                Vehicle: {
+                    ID: 0,
+                    CreatedAt: "0001-01-01T00:00:00Z",
+                    UpdatedAt: "0001-01-01T00:00:00Z",
+                    DeletedAt: null,
+                    Plate: "",
+                    Incidents: null,
+                    Images: null,
+                    Kind: {
+                        ID: 0,
+                        CreatedAt: "0001-01-01T00:00:00Z",
+                        UpdatedAt: "0001-01-01T00:00:00Z",
+                        DeletedAt: null,
+                        FipeID: "",
+                        FipePrice: 0,
+                        Brand: "",
+                        ShortName: "",
+                        Name: "",
+                        Year: "",
+                    },
+                    KindID: 0,
+                    PredictedPrice: 0,
+                },
+                vehicle_id: 1,
+            },
+            {
+                ID: 2,
+                CreatedAt: "2024-06-13T14:28:33.69215-03:00",
+                UpdatedAt: "2024-06-13T14:28:33.69215-03:00",
+                DeletedAt: null,
+                incident_type: {
+                    ID: 0,
+                    CreatedAt: "0001-01-01T00:00:00Z",
+                    UpdatedAt: "0001-01-01T00:00:00Z",
+                    DeletedAt: null,
+                    Name: "bbbbbbb",
                 },
                 incident_type_id: 1,
                 Description: "Roubo de veÃ­culo",
@@ -196,7 +252,9 @@ export default function BuyVehiclePage({}) {
             <div className="flex justify-between flex-grow overflow-hidden">
                 <Sidebar />
                 {loading ? (
-                    <></>
+                    <div className="h-full w-full flex items-center justify-center">
+                        <Bars height="100" color="#000" />
+                    </div>
                 ) : (
                     <>
                         <Details carData={carData} />
