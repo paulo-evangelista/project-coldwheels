@@ -99,19 +99,25 @@ func GetVehicleByPlate(args FuncArguments) error {
 
 	plate, ok1 := payload["plate"].(string)
 	if !ok1 {
-		return u.InspectError(args.Env,fmt.Errorf("failed to get vehicle plate from payload"), "failed to get vehicle plate from payload")
+		return u.InspectError(args.Env, fmt.Errorf("failed to get vehicle plate from payload"), "failed to get vehicle plate from payload")
 	}
 
 	var vehicle db.Vehicle
-	tx := args.Db.Preload("incidents").Where("plate = ?", plate).First(&vehicle)
+	tx := args.Db.Preload("Incidents").Preload("Images").Where("plate = ?", plate).First(&vehicle)
 	if tx.Error != nil {
+		fmt.Printf("erro ao buscar veículo: %w\n", tx.Error)
 		return u.InspectError(args.Env, tx.Error, `"vehicle not found"`)
-		
+	} else {
+		fmt.Printf("veículo encontrado: %+v\n", vehicle)
+	}
+
+	for _, img := range vehicle.Images {
+		fmt.Printf("imagem carregada: %s\n", img.IPFSURL)
 	}
 
 	jsonvehicle, err := json.Marshal(vehicle)
 	if err != nil {
-		return u.InspectError(args.Env,fmt.Errorf("error marshaling json: %+v", err), "error marshaling json")
+		return u.InspectError(args.Env, fmt.Errorf("error marshaling json: %+v", err), "error marshaling json")
 	}
 
 	args.Env.Report(jsonvehicle)
@@ -119,10 +125,10 @@ func GetVehicleByPlate(args FuncArguments) error {
 }
 
 func GetAllVehicleKinds(args FuncArguments) error {
-	
+
 	var kinds []db.VehicleKind
 
-	err :=args.Db.Find(&kinds).Error
+	err := args.Db.Find(&kinds).Error
 	if err != nil {
 		return u.InspectError(args.Env, err, "error getting vehicle kinds")
 	}
