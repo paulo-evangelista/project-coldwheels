@@ -76,6 +76,7 @@ type Vehicle struct {
 	PredictedPrice float32     `json:"predicted_price,omitempty"`
 	Odometer       uint        `json:"odometer,omitempty"`
 	Color          string      `json:"color,omitempty"`
+	Location       string      `json:"location,omitempty"`
 }
 
 func GetVehicleByPlate(db *gorm.DB, plate string) (Vehicle, error) {
