@@ -97,7 +97,7 @@ const Home = () => {
     const submitPlate = () => {
         if (inputValue.trim() === "") return;
 
-        router.push(`/buy/${inputValue}`);
+        router.push(`/home/${inputValue}`);
     };
 
     return (

@@ -1,7 +1,7 @@
 import Link from "next/link";
 import Logo from "../../assets/icons/Logo";
 import Home from "../../assets/icons/Home";
-import Search from "../../assets/icons/Search";
+import { Search } from "lucide-react";
 import Star from "../../assets/icons/Star";
 import { usePathname } from "next/navigation";
 import React from "react";
@@ -34,15 +34,15 @@ const NavLink = ({ href, icon: Icon, children }: NavLinkProps) => (
 
 const Sidebar = () => {
     return (
-        <div className="w-64 bg-white p-6 shadow-lg rounded-lg mb-8">
+        <div className="w-64 bg-white p-6 shadow-lg rounded-xl mb-8">
             <div className="w-full">
-                <div className="mb-6">
+                {/* <div className="mb-6">
                     <Link href="/">
                         <Logo />
                     </Link>
-                </div>
+                </div> */}
 
-                <div className="w-full border-b border-gray-300 my-4"></div>
+                {/* <div className="w-full border-b border-gray-300 my-4"></div> */}
 
                 <nav>
                     <p className="pb-4 font-bold">Vehicle Finder</p>

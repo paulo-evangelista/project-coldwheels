@@ -29,7 +29,32 @@ export default function BuyVehiclePage({}) {
         //         JSON.parse(Buffer.from(payload, "hex").toString("utf-8"))
         //     );
         // });
+
+        setTimeout(() => {
+            const res = {
+                data: {
+                    status: "Rejected",
+                    exception_payload: null,
+                    reports: [
+                        {
+                            payload:
+                                "0x7b22737461747573223a20226572726f72222c226d657373616765223a222276656869636c65206e6f7420666f756e6422227d",
+                        },
+                    ],
+                    processed_input_count: 0,
+                },
+            };
+            const payload = res.data.reports[0].payload;
+            const asString = hexToString(payload);
+            console.log({ asString });
+            const asJson = JSON.parse(asString);
+            console.log({ asJson });
+        }, 2000);
     }, []);
+
+    function hexToString(hex: any) {
+        return Buffer.from(hex, "hex").toString("utf8");
+    }
 
     return (
         <div className="h-screen px-14 flex flex-col bg-[#E1E8F0]">

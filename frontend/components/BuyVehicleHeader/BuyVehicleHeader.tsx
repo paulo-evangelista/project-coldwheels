@@ -2,16 +2,28 @@ import { Search, Menu } from "lucide-react";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 import Logo from "../../assets/icons/Logo";
+import Link from "next/link";
+
+import { useRouter } from "next/navigation";
 
 export default function BuyVehicleHeader() {
+    const router = useRouter();
+
+    function handleClick() {
+        router.push("/buy");
+    }
+
     return (
         <div className="w-full py-6 flex items-center justify-between">
             <div className="flex items-center justify-between w-full">
-                <div className="flex items-center">
+                {/* <div className="flex items-center">
                     <p className="text-3xl font-bold text-black">
                         <span className="text-[#EA580C]">Car</span>Tracker
                     </p>
-                </div>
+                </div> */}
+                <Link href="/">
+                    <Logo />
+                </Link>
 
                 <div className="flex">
                     <div className="relative w-full max-w-lg">
@@ -21,7 +33,10 @@ export default function BuyVehicleHeader() {
                             className="w-full h-12 pl-12 rounded-l-lg bg-[#F3F3F3] border-none"
                         />
                     </div>
-                    <Button className="bg-[#1F91E3] w-32 h-12 rounded-r-lg shadow-lg hover:bg-[#0577C9] text-white font-semibold ml-8">
+                    <Button
+                        onClick={handleClick}
+                        className="bg-[#1F91E3] w-32 h-12 rounded-r-lg shadow-lg hover:bg-[#0577C9] text-white font-semibold ml-8"
+                    >
                         Search
                     </Button>
                 </div>
