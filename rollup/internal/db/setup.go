@@ -72,10 +72,10 @@ func PopulateDB(db *gorm.DB) error {
 	}
 
 	vehicles := []Vehicle{
-		{Plate: "ABC1234", KindID: 1, Images: []Image{{IpfsURL: "QmSPUyR9fwdKpZnybRTAC2WnPHnPtM46KA1BhSir6KQ5ev"}}, Odometer: 10000},
-		{Plate: "ADC12T4", KindID: 2, Images: []Image{{IpfsURL: "QmSPUyR9fwdKpZnybRTAC2WnPHnPtM46KA1BhSir6KQ5ev"}}, Odometer: 20000},
-		{Plate: "BFC1SS4", KindID: 3, Images: []Image{{IpfsURL: "QmSPUyR9fwdKpZnybRTAC2WnPHnPtM46KA1BhSir6KQ5ev"}}, Odometer: 30000},
-		{Plate: "AAC12HG", KindID: 4, Images: []Image{{IpfsURL: "QmSPUyR9fwdKpZnybRTAC2WnPHnPtM46KA1BhSir6KQ5ev"}}, Odometer: 40000},
+		{Plate: "ABC1234", KindID: 1, Images: []Image{{IpfsURL: "QmSPUyR9fwdKpZnybRTAC2WnPHnPtM46KA1BhSir6KQ5ev"}}, Odometer: 10000, Color: "Red"},
+		{Plate: "ADC12T4", KindID: 2, Images: []Image{{IpfsURL: "QmSPUyR9fwdKpZnybRTAC2WnPHnPtM46KA1BhSir6KQ5ev"}}, Odometer: 20000, Color: "Blue"},
+		{Plate: "BFC1SS4", KindID: 3, Images: []Image{{IpfsURL: "QmSPUyR9fwdKpZnybRTAC2WnPHnPtM46KA1BhSir6KQ5ev"}}, Odometer: 30000, Color: "Black"},
+		{Plate: "AAC12HG", KindID: 4, Images: []Image{{IpfsURL: "QmSPUyR9fwdKpZnybRTAC2WnPHnPtM46KA1BhSir6KQ5ev"}}, Odometer: 40000, Color: "White"},
 	}
 
 	for _, vehicle := range vehicles {
