@@ -1,0 +1,43 @@
+{
+  "name": "cartesi-client",
+  "version": "0.1.0",
+  "description": "A typescript package that abstracts the complexity of the interaction with a Cartesi Rollups DApp.",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "/dist"
+  ],
+  "scripts": {
+    "build": "npm run codegen:graphql && tsc && tsc-alias",
+    "clean": "rm -r dist",
+    "codegen:graphql": "npx graphql-code-generator",
+    "test": "jest"
+  },
+  "author": "Arthur Vianna",
+  "license": "Apache-2.0",
+  "devDependencies": {
+    "@ethersproject/providers": "^5.7.1",
+    "@graphql-codegen/cli": "^5.0.0",
+    "@graphql-codegen/typed-document-node": "^5.0.6",
+    "@graphql-codegen/typescript-operations": "^4.0.1",
+    "@types/jest": "^29.5.7",
+    "ethers": "^5.7.2",
+    "ts-jest": "^29.1.1",
+    "tsc-alias": "^1.8.8"
+  },
+  "dependencies": {
+    "@cartesi/rollups": "^1.3.1",
+    "graphql": "~16.6.0",
+    "graphql-request": "^6.1.0",
+    "graphql-tag": "~2.12.6",
+    "react": "^18.2.0"
+  },
+  "overrides": {
+    "@graphql-codegen/cli": {
+      "graphql": "~16.6.0"
+    },
+    "@graphql-codegen/typescript-operations": {
+      "graphql": "~16.6.0"
+    }
+  }
+}
