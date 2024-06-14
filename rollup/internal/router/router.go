@@ -1,6 +1,7 @@
 package router
 
 import (
+	"coldwheels/internal/AI"
 	"coldwheels/internal/db"
 	"coldwheels/internal/services/advance"
 	"coldwheels/internal/services/inspect"
@@ -69,6 +70,13 @@ func Inspect(env rollmelette.EnvInspector, DB *gorm.DB, input *utils.InspectInpu
 		return inspect.Favorites(args)
 	case "get_vehicle_kinds":
 		return inspect.GetAllVehicleKinds(args)
+	case "ai":
+		res, err := AI.Predict(2016, 150000, 1, 5, false, 2, false); if err != nil {
+			return err
+		}
+		utils.InspectSuccess(env, fmt.Sprint(res))
+		return nil
+
 	default:
 		return fmt.Errorf("unknown kind: %s", input.Kind)
 	}
