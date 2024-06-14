@@ -1,10 +1,10 @@
 package utils
 
 import (
-	"github.com/rollmelette/rollmelette"
-  "fmt"
-)
+	"fmt"
 
+	"github.com/rollmelette/rollmelette"
+)
 
 func ParsePayload(unparsedPayload any) (map[string]interface{}, error) {
 	payload, ok := unparsedPayload.(map[string]interface{})
@@ -12,9 +12,9 @@ func ParsePayload(unparsedPayload any) (map[string]interface{}, error) {
 		return nil, fmt.Errorf(fmt.Sprintf("Payload is not a map: %v", unparsedPayload))
 	}
 
+	fmt.Println("Payload: ", payload)
 	return payload, nil
 }
-
 
 func PrintNewAdvance(payload string) {
 	fmt.Println("\n\n==== NEW ADVANCE ====")

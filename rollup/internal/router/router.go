@@ -30,6 +30,8 @@ func Advance(env rollmelette.Env, DB *gorm.DB, metadata rollmelette.Metadata, co
 	case "test_notice":
 		args.Env.Notice([]byte("notice is working"))
 		return nil
+	case "create_vehicle":
+		return advance.CreateVehicle(args)
 	case "register_company":
 		return advance.RegisterCompany(args)
 	case "promote_company":
