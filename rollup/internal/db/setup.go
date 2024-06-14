@@ -14,7 +14,7 @@ func Setup() *gorm.DB {
 		panic("failed to connect database")
 	}
 
-	models := []interface{}{&Company{}, &Vehicle{}, &Incident{}, &IncidentType{}}
+	models := []interface{}{&Company{}, &Vehicle{}, &Incident{}, &IncidentType{}, &Image{}, &VehicleKind{}}
 	for _, model := range models {
 		err = dbClient.AutoMigrate(model)
 		if err != nil {
@@ -46,10 +46,10 @@ func PopulateDB(db *gorm.DB) error {
 	}
 
 	vehicleKinds := []VehicleKind{
-		{ FipeID: "1234-123", FipePrice: 121320.20, Brand: "Ford", ShortName: "Mustang", Name: "Mustang V8 5.0 Ti-VCT GT Premium SelectShift", Year: "2019/1019"},
-		{ FipeID: "1234-234", FipePrice: 171330.46, Brand: "Ford", ShortName: "Mustang", Name: "Mustang V8 5.0 Ti-VCT GT Premium SelectShift", Year: "2017/2018"},
-		{ FipeID: "1245-332", FipePrice: 60142.67, Brand: "Toyota", ShortName: "Corolla", Name: "Corolla Altis TG-A 1.4T", Year: "2014/2014"},
-		{ FipeID: "1233-432", FipePrice: 80320.10, Brand: "Chevrolet", ShortName: "Onix", Name: "Onix LTZ 1.0T", Year: "2024/2024"},
+		{FipeID: "1233-432", FipePrice: 121320.20, Brand: "Ford", ShortName: "Mustang", Name: "Mustang V8 5.0 Ti-VCT GT Premium SelectShift", Year: "2019/2019"},
+		{FipeID: "1233-433", FipePrice: 171330.46, Brand: "Ford", ShortName: "Mustang", Name: "Mustang V8 5.0 Ti-VCT GT Premium SelectShift", Year: "2017/2018"},
+		{FipeID: "1245-332", FipePrice: 60142.67, Brand: "Toyota", ShortName: "Corolla", Name: "Corolla Altis TG-A 1.4T", Year: "2014/2014"},
+		{FipeID: "1233-434", FipePrice: 80320.10, Brand: "Chevrolet", ShortName: "Onix", Name: "Onix LTZ 1.0T", Year: "2024/2024"},
 	}
 
 	for i := range vehicleKinds {
@@ -62,7 +62,7 @@ func PopulateDB(db *gorm.DB) error {
 		{Name: "Roubo"},
 		{Name: "Furto"},
 		{Name: "Acidente"},
-        {Name: "Manutenção preventiva"},
+		{Name: "Manutenção preventiva"},
 	}
 
 	for i := range incidentTypes {
@@ -71,21 +71,18 @@ func PopulateDB(db *gorm.DB) error {
 		}
 	}
 
+	vehicles := []Vehicle{
+		{Plate: "ABC1234", KindID: 1, Images: []Image{{IpfsURL: "QmSPUyR9fwdKpZnybRTAC2WnPHnPtM46KA1BhSir6KQ5ev"}}, Odometer: 10000, Color: "Red", Location: "Maringá, PR"},
+		{Plate: "ADC12T4", KindID: 2, Images: []Image{{IpfsURL: "QmSPUyR9fwdKpZnybRTAC2WnPHnPtM46KA1BhSir6KQ5ev"}}, Odometer: 20000, Color: "Blue", Location: "Porto Seguro, BA"},
+		{Plate: "BFC1SS4", KindID: 3, Images: []Image{{IpfsURL: "QmSPUyR9fwdKpZnybRTAC2WnPHnPtM46KA1BhSir6KQ5ev"}}, Odometer: 30000, Color: "Black", Location: "Juiz de Fora, MG"},
+		{Plate: "AAC12HG", KindID: 4, Images: []Image{{IpfsURL: "QmSPUyR9fwdKpZnybRTAC2WnPHnPtM46KA1BhSir6KQ5ev"}}, Odometer: 40000, Color: "White", Location: "Xique Xique, Bahia"},
+	}
 
-    vehicles := []Vehicle{
-        {Plate: "ABC1234", KindID: 1},
-        {Plate: "AG1AA34", KindID: 1},
-        {Plate: "ADC12T4", KindID: 2},
-        {Plate: "AAC12HG", KindID: 4},
-        {Plate: "BFC1SS4", KindID: 3},
-    }
-
-	for i := range vehicles {
-		if err := db.Create(&vehicles[i]).Error; err != nil {
+	for _, vehicle := range vehicles {
+		if err := db.Create(&vehicle).Error; err != nil {
 			return err
 		}
 	}
-
 
 	incidents := []Incident{
 		{IncidentTypeID: 4, Description: "Realizada na concessionaria FFA1242", IncidentDate: time.Now(), CompanyID: 4, VehicleID: 1},
