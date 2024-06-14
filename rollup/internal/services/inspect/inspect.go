@@ -102,12 +102,14 @@ func GetVehicleByPlate(args FuncArguments) error {
 		return u.InspectError(args.Env, fmt.Errorf("failed to get vehicle plate from payload"), "failed to get vehicle plate from payload")
 	}
 
+	fmt.Printf("Searching for vehicle with plate: %s\n", plate)
 	var vehicle db.Vehicle
 	if err := args.Db.Preload("Incidents.IncidentType").
 		Preload("Incidents.Company").
 		Preload("Images").
 		Preload("Kind").
-		First(&vehicle).Where("plate = ?", plate).Error; err != nil {
+		Where("plate = ?", plate).
+		First(&vehicle).Error; err != nil {
 		return u.InspectError(args.Env, err, `"vehicle not found"`)
 	} else {
 		fmt.Printf("veículo encontrado: %+v\n", vehicle)
@@ -127,7 +129,6 @@ func GetVehicleByPlate(args FuncArguments) error {
 }
 
 func GetAllVehicleKinds(args FuncArguments) error {
-
 	var kinds []db.VehicleKind
 
 	err := args.Db.Find(&kinds).Error
