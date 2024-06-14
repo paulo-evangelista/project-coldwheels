@@ -57,10 +57,10 @@ func GetCompanyByWallet(db *gorm.DB, wallet string) (Company, error) {
 type Role int
 
 const (
-	Untrusted Role = iota + 1
-	Trusted
-	Affiliate
-	Admin
+	Untrusted Role = iota + 1 // 1
+	Trusted                   // 2
+	Affiliate                 // 3
+	Admin                     // 4
 )
 
 type IncidentType struct {
@@ -82,20 +82,19 @@ type Incident struct {
 
 type Vehicle struct {
 	gorm.Model
-	Plate      string
-	Incidents  []Incident 
-	Kind 	VehicleKind
-	KindID uint
+	Plate          string
+	Incidents      []Incident
+	Kind           VehicleKind
+	KindID         uint
 	PredictedPrice float32
 }
 
 type VehicleKind struct {
 	gorm.Model
-	FipeID string `gorm:"unique"`
+	FipeID    string `gorm:"unique"`
 	FipePrice float64
-	Brand string
+	Brand     string
 	ShortName string
-	Name string
-	Year string
-	
+	Name      string
+	Year      string
 }
