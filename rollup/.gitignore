@@ -1,6 +1,7 @@
 .cartesi
 dapp
 main
+build/
 coldwheels
 tmp
 cmd/rollup/tmp
