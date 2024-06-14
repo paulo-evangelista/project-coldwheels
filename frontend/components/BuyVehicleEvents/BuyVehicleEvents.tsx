@@ -84,11 +84,15 @@ export default function BuyVehicleEvents({
                 <div className="w-full h-[80px] flex justify-between items-center mb-4">
                     <div className="h-5/6 flex items-center justify-center bg-[#FF9900] p-4 rounded-xl shadow-sm">
                         <MapPin className="mr-2" />
-                        Juiz de Fora, MG
+                        {carData.location}
                     </div>
 
                     <div className="h-5/6 flex items-center justify-center bg-[#FF9900] p-4 rounded-xl shadow-sm">
-                        Última atualização: 15/03/2003
+                        Última atualização:{" "}
+                        {formatDate(
+                            carData.incidents[carData.incidents.length - 1]
+                                .updated_at
+                        )}
                     </div>
 
                     {checkIfAtFavorites() ? (
@@ -109,13 +113,13 @@ export default function BuyVehicleEvents({
                 </div>
                 <div className="relative before:content-[''] before:absolute before:left-[40px] before:top-[35px] before:rounded-full before:w-[10px] before:bg-[#000] timeline">
                     {carData ? (
-                        carData.Incidents.map(
+                        carData.incidents.map(
                             (incident: any, index: number) => {
                                 return (
                                     <EventCard
                                         key={index}
                                         title={incident.incident_type.Name}
-                                        description={incident.Description}
+                                        description={incident.description}
                                         date={formatDate(
                                             incident.incident_date
                                         )}

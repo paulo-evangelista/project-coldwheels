@@ -24,15 +24,15 @@ export default function ({ width = "w-5/12", carData }: any) {
                         <div className="flex justify-between">
                             <div className="flex flex-col">
                                 <h1 className="font-bold pt-4 pl-4 text-3xl">
-                                    {carData.Kind.ShortName}
+                                    {carData.kind.short_name}
                                 </h1>
                                 <h1 className="font-bold text-lg pl-5 text-[#9A9A9A]">
-                                    {carData.Kind.Name}
+                                    {carData.kind.name}
                                 </h1>
                             </div>
                             <div className="flex flex-col text-right">
                                 <h1 className="font-bold text-3xl pr-10 pt-4">
-                                    {formatCurrencyBRL(carData.PredictedPrice)}
+                                    {formatCurrencyBRL(999)}
                                 </h1>
                                 <h1 className="font-bold text-lg pr-11 text-[#9A9A9A]">
                                     Suggested Price
@@ -43,7 +43,7 @@ export default function ({ width = "w-5/12", carData }: any) {
                             <Image
                                 src={
                                     "https://ipfs.io/ipfs/" +
-                                    carData.Images[0].IPFSURL
+                                    carData.images[0].ipfs_url
                                 }
                                 alt="Renegade"
                                 width={450}
@@ -57,49 +57,29 @@ export default function ({ width = "w-5/12", carData }: any) {
                         <div className="flex justify-between">
                             <VehicleInfoBox
                                 label="Year"
-                                value={carData.Kind.Year}
+                                value={carData.kind.year}
                                 color="blue"
                                 icon={<Year width="24" height="24" />}
                             />
                             <VehicleInfoBox
                                 label="Plate"
-                                value={carData.Plate}
+                                value={carData.plate}
                                 color="green"
                                 icon={<Plate width="24" height="24" />}
                             />
                             <VehicleInfoBox
                                 label="Odometer"
-                                value="12.345km"
+                                value={carData.odometer + "km"}
                                 color="red"
                                 icon={<Truck width="24" height="24" />}
                             />
                             <VehicleInfoBox
                                 label="Color"
-                                value="Orange"
+                                value={carData.color}
                                 color="purple"
                                 icon={<Color width="24" height="24" />}
                             />
                         </div>
-
-                        {/* <div className="flex space-between items-center">
-                    <div className="w-6/12 flex items-center justify-start">
-                        <div className="h-16 flex justify-between items-center px-8 py-2 my-8 bg-[#FF9900] rounded-lg border border-stone-800">
-                            <ShieldCheck />
-                            <p className="font-bold pl-4">Verified Vehicle</p>
-                        </div>
-                    </div>
-
-                    <div className="w-6/12 flex items-center justify-end">
-                        <div className="h-16 flex flex-col justify-center items-center px-8 py-2 my-8 bg-[#FF9900] rounded-lg border border-stone-800">
-                            <p className="font-bold">
-                                Inscrição:0x478a91245...
-                            </p>
-                            <p className="font-bold">
-                                Última atualização:07/01/2004
-                            </p>
-                        </div>
-                    </div>
-                </div> */}
                     </div>
                 </>
             ) : (
@@ -165,26 +145,6 @@ export default function ({ width = "w-5/12", carData }: any) {
                                 icon={<Color width="24" height="24" />}
                             />
                         </div>
-
-                        {/* <div className="flex space-between items-center">
-                    <div className="w-6/12 flex items-center justify-start">
-                        <div className="h-16 flex justify-between items-center px-8 py-2 my-8 bg-[#FF9900] rounded-lg border border-stone-800">
-                            <ShieldCheck />
-                            <p className="font-bold pl-4">Verified Vehicle</p>
-                        </div>
-                    </div>
-
-                    <div className="w-6/12 flex items-center justify-end">
-                        <div className="h-16 flex flex-col justify-center items-center px-8 py-2 my-8 bg-[#FF9900] rounded-lg border border-stone-800">
-                            <p className="font-bold">
-                                Inscrição:0x478a91245...
-                            </p>
-                            <p className="font-bold">
-                                Última atualização:07/01/2004
-                            </p>
-                        </div>
-                    </div>
-                </div> */}
                     </div>
                 </>
             )}

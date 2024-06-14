@@ -4,244 +4,44 @@ import Header from "../../../components/BuyVehicleHeader/BuyVehicleHeader";
 import Details from "../../../components/BuyVehicleDetails/BuyVehicleDetails";
 import VehicleEvents from "../../../components/BuyVehicleEvents/BuyVehicleEvents";
 import Sidebar from "@/components/Sidebar/Sidebar";
-
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { Bars } from "react-loader-spinner";
+import { ethers } from "ethers";
 import axios from "axios";
-
-const mockCarData = {
-    status: "success",
-    message: {
-        ID: 1,
-        CreatedAt: "2024-06-13T14:28:33.691828-03:00",
-        UpdatedAt: "2024-06-13T14:28:33.691828-03:00",
-        DeletedAt: null,
-        Plate: "ABC1234",
-        Incidents: [
-            {
-                ID: 1,
-                CreatedAt: "2024-06-13T14:28:33.69211-03:00",
-                UpdatedAt: "2024-06-13T14:28:33.69211-03:00",
-                DeletedAt: null,
-                incident_type: {
-                    ID: 0,
-                    CreatedAt: "0001-01-01T00:00:00Z",
-                    UpdatedAt: "0001-01-01T00:00:00Z",
-                    DeletedAt: null,
-                    Name: "aaaaaaaaa",
-                },
-                incident_type_id: 4,
-                Description: "Realizada na concessionaria FFA1242",
-                incident_date: "2024-06-13T14:28:33.692104-03:00",
-                Company: {
-                    ID: 0,
-                    CreatedAt: "0001-01-01T00:00:00Z",
-                    UpdatedAt: "0001-01-01T00:00:00Z",
-                    DeletedAt: null,
-                    Name: "",
-                    Kind: "",
-                    Description: "",
-                    Wallet: "",
-                    Address: "",
-                    Role: 0,
-                    Incidents: null,
-                    Favorites: null,
-                },
-                company_id: 4,
-                Vehicle: {
-                    ID: 0,
-                    CreatedAt: "0001-01-01T00:00:00Z",
-                    UpdatedAt: "0001-01-01T00:00:00Z",
-                    DeletedAt: null,
-                    Plate: "",
-                    Incidents: null,
-                    Images: null,
-                    Kind: {
-                        ID: 0,
-                        CreatedAt: "0001-01-01T00:00:00Z",
-                        UpdatedAt: "0001-01-01T00:00:00Z",
-                        DeletedAt: null,
-                        FipeID: "",
-                        FipePrice: 0,
-                        Brand: "",
-                        ShortName: "",
-                        Name: "",
-                        Year: "",
-                    },
-                    KindID: 0,
-                    PredictedPrice: 0,
-                },
-                vehicle_id: 1,
-            },
-            {
-                ID: 2,
-                CreatedAt: "2024-06-13T14:28:33.69215-03:00",
-                UpdatedAt: "2024-06-13T14:28:33.69215-03:00",
-                DeletedAt: null,
-                incident_type: {
-                    ID: 0,
-                    CreatedAt: "0001-01-01T00:00:00Z",
-                    UpdatedAt: "0001-01-01T00:00:00Z",
-                    DeletedAt: null,
-                    Name: "bbbbbbb",
-                },
-                incident_type_id: 1,
-                Description: "Roubo de veÃ­culo",
-                incident_date: "2024-06-13T14:28:33.692104-03:00",
-                Company: {
-                    ID: 0,
-                    CreatedAt: "0001-01-01T00:00:00Z",
-                    UpdatedAt: "0001-01-01T00:00:00Z",
-                    DeletedAt: null,
-                    Name: "",
-                    Kind: "",
-                    Description: "",
-                    Wallet: "",
-                    Address: "",
-                    Role: 0,
-                    Incidents: null,
-                    Favorites: null,
-                },
-                company_id: 1,
-                Vehicle: {
-                    ID: 0,
-                    CreatedAt: "0001-01-01T00:00:00Z",
-                    UpdatedAt: "0001-01-01T00:00:00Z",
-                    DeletedAt: null,
-                    Plate: "",
-                    Incidents: null,
-                    Images: null,
-                    Kind: {
-                        ID: 0,
-                        CreatedAt: "0001-01-01T00:00:00Z",
-                        UpdatedAt: "0001-01-01T00:00:00Z",
-                        DeletedAt: null,
-                        FipeID: "",
-                        FipePrice: 0,
-                        Brand: "",
-                        ShortName: "",
-                        Name: "",
-                        Year: "",
-                    },
-                    KindID: 0,
-                    PredictedPrice: 0,
-                },
-                vehicle_id: 1,
-            },
-            {
-                ID: 2,
-                CreatedAt: "2024-06-13T14:28:33.69215-03:00",
-                UpdatedAt: "2024-06-13T14:28:33.69215-03:00",
-                DeletedAt: null,
-                incident_type: {
-                    ID: 0,
-                    CreatedAt: "0001-01-01T00:00:00Z",
-                    UpdatedAt: "0001-01-01T00:00:00Z",
-                    DeletedAt: null,
-                    Name: "bbbbbbb",
-                },
-                incident_type_id: 1,
-                Description: "Roubo de veÃ­culo",
-                incident_date: "2024-06-13T14:28:33.692104-03:00",
-                Company: {
-                    ID: 0,
-                    CreatedAt: "0001-01-01T00:00:00Z",
-                    UpdatedAt: "0001-01-01T00:00:00Z",
-                    DeletedAt: null,
-                    Name: "",
-                    Kind: "",
-                    Description: "",
-                    Wallet: "",
-                    Address: "",
-                    Role: 0,
-                    Incidents: null,
-                    Favorites: null,
-                },
-                company_id: 1,
-                Vehicle: {
-                    ID: 0,
-                    CreatedAt: "0001-01-01T00:00:00Z",
-                    UpdatedAt: "0001-01-01T00:00:00Z",
-                    DeletedAt: null,
-                    Plate: "",
-                    Incidents: null,
-                    Images: null,
-                    Kind: {
-                        ID: 0,
-                        CreatedAt: "0001-01-01T00:00:00Z",
-                        UpdatedAt: "0001-01-01T00:00:00Z",
-                        DeletedAt: null,
-                        FipeID: "",
-                        FipePrice: 0,
-                        Brand: "",
-                        ShortName: "",
-                        Name: "",
-                        Year: "",
-                    },
-                    KindID: 0,
-                    PredictedPrice: 0,
-                },
-                vehicle_id: 1,
-            },
-        ],
-        Images: [
-            {
-                ID: 1,
-                CreatedAt: "2024-06-13T14:28:33.691867-03:00",
-                UpdatedAt: "2024-06-13T14:28:33.691867-03:00",
-                DeletedAt: null,
-                VehicleID: 1,
-                IPFSURL: "QmSPUyR9fwdKpZnybRTAC2WnPHnPtM46KA1BhSir6KQ5ev",
-            },
-        ],
-        Kind: {
-            ID: 0,
-            CreatedAt: "0001-01-01T00:00:00Z",
-            UpdatedAt: "0001-01-01T00:00:00Z",
-            DeletedAt: null,
-            FipeID: "",
-            FipePrice: 0,
-            Brand: "Jeep",
-            ShortName: "Jeep Renegade",
-            Name: "Jeep Renegade Turbo flamengo arrascaeta",
-            Year: "2022",
-        },
-        KindID: 1,
-        PredictedPrice: 10000,
-    },
-};
 
 export default function BuyVehiclePage({}) {
     const { carplate } = useParams();
 
     const [carData, setCarData] = useState<any>(null);
     const [loading, setLoading] = useState(true);
+    const [found, setFound] = useState(false);
 
     useEffect(() => {
-        // const promise = axios.post("http://localhost:8080/inspect", {
-        //     kind: "get_vehicle_by_plate",
-        //     payload: {
-        //         plate: carplate,
-        //     },
-        // });
-        // promise.then((res) => {
-        //     if (res.data.status != "Accepted") return;
-        //     const payload = res.data.reports[0].payload;
-        //     //convert from hex and load as json at var carData
-        //     setCarData(
-        //         JSON.parse(Buffer.from(payload, "hex").toString("utf-8"))
-        //     );
-        // });
+        const promise = axios.post("http://localhost:8080/inspect", {
+            kind: "get_vehicle_by_plate",
+            payload: {
+                plate: carplate,
+            },
+        });
 
-        setTimeout(() => {
-            setCarData(mockCarData.message);
+        promise.then((res) => {
+            if (res.data.status != "Accepted") return;
+            const payload = res.data.reports[0].payload;
+
+            setCarData(() => {
+                return { ...hexToJson(payload) };
+            });
             setLoading(false);
-        }, 1000);
+            setFound(true);
+        });
     }, []);
 
-    function hexToString(hex: any) {
-        return Buffer.from(hex, "hex").toString("utf8");
+    function hexToJson(hex: any) {
+        const asString = ethers.utils.toUtf8String(hex);
+        //printa tipo de dado
+        console.log(typeof asString);
+        return JSON.parse(asString);
     }
 
     return (
@@ -255,11 +55,15 @@ export default function BuyVehiclePage({}) {
                     <div className="h-full w-full flex items-center justify-center">
                         <Bars height="100" color="#000" />
                     </div>
-                ) : (
+                ) : found ? (
                     <>
                         <Details carData={carData} />
-                        <VehicleEvents carPlate={carplate} carData={carData} />
+                        <VehicleEvents carData={carData} carPlate={carplate} />
                     </>
+                ) : (
+                    <div className="w-full h-full flex items-center justify-center text-black text-3xl">
+                        <h1>Veículo não encontrado</h1>
+                    </div>
                 )}
             </div>
         </div>

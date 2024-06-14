@@ -3,14 +3,16 @@ import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 import Logo from "../../assets/icons/Logo";
 import Link from "next/link";
-
+import { useState } from "react";
 import { useRouter } from "next/navigation";
 
 export default function BuyVehicleHeader() {
     const router = useRouter();
 
+    const [inputValue, setInputValue] = useState("");
+
     function handleClick() {
-        router.push("/buy");
+        router.push(`/home/${inputValue}`);
     }
 
     return (
@@ -29,6 +31,8 @@ export default function BuyVehicleHeader() {
                     <div className="relative w-full max-w-lg">
                         <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
                         <Input
+                            value={inputValue}
+                            onChange={(e) => setInputValue(e.target.value)}
                             placeholder="Search by plate"
                             className="w-full h-12 pl-12 rounded-l-lg bg-[#F3F3F3] border-none"
                         />
