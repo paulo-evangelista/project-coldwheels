@@ -26,7 +26,7 @@ export default function BuyVehiclePage({}) {
                             />
                         </div>
                         <p className="text-xl font-semibold text-center text-black">
-                            Search for a car
+                            Search for a vehicle
                         </p>
                     </div>
                 </div>

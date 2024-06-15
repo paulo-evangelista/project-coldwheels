@@ -44,7 +44,6 @@ export default function BuyVehiclePage({}) {
         });
 
         promise.catch((err) => {
-            alert(err);
             setLoading(false);
             setFound(false);
         });
@@ -56,35 +55,40 @@ export default function BuyVehiclePage({}) {
     }
 
     return (
-        <div className="h-screen px-14 flex flex-col bg-[#E1E8F0]">
-            <div className="flex-shrink-0">
+        <div className="w-full h-screen flex bg-white">
+            <Sidebar />
+            <div className="w-full h-full flex flex-col px-14">
                 <Header />
-            </div>
-            <div className="flex justify-between flex-grow overflow-hidden">
-                <Sidebar />
-                {loading ? (
-                    <div className="h-full w-full flex items-center justify-center">
-                        <Bars height="100" color="#000" />
-                    </div>
-                ) : found ? (
-                    <>
-                        <Details carData={carData} />
-                        <VehicleEvents carData={carData} carPlate={carplate} />
-                    </>
-                ) : (
-                    <div className="flex justify-between flex-grow overflow-hidden">
-                        <div className="flex flex-grow items-center justify-center text-xl font-semibold text-center text-black">
-                            <div className=" bg-white p-4 rounded-xl shadow-lg">
-                                <GLBViewer
-                                    glbPath="/models/car2.glb"
-                                    sensitivity={8.5}
-                                    scale={0.06}
-                                />
-                                <p>Car not found</p>
+                <div className="w-full h-full flex justify-between">
+                    {loading ? (
+                        <div className="h-full w-full flex items-center justify-center">
+                            <Bars height="100" color="#000" />
+                        </div>
+                    ) : found ? (
+                        <>
+                            <Details carData={carData} />
+                            <VehicleEvents
+                                carData={carData}
+                                carPlate={carplate}
+                            />
+                        </>
+                    ) : (
+                        <div className="w-full h-full flex items-center justify-center">
+                            <div className="bg-white p-4 rounded-xl">
+                                <div className="">
+                                    <GLBViewer
+                                        glbPath="/models/car2.glb"
+                                        sensitivity={8.5}
+                                        scale={0.06}
+                                    />
+                                </div>
+                                <p className="text-xl font-semibold text-center text-black">
+                                    Vehicle not found
+                                </p>
                             </div>
                         </div>
-                    </div>
-                )}
+                    )}
+                </div>
             </div>
         </div>
     );
