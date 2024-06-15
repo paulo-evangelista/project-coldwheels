@@ -157,6 +157,15 @@ func AddVehicleKind(args FuncArguments) error {
 }
 
 func Payable(args FuncArguments) error {
-	fmt.Printf("deposited! -> %+v",args.Deposit)
+	fmt.Println("-_-_-_-_-_-")
+	fmt.Println("sender -> ",args.Metadata.MsgSender)
+	fmt.Println("deposited! ->",args.Deposit)
+	fmt.Println("-_-_-_-_-_-")
+
+	switch deposit := args.Deposit.(type) {
+		case *rollmelette.EtherDeposit:
+			fmt.Println(deposit.Value)
+	}
+
 	return nil
 }
