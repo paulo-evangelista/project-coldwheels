@@ -84,7 +84,7 @@ const Home = () => {
     const getRotate = (progress: any) => {
         if (!displayWhiteDiv) return;
 
-        return `rotate(${900 * progress}deg)`;
+        return `rotate(${540 * progress}deg)`;
     };
 
     const getScale = (progress: any) => {
