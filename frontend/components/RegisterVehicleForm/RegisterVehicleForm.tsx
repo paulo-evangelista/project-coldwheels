@@ -1,9 +1,21 @@
 import { useState } from 'react';
 import { CSSTransition, SwitchTransition } from 'react-transition-group';
+import { ethers } from "ethers";
+import { advanceInput } from "cartesi-client";
 import './formAnimations.css';
 
-const RegisterVehicleForm = () => {
+interface Props {
+  dappAddress: string;
+}
+
+const RegisterVehicleForm: React.FC<Props> = (props) => {
+  const provider = new ethers.providers.Web3Provider(window.ethereum);
+  const dappAddress = props.dappAddress;
   const [step, setStep] = useState(0);
+  const [plate, setPlate] = useState("");
+  const [kindId, setKindId] = useState("");
+  const [odometer, setOdometer] = useState("");
+  const [image, setImage] = useState("");
 
   const handleNext = () => {
     setStep(prevStep => prevStep + 1);
@@ -13,25 +25,46 @@ const RegisterVehicleForm = () => {
     setStep(prevStep => prevStep - 1);
   };
 
+  const handleInputChange = (setter: React.Dispatch<React.SetStateAction<string>>) => 
+    (event: React.ChangeEvent<HTMLInputElement>) => {
+      setter(event.target.value);
+  };
+
+  const registerVehicle = async () => {
+    const input = {
+      plate,
+      kindId,
+      odometer,
+      image,
+    };
+
+    console.log("adding input", input);
+    const signer = await provider.getSigner();
+    console.log("signer and input is ", signer, input);
+    advanceInput(signer, dappAddress, input);
+  };
+
   return (
     <div className="w-[400px] p-6 border border-gray-300 rounded-lg shadow-sm">
       <SwitchTransition>
         <CSSTransition
           key={step}
           timeout={300}
-          classNames="fade"
+          classNames="form-animation"
         >
           <div>
             {step === 0 && (
             <>
                 <h2 className="text-xl font-semibold mb-4">Register Vehicle</h2>
                 <div className="mb-4">
-                  <label htmlFor="fipeId" className="block text-sm font-medium text-gray-700 mb-1">
-                    Fipe ID:
+                  <label htmlFor="plate" className="block text-sm font-medium text-gray-700 mb-1">
+                    Plate:
                   </label>
                   <input
                     type="text"
-                    id="fipeId"
+                    id="plate"
+                    value={plate}
+                    onChange={handleInputChange(setPlate)}
                     className="block w-full p-2 border border-gray-300 rounded-md"
                   />
                 </div>
@@ -47,12 +80,14 @@ const RegisterVehicleForm = () => {
             <>
                 <h2 className="text-xl font-semibold mb-4">Register Vehicle</h2>
                 <div className="mb-4">
-                    <label htmlFor="fipePrice" className="block text-sm font-medium text-gray-700 mb-1">
-                    Fipe Price:
+                    <label htmlFor="kindId" className="block text-sm font-medium text-gray-700 mb-1">
+                    Vehicle Kind:
                     </label>
                     <input
                     type="text"
-                    id="fipePrice"
+                    id="kindId"
+                    value={kindId}
+                    onChange={handleInputChange(setKindId)}
                     className="block w-full p-2 border border-gray-300 rounded-md"
                     />
                 </div>
@@ -68,12 +103,14 @@ const RegisterVehicleForm = () => {
             <>
                 <h2 className="text-xl font-semibold mb-4">Register Vehicle</h2>
                 <div className="mb-4">
-                    <label htmlFor="brand" className="block text-sm font-medium text-gray-700 mb-1">
-                    Brand:
+                    <label htmlFor="odometer" className="block text-sm font-medium text-gray-700 mb-1">
+                    Odometer:
                     </label>
                     <input
                     type="text"
-                    id="brand"
+                    id="odometer"
+                    value={odometer}
+                    onChange={handleInputChange(setOdometer)}
                     className="block w-full p-2 border border-gray-300 rounded-md"
                     />
                 </div>
@@ -89,62 +126,22 @@ const RegisterVehicleForm = () => {
             <>
                 <h2 className="text-xl font-semibold mb-4">Register Vehicle</h2>
                 <div className="mb-4">
-                    <label htmlFor="shortName" className="block text-sm font-medium text-gray-700 mb-1">
-                    Short Name:
+                    <label htmlFor="image" className="block text-sm font-medium text-gray-700 mb-1">
+                    Vehicle Image:
                     </label>
                     <input
                     type="text"
-                    id="shortName"
+                    id="image"
+                    value={image}
+                    onChange={handleInputChange(setImage)}
                     className="block w-full p-2 border border-gray-300 rounded-md"
                     />
                 </div>
                 <button
-                    onClick={handleNext}
+                    onClick={registerVehicle}
                     className="w-full bg-blue-500 text-white py-2 rounded-md hover:bg-blue-600"
                 >
-                    Next
-                </button>
-            </>                
-            )}
-            {step === 4 && (
-            <>
-                <h2 className="text-xl font-semibold mb-4">Register Vehicle</h2>
-                <div className="mb-4">
-                    <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">
-                    Name:
-                    </label>
-                    <input
-                    type="text"
-                    id="name"
-                    className="block w-full p-2 border border-gray-300 rounded-md"
-                    />
-                </div>
-                <button
-                    onClick={handleNext}
-                    className="w-full bg-blue-500 text-white py-2 rounded-md hover:bg-blue-600"
-                >
-                    Next
-                </button>
-            </>                
-            )}
-            {step === 5 && (
-            <>
-                <h2 className="text-xl font-semibold mb-4">Register Vehicle</h2>
-                <div className="mb-4">
-                    <label htmlFor="year" className="block text-sm font-medium text-gray-700 mb-1">
-                    Year:
-                    </label>
-                    <input
-                    type="text"
-                    id="year"
-                    className="block w-full p-2 border border-gray-300 rounded-md"
-                    />
-                </div>
-                <button
-                    onClick={handleNext}
-                    className="w-full bg-blue-500 text-white py-2 rounded-md hover:bg-blue-600"
-                >
-                    Submit
+                    Register
                 </button>
             </>                
             )}
