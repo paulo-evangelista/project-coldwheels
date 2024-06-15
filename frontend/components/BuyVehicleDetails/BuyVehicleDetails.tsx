@@ -5,15 +5,29 @@ import Color from "../../assets/icons/Color";
 import Plate from "../../assets/icons/Plate";
 import Year from "../../assets/icons/Year";
 import Truck from "../../assets/icons/Truck";
+import { FaRegCircleCheck } from "react-icons/fa6";
 
 import VehicleInfoBox from "./VehicleInfoBox";
 
-export default function ({ width = "w-5/12", carData }: any) {
+export default function ({ width = "w-6/12", carData }: any) {
     function formatCurrencyBRL(value: number): string {
         return new Intl.NumberFormat("pt-BR", {
             style: "currency",
             currency: "BRL",
         }).format(value);
+    }
+
+    function formatDate(timestamp: any) {
+        // Create a new Date object from the timestamp string
+        const date = new Date(timestamp);
+
+        // Get the day, month, and year from the date object
+        const day = date.getDate().toString().padStart(2, "0");
+        const month = (date.getMonth() + 1).toString().padStart(2, "0");
+        const year = date.getFullYear().toString().substr(-2);
+
+        // Return the formatted string
+        return `${day}/${month}/${year}`;
     }
 
     return (
@@ -79,6 +93,34 @@ export default function ({ width = "w-5/12", carData }: any) {
                                 color="purple"
                                 icon={<Color width="24" height="24" />}
                             />
+                        </div>
+                    </div>
+
+                    <div className="flex w-full py-4">
+                        <div className="w-1/2">
+                            <div className="w-4/6 h-full bg-[#FF9900] flex items-center justify-center rounded-xl shadow-lg">
+                                <FaRegCircleCheck className="text-black mr-4" />
+                                <p className="font-semibold">
+                                    Verified vehicle
+                                </p>
+                            </div>
+                        </div>
+                        <div className="w-1/2">
+                            <p>
+                                {carData
+                                    ? carData.location
+                                    : "Juiz de Fora, MG"}
+                            </p>
+                            <p>
+                                Last update:{" "}
+                                {carData
+                                    ? formatDate(
+                                          carData.incidents[
+                                              carData.incidents.length - 1
+                                          ].updated_at
+                                      )
+                                    : "23/11/2019"}
+                            </p>
                         </div>
                     </div>
                 </>

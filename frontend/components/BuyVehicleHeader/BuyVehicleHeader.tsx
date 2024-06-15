@@ -30,7 +30,7 @@ export default function BuyVehicleHeader() {
                     </div>
                     <Button
                         onClick={handleClick}
-                        className="bg-[#1F91E3] w-32 h-12 rounded-r-lg shadow-lg hover:bg-[#0577C9] text-white font-semibold ml-8"
+                        className="bg-[#1F91E3] w-32 h-12 rounded-lg shadow-lg hover:bg-[#0577C9] text-white text-lg font-semibold ml-8"
                     >
                         Search
                     </Button>
