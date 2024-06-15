@@ -37,31 +37,31 @@ export default function ({ width = "w-6/12", carData }: any) {
                     <div className="shadow-lg pb-6 rounded-xl bg-[#fff]">
                         <div className="flex justify-between">
                             <div className="flex flex-col">
-                                <h1 className="font-bold pt-4 pl-4 text-3xl">
+                                <h1 className="font-bold pt-4 pl-4 text-2xl">
                                     {carData.kind.short_name}
                                 </h1>
-                                <h1 className="font-bold text-lg pl-5 text-[#9A9A9A]">
+                                <h1 className="font-bold text-base pl-5 text-[#9A9A9A]">
                                     {carData.kind.name}
                                 </h1>
                             </div>
                             <div className="flex flex-col text-right">
-                                <h1 className="font-bold text-3xl pr-10 pt-4">
+                                <h1 className="font-bold text-2xl pr-10 pt-4">
                                     {formatCurrencyBRL(999)}
                                 </h1>
-                                <h1 className="font-bold text-lg pr-11 text-[#9A9A9A]">
+                                <h1 className="font-bold text-base pr-11 text-[#9A9A9A]">
                                     Suggested Price
                                 </h1>
                             </div>
                         </div>
-                        <div className="flex justify-center pt-10">
+                        <div className="flex justify-center pt-6">
                             <Image
                                 src={
                                     "https://ipfs.io/ipfs/" +
                                     carData.images[0].ipfs_url
                                 }
                                 alt="Renegade"
-                                width={450}
-                                height={200}
+                                width={380}
+                                height={150}
                                 className="rounded-xl"
                             />
                         </div>
@@ -96,7 +96,7 @@ export default function ({ width = "w-6/12", carData }: any) {
                         </div>
                     </div>
 
-                    <div className="flex w-full py-4">
+                    <div className="flex w-full pt-4">
                         <div className="w-1/2">
                             <div className="w-4/6 h-full bg-[#FF9900] flex items-center justify-center rounded-xl shadow-lg">
                                 <FaRegCircleCheck className="text-black mr-4" />
