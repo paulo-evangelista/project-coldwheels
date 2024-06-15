@@ -10,6 +10,8 @@ import { Bars } from "react-loader-spinner";
 import { ethers } from "ethers";
 import axios from "axios";
 
+import GLBViewer from "@/components/Render3d/Render3d";
+
 export default function BuyVehiclePage({}) {
     const { carplate } = useParams();
 
@@ -26,21 +28,30 @@ export default function BuyVehiclePage({}) {
         });
 
         promise.then((res) => {
-            if (res.data.status != "Accepted") return;
-            const payload = res.data.reports[0].payload;
+            if (res.data.status == "Accepted") {
+                const payload = res.data.reports[0].payload;
+                const carData = hexToJson(payload);
 
-            setCarData(() => {
-                return { ...hexToJson(payload) };
-            });
+                setCarData(() => {
+                    return { ...carData };
+                });
+                setLoading(false);
+                setFound(true);
+            } else {
+                setLoading(false);
+                setFound(false);
+            }
+        });
+
+        promise.catch((err) => {
+            alert(err);
             setLoading(false);
-            setFound(true);
+            setFound(false);
         });
     }, []);
 
     function hexToJson(hex: any) {
         const asString = ethers.utils.toUtf8String(hex);
-        //printa tipo de dado
-        console.log(typeof asString);
         return JSON.parse(asString);
     }
 
@@ -61,8 +72,17 @@ export default function BuyVehiclePage({}) {
                         <VehicleEvents carData={carData} carPlate={carplate} />
                     </>
                 ) : (
-                    <div className="w-full h-full flex items-center justify-center text-black text-3xl">
-                        <h1>Veículo não encontrado</h1>
+                    <div className="flex justify-between flex-grow overflow-hidden">
+                        <div className="flex flex-grow items-center justify-center text-xl font-semibold text-center text-black">
+                            <div className=" bg-white p-4 rounded-xl shadow-lg">
+                                <GLBViewer
+                                    glbPath="/models/car2.glb"
+                                    sensitivity={8.5}
+                                    scale={0.06}
+                                />
+                                <p>Car not found</p>
+                            </div>
+                        </div>
                     </div>
                 )}
             </div>

@@ -8,6 +8,8 @@ import { useRouter } from "next/router";
 import { useAccount } from "wagmi";
 import { useEffect, useState } from "react";
 
+import GLBViewer from "@/components/Render3d/Render3d";
+
 export default function BuyVehiclePage({}) {
     return (
         <div className="h-screen px-14 flex flex-col bg-[#E1E8F0]">
@@ -16,9 +18,14 @@ export default function BuyVehiclePage({}) {
             </div>
             <div className="flex justify-between flex-grow overflow-hidden">
                 <Sidebar />
-                <div className="flex flex-grow items-center justify-center text-2xl text-black">
+                <div className="flex flex-grow items-center justify-center text-xl font-semibold text-center text-black">
                     <div className=" bg-white p-4 rounded-xl shadow-lg">
-                        Search for a vehicle
+                        <GLBViewer
+                            glbPath="/models/car2.glb"
+                            sensitivity={8.5}
+                            scale={0.06}
+                        />
+                        <p>Search for a car</p>
                     </div>
                 </div>
             </div>
