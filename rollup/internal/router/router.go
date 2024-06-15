@@ -12,7 +12,7 @@ import (
 	"gorm.io/gorm"
 )
 
-func Advance(env rollmelette.Env, DB *gorm.DB, metadata rollmelette.Metadata, company *db.Company, input *utils.AdvaceInputDTO) error {
+func Advance(env rollmelette.Env, DB *gorm.DB, metadata rollmelette.Metadata, deposit rollmelette.Deposit, company *db.Company, input *utils.AdvaceInputDTO) error {
 	fmt.Println("[ROUTER] Advancing for kind ->", input.Kind)
 
 	kind, payload := input.Kind, input.Payload
@@ -22,6 +22,7 @@ func Advance(env rollmelette.Env, DB *gorm.DB, metadata rollmelette.Metadata, co
 		DB:       DB,
 		Sender:   company,
 		Metadata: metadata,
+		Deposit: deposit,
 		Payload:  payload,
 	}
 
@@ -46,7 +47,8 @@ func Advance(env rollmelette.Env, DB *gorm.DB, metadata rollmelette.Metadata, co
 	//////////////////////////// VEHICLES/FIPE ///////////////////////////
 	case "add_vehicle_kind":
 		return advance.AddVehicleKind(args)
-
+	case "voucher":
+		return advance.Payable(args)
 	default:
 		return fmt.Errorf("unknown kind: %s", kind)
 	}
