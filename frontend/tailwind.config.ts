@@ -92,6 +92,10 @@ const config = {
                 "accordion-down": "accordion-down 0.2s ease-out",
                 "accordion-up": "accordion-up 0.2s ease-out",
             },
+            boxShadow: {
+                "neon-orange":
+                    "0 0 10px 0 rgba(234, 88, 12, 0.8), 0 0 20px 0 rgba(234, 88, 12, 0.6), 0 0 30px 0 rgba(234, 88, 12, 0.4)",
+            },
         },
     },
     plugins: [require("tailwindcss-animate")],

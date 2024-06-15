@@ -15,11 +15,24 @@ const Model = ({ path, mouse, sensitivity, scale }: ModelProps) => {
     const modelRef = useRef<THREE.Object3D>(null);
     const { size, camera } = useThree();
 
+    useEffect(() => {
+        if (modelRef.current) {
+            const initialX = 0; // Center of the screen in normalized device coordinates
+            const initialY = 0; // Center of the screen in normalized device coordinates
+            const vector = new THREE.Vector3(
+                initialX * sensitivity,
+                initialY * sensitivity,
+                0.5
+            ).unproject(camera as unknown as THREE.Camera);
+            modelRef.current.lookAt(vector);
+        }
+    }, [camera, sensitivity]);
+
     useFrame(() => {
         if (modelRef.current) {
             // Convert mouse coordinates to normalized device coordinates and apply sensitivity
-            const mouseX = (mouse.x / size.width) * 2 - 1;
-            const mouseY = -(mouse.y / size.height) * 2 + 1;
+            const mouseX = (mouse.x / size.width) * 2 - 7.7;
+            const mouseY = -(mouse.y / size.height) * 2 + 7.7;
 
             // Calculate the 3D position from the mouse coordinates with sensitivity
             const vector = new THREE.Vector3(
@@ -60,7 +73,6 @@ const GLBViewer = ({ glbPath, sensitivity, scale }: GLBViewerProps) => {
             <Canvas
                 style={{
                     height: "100%",
-                    backgroundColor: "#212121",
                     borderRadius: "15px",
                 }}
             >
