@@ -157,6 +157,6 @@ func AddVehicleKind(args FuncArguments) error {
 }
 
 func Payable(args FuncArguments) error {
-	fmt.Println(args.Deposit.String())
+	fmt.Printf("deposited! -> %+v",args.Deposit)
 	return nil
 }
