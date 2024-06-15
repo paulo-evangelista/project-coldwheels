@@ -5,23 +5,22 @@ import RegisterVehicleForm from "../../components/RegisterVehicleForm/RegisterVe
 import GrantCompaniesForm from "../../components/GrantCompaniesForm/GrantCompaniesForm";
 
 const FormInterface = () => {
-	return (
-		<div className="flex min-h-screen">
-			<Sidebar />
+  const dappAddress = "0xab7528bb862fb57e8a2bcd567a2e929a0be56a5e"
 
-			<div className="w-full grid grid-cols-1 gap-6 p-6 border-2 border-blue-500">
-				<div className="flex flex-col gap-6 col-span-1">
-					<GrantCompaniesForm />
-				</div>
-				<div className="flex flex-col gap-6 col-span-1">
-					<RegisterIncidentForm />
-				</div>
-				<div className="flex flex-col gap-6 col-span-2">
-					<RegisterVehicleForm />
-				</div>
-			</div>
-		</div>
-	);
+  return (
+    <div className="flex flex-wrap justify-center gap-6 p-6">
+      <Sidebar />
+      <div className="flex flex-col gap-6">
+        <GrantCompaniesForm />
+      </div>
+      <div className="flex flex-col gap-6">
+        <RegisterIncidentForm dappAddress={dappAddress}/>
+      </div>
+      <div className="flex flex-col gap-6">
+        <RegisterVehicleForm dappAddress={dappAddress}/>
+      </div>
+    </div>
+  );
 };
 
 export default FormInterface;
