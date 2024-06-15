@@ -19,7 +19,7 @@ const GrantCompaniesForm = () => {
 	return (
 		<form
 			onSubmit={handleSubmit}
-			className="w-full p-6 border border-gray-300 rounded-lg shadow-sm"
+			className="flex flex-col w-full p-6 border border-gray-300 rounded-lg shadow-sm h-full"
 		>
 			<h2 className="text-xl font-semibold mb-4">Register Incident</h2>
 			<div className="mb-4">
@@ -55,12 +55,14 @@ const GrantCompaniesForm = () => {
 					))}
 				</select>
 			</div>
-			<button
+			<div className="flex justify-end">
+            <button
 				type="submit"
-				className="w-full bg-blue-500 text-white py-2 rounded-md hover:bg-blue-600"
+				className="p-2 bg-blue-500 text-white py-2 rounded-md hover:bg-blue-600"
 			>
-				Next
+				Grant
 			</button>
+            </div>
 		</form>
 	);
 };
