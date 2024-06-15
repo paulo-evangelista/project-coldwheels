@@ -132,7 +132,7 @@ const Home = () => {
             {/* div 3 cards */}
             <div className="sticky top-0 left-0 flex items-center justify-between h-screen max-h-screen bg-black rounded-3xl px-96 z-20 relative overflow-hidden">
                 <div
-                    className="w-[20%] h-[50%] bg-[#212121] absolute top-1/2 flex flex-col items-center justify-between px-8 py-24 rounded-3xl"
+                    className="w-[20%] h-[50%] bg-[#212121] absolute top-1/2 flex flex-col items-center justify-between px-8 py-24 rounded-3xl shadow-neon-orange"
                     style={{
                         left: calculateLeft("left", cardAnimationProgress),
                         transform: `translate(0%, -50%)`,
@@ -140,16 +140,19 @@ const Home = () => {
                     }}
                 >
                     <h1 className="text-3xl font-bold text-white text-center mb-8">
-                        Latest modifications
+                        Reliable Sources
                     </h1>
                     <p className="text-lg font-semibold text-white text-center">
-                        Lorem ipsum dolor sit amet consectetur. Morbi eu urna
-                        pellentesque tortor morbi odio netus cras nulla.
+                        Every piece of information about car modifications comes
+                        from verified and reliable sources. Our system only
+                        allows verified sources to write before storing it on
+                        blockchain, providing you with the most trustworthy
+                        information available.
                     </p>
                 </div>
 
                 <div
-                    className="w-[20%] h-[50%] bg-[#212121] absolute top-1/2 flex flex-col items-center justify-between px-8 py-24 rounded-3xl"
+                    className="w-[20%] h-[50%] bg-[#212121] absolute top-1/2 flex flex-col items-center justify-between px-8 py-24 rounded-3xl shadow-neon-orange"
                     style={{
                         left: calculateLeft("center", cardAnimationProgress),
                         transform: `translate(0%, -50%)`,
@@ -157,16 +160,20 @@ const Home = () => {
                     }}
                 >
                     <h1 className="text-3xl font-bold text-white text-center mb-8">
-                        Latest modifications
+                        AI-Powered Price Prediction
                     </h1>
                     <p className="text-lg font-semibold text-white text-center">
-                        Lorem ipsum dolor sit amet consectetur. Morbi eu urna
-                        pellentesque tortor morbi odio netus cras nulla.
+                        Fair Price Analysis: Utilize our AI technology to
+                        determine the suggested price of a car based on its
+                        modification history and current condition. Ensure every
+                        purchase or sale is priced fairly and in line with the
+                        car's actual value, making every transaction transparent
+                        and justified.
                     </p>
                 </div>
 
                 <div
-                    className="w-[20%] h-[50%] bg-[#212121] absolute top-1/2 flex flex-col items-center justify-between px-8 py-24 rounded-3xl"
+                    className="w-[20%] h-[50%] bg-[#212121] absolute top-1/2 flex flex-col items-center justify-between px-8 py-24 rounded-3xl shadow-neon-orange"
                     style={{
                         left: calculateLeft("right", cardAnimationProgress),
                         transform: `translate(0%, -50%)`,
@@ -174,11 +181,15 @@ const Home = () => {
                     }}
                 >
                     <h1 className="text-3xl font-bold text-white text-center mb-8">
-                        Latest modifications
+                        Immutable Data Integrity
                     </h1>
                     <p className="text-lg font-semibold text-white text-center">
-                        Lorem ipsum dolor sit amet consectetur. Morbi eu urna
-                        pellentesque tortor morbi odio netus cras nulla.
+                        Guaranteed Data Security: With blockchain technology,
+                        once data about a car’s modifications is recorded, it
+                        cannot be altered or tampered with. This ensures
+                        absolute integrity of the historical records, providing
+                        a reliable and secure foundation for trust in every
+                        transaction.
                     </p>
                 </div>
 
@@ -221,7 +232,11 @@ const Home = () => {
                     tracking
                 </div>
                 <div className="w-1/2 h-full flex items-center justify-center">
-                    <BuyVehicleEvents width="w-5/6" />
+                    <BuyVehicleEvents
+                        width="w-5/6"
+                        carPlate={""}
+                        carData={null}
+                    />
                 </div>
             </div>
 
@@ -229,7 +244,7 @@ const Home = () => {
             <div className="sticky top-0 left-0 flex items-center justify-center h-screen bg-custom-radial-offset z-40">
                 <div className="w-1/2 h-full flex items-center justify-center">
                     <Card className="px-5 py-10">
-                        <BuyVehicleDetails width="w-full" />
+                        <BuyVehicleDetails width="w-full" carData={null} />
                     </Card>
                 </div>
 

@@ -84,15 +84,18 @@ export default function BuyVehicleEvents({
                 <div className="w-full h-[80px] flex justify-between items-center mb-4">
                     <div className="h-5/6 flex items-center justify-center bg-[#FF9900] p-4 rounded-xl shadow-sm">
                         <MapPin className="mr-2" />
-                        {carData.location}
+                        {carData ? carData.location : "Juiz de Fora, MG"}
                     </div>
 
                     <div className="h-5/6 flex items-center justify-center bg-[#FF9900] p-4 rounded-xl shadow-sm">
                         Última atualização:{" "}
-                        {formatDate(
-                            carData.incidents[carData.incidents.length - 1]
-                                .updated_at
-                        )}
+                        {carData
+                            ? formatDate(
+                                  carData.incidents[
+                                      carData.incidents.length - 1
+                                  ].updated_at
+                              )
+                            : "23/11/2019"}
                     </div>
 
                     {checkIfAtFavorites() ? (
