@@ -1,4 +1,4 @@
-'use client'
+"use client";
 import Sidebar from "../../components/Sidebar/Sidebar";
 import RegisterIncidentForm from "../../components/RegisterIncidentForm/RegisterIncidentForm";
 import RegisterVehicleForm from "../../components/RegisterVehicleForm/RegisterVehicleForm";

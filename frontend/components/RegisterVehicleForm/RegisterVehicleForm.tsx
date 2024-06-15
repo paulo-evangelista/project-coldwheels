@@ -17,13 +17,13 @@ const RegisterVehicleForm: React.FC<Props> = (props) => {
   const [odometer, setOdometer] = useState("");
   const [image, setImage] = useState("");
 
-  const handleNext = () => {
-    setStep(prevStep => prevStep + 1);
-  };
+	const handleNext = () => {
+		setStep((prevStep) => prevStep + 1);
+	};
 
-  const handleBack = () => {
-    setStep(prevStep => prevStep - 1);
-  };
+	const handleBack = () => {
+		setStep((prevStep) => prevStep - 1);
+	};
 
   const handleInputChange = (setter: React.Dispatch<React.SetStateAction<string>>) => 
     (event: React.ChangeEvent<HTMLInputElement>) => {
