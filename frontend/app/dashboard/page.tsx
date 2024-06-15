@@ -5,6 +5,8 @@ import RegisterVehicleForm from "../../components/RegisterVehicleForm/RegisterVe
 import GrantCompaniesForm from "../../components/GrantCompaniesForm/GrantCompaniesForm";
 
 const FormInterface = () => {
+  const dappAddress = "0xab7528bb862fb57e8a2bcd567a2e929a0be56a5e"
+
   return (
     <div className="flex flex-wrap justify-center gap-6 p-6">
       <Sidebar />
@@ -12,10 +14,10 @@ const FormInterface = () => {
         <GrantCompaniesForm />
       </div>
       <div className="flex flex-col gap-6">
-        <RegisterIncidentForm />
+        <RegisterIncidentForm dappAddress={dappAddress}/>
       </div>
       <div className="flex flex-col gap-6">
-        <RegisterVehicleForm />
+        <RegisterVehicleForm dappAddress={dappAddress}/>
       </div>
     </div>
   );
