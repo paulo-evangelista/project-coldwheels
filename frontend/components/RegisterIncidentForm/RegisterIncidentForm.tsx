@@ -1,8 +1,10 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { CSSTransition, SwitchTransition } from "react-transition-group";
 import { ethers } from "ethers";
 import "./formAnimations.css";
 import axios from "axios";
+import { advanceInput, inspect } from "cartesi-client";
+import { toast } from "react-toastify";
 
 interface Props {
 	dappAddress: string;
@@ -16,6 +18,13 @@ const RegisterIncidentForm: React.FC<Props> = (props) => {
 	const [description, setDescription] = useState("");
 	const [incidentDate, setIncidentDate] = useState("");
 	const [vehicleId, setVehicleId] = useState("");
+	const [vehicles, setVehicles] = useState<any[]>([]);
+	const incidentTypes = [
+		{ role: "Untrusted", value: 1 },
+		{ role: "Trusted", value: 2 },
+		{ role: "Affiliate", value: 3 },
+		{ role: "Admin", value: 4 },
+	];
 
 	const handleNext = () => {
 		setStep((prevStep) => prevStep + 1);
@@ -31,6 +40,12 @@ const RegisterIncidentForm: React.FC<Props> = (props) => {
 			setter(event.target.value);
 		};
 
+	const handleSelectChange = (
+		event: React.ChangeEvent<HTMLSelectElement>
+	) => {
+		setVehicleId(event.target.value);
+	};
+
 	const registerIncident = async () => {
 		const input = {
 			incidentType,
@@ -39,26 +54,47 @@ const RegisterIncidentForm: React.FC<Props> = (props) => {
 			vehicleId,
 		};
 
-		console.log("adding input", input);
+		const advanceInputJSON = {
+			kind: "create_incident",
+			payload: input,
+		};
+
 		const signer = await provider.getSigner();
-		console.log("signer and input is ", signer, input);
-		// advanceInput(signer, dappAddress, input);
+		let parsedInput = JSON.stringify(advanceInputJSON);
+		advanceInput(signer, dappAddress, parsedInput).then((res) => {
+			toast.success("Incident registered successfully");
+			setStep(0);
+		});;
 	};
 
 	const getAllVehicles = async () => {
-		const response = await axios
-			.post("http://localhost:8080/inspect", {
-				kind: "company",
-				payload: { wallet },
-			})
-			.then((response) => {
-				return response;
-			})
-			.catch((error) => {
-				console.error("error is ", error);
-				return error;
+		try {
+			const payload = JSON.stringify({
+				kind: "get_vehicles",
+				payload: {},
 			});
-	}
+
+			const data = await inspect(payload, {
+				aggregate: false,
+				cache: "no-cache",
+				cartesiNodeUrl: "http://localhost:8080",
+				decodeTo: "utf-8",
+				method: "POST",
+			});
+
+			if (typeof data === "string") {
+				const parsedData = JSON.parse(data);
+				setVehicles(parsedData.message);
+				console.log(parsedData.message);
+			}
+		} catch (error) {
+			console.error("error is ", error);
+		}
+	};
+
+	useEffect(() => {
+		getAllVehicles();
+	}, []);
 
 	return (
 		<div className="flex flex-col w-full p-6 rounded-lg shadow-lg h-full">
@@ -87,14 +123,14 @@ const RegisterIncidentForm: React.FC<Props> = (props) => {
 										className="block w-full p-2 border border-gray-300 rounded-md"
 									/>
 								</div>
-                  <div className="flex justify-end">
-                  <button
-                    onClick={handleNext}
-                    className="p-2 bg-blue-500 text-white py-2 rounded-md hover:bg-blue-600"
-                  >
-                    Next
-                  </button>
-                </div>
+								<div className="flex justify-end">
+									<button
+										onClick={handleNext}
+										className="p-2 bg-blue-500 text-white py-2 rounded-md hover:bg-blue-600"
+									>
+										Next
+									</button>
+								</div>
 							</>
 						)}
 						{step === 1 && (
@@ -185,15 +221,24 @@ const RegisterIncidentForm: React.FC<Props> = (props) => {
 									>
 										Vehicle ID:
 									</label>
-									<input
-										type="text"
+									<select
 										id="vehicleId"
 										value={vehicleId}
-										onChange={handleInputChange(
-											setVehicleId
-										)}
+										onChange={handleSelectChange}
 										className="block w-full p-2 border border-gray-300 rounded-md"
-									/>
+									>
+										<option value="" disabled>
+											Select Vehicle
+										</option>
+										{vehicles.map((vehicle) => (
+											<option
+												key={vehicle.id}
+												value={vehicle.id}
+											>
+												{vehicle.kind.name}
+											</option>
+										))}
+									</select>
 								</div>
 								<div className="flex justify-between">
 									<button
