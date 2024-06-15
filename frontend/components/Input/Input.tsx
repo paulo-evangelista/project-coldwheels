@@ -1,7 +1,7 @@
 "use client";
 import React, { useState } from "react";
 import { ethers } from "ethers";
-import { advanceDAppRelay, advanceInput } from "cartesi-client";
+import { advanceDAppRelay, advanceInput,  } from "cartesi-client";
 
 interface IInputProps {
     dappAddress: string;
