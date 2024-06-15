@@ -84,7 +84,7 @@ const Home = () => {
     const getRotate = (progress: any) => {
         if (!displayWhiteDiv) return;
 
-        return `rotate(${1260 * progress}deg)`;
+        return `rotate(${900 * progress}deg)`;
     };
 
     const getScale = (progress: any) => {
@@ -195,7 +195,7 @@ const Home = () => {
 
                 {/* div branca que roda */}
                 <div
-                    className="w-[20%] max-w-full h-[50%] bg-[#fff] absolute top-1/2 flex flex-col items-center justify-between rounded-3xl origin-center"
+                    className="w-[20%] max-w-full h-[50%] bg-custom-radial-offset absolute top-1/2 flex flex-col items-center justify-between rounded-3xl origin-center"
                     style={{
                         left: calculateLeft("center", cardAnimationProgress),
                         transform: getRotate(whiteDivAnimationProgress),
@@ -204,7 +204,7 @@ const Home = () => {
                     }}
                 >
                     <div
-                        className="w-full h-full bg-hash-pattern bg-hash-size bg-repeat border-black border-solid border-[1px]"
+                        className="w-full h-full"
                         style={{
                             transform: `rotate(-${
                                 1260 * whiteDivAnimationProgress
