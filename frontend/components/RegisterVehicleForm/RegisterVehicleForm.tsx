@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { CSSTransition, SwitchTransition } from 'react-transition-group';
 import { ethers } from "ethers";
-import { advanceInput } from "cartesi-client";
+// import { advanceInput } from "cartesi-client";
 import './formAnimations.css';
 
 interface Props {
@@ -41,7 +41,7 @@ const RegisterVehicleForm: React.FC<Props> = (props) => {
     console.log("adding input", input);
     const signer = await provider.getSigner();
     console.log("signer and input is ", signer, input);
-    advanceInput(signer, dappAddress, input);
+    // advanceInput(signer, dappAddress, input);
   };
 
   return (
