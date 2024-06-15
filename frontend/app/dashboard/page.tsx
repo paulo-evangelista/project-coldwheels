@@ -64,7 +64,7 @@ const FormInterface = () => {
 
 			<div className="w-full grid grid-cols-2 gap-6 p-6">
 				<div className="flex flex-col gap-6">
-					<GrantCompaniesForm />
+					<GrantCompaniesForm dappAddress={dappAddress} />
 				</div>
 				<div className="flex flex-col gap-6">
 					<RegisterIncidentForm dappAddress={dappAddress} />

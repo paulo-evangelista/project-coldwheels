@@ -152,6 +152,14 @@ func GetAllVehicles(args FuncArguments) error {
 		return u.InspectError(args.Env, err, "error getting vehicles")
 	}
 
+	var kind db.VehicleKind
+	for i := range vehicles {
+		if err := args.Db.Model(&vehicles[i]).Association("Kind").Find(&kind); err != nil {
+			return u.InspectError(args.Env, err, "error getting vehicle kind")
+		}
+		vehicles[i].Kind = kind
+	}
+
 	jsonvehicles, err := json.Marshal(vehicles)
 	if err != nil {
 		return u.InspectError(args.Env, err, "error marshaling json")
