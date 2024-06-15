@@ -14,7 +14,7 @@ const RegisterIncidentForm = () => {
   };
 
   return (
-    <div className="w-[400px] p-6 border border-gray-300 rounded-lg shadow-sm">
+    <div className="w-full p-6 border border-gray-300 rounded-lg shadow-sm">
       <SwitchTransition>
         <CSSTransition
           key={step}
