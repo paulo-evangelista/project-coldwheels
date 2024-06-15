@@ -19,6 +19,7 @@ const config = {
         },
         extend: {
             colors: {
+                mainOrange: "#FF9900",
                 border: "hsl(var(--border))",
                 input: "hsl(var(--input))",
                 ring: "hsl(var(--ring))",
@@ -90,6 +91,10 @@ const config = {
             animation: {
                 "accordion-down": "accordion-down 0.2s ease-out",
                 "accordion-up": "accordion-up 0.2s ease-out",
+            },
+            boxShadow: {
+                "neon-orange":
+                    "0 0 10px 0 rgba(234, 88, 12, 0.8), 0 0 20px 0 rgba(234, 88, 12, 0.6), 0 0 30px 0 rgba(234, 88, 12, 0.4)",
             },
         },
     },

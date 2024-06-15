@@ -33,7 +33,7 @@ func AllCompanies(args FuncArguments) error {
 }
 
 func Company(args FuncArguments) error {
-	fmt.Println(args.Payload)
+	fmt.Printf("Payload received: %+v\n", args.Payload)
 
 	payload, ok := args.Payload.(map[string]interface{})
 	if !ok {
@@ -142,4 +142,20 @@ func GetAllVehicleKinds(args FuncArguments) error {
 	}
 
 	return u.InspectSuccess(args.Env, string(jsonkinds))
+}
+
+func GetAllVehicles(args FuncArguments) error {
+	var vehicles []db.Vehicle
+
+	err := args.Db.Find(&vehicles).Error
+	if err != nil {
+		return u.InspectError(args.Env, err, "error getting vehicles")
+	}
+
+	jsonvehicles, err := json.Marshal(vehicles)
+	if err != nil {
+		return u.InspectError(args.Env, err, "error marshaling json")
+	}
+
+	return u.InspectSuccess(args.Env, string(jsonvehicles))
 }

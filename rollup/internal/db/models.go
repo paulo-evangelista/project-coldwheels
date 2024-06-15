@@ -42,10 +42,10 @@ type Vehicle struct {
 type Role int
 
 const (
-	Untrusted Role = iota + 1
-	Trusted
-	Affiliate
-	Admin
+	Untrusted Role = iota + 1 // 1
+	Trusted                   // 2
+	Affiliate                 // 3
+	Admin                     // 4
 )
 
 type IncidentType struct {

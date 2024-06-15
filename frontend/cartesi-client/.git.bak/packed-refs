@@ -1,0 +1,8 @@
+# pack-refs with: peeled fully-peeled sorted 
+15c17c38f5cd4493f421f082a3d1636265167d98 refs/remotes/origin/feat/advanceEtherDeposit
+5d68b913da68d3fb69e882ad20441b55b79bd5bf refs/remotes/origin/feat/tests
+aa7b89ca0157142f8cd35931a4ace65b6387b932 refs/remotes/origin/feature/base
+5648cee3af0aa89c9ba74be3601aec741906c31f refs/remotes/origin/feature/types-and-standardizations
+abe855e17d400240df1792dab0500f909f221557 refs/remotes/origin/fix/graphql-input-query
+ad5c535c015853c7419880e14e6f1f9317035625 refs/remotes/origin/main
+54528b913516cb3b9c0d582402ea122cacbdb0ae refs/remotes/origin/refactor/graphql-request

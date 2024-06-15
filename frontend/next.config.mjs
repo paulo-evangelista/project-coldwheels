@@ -1,29 +1,3 @@
-// /** @type {import('next').NextConfig} */
-// const nextConfig = {};
-
-// export default nextConfig;
-
-// next.config.js
-// const nextConfig = {
-//     webpack(config, options) {
-//         config.module.rules.push({
-//             test: /\.glb$/,
-//             use: {
-//                 loader: "file-loader",
-//                 options: {
-//                     publicPath: "/_next/static/models/",
-//                     outputPath: "static/models/",
-//                     name: "[name].[ext]",
-//                 },
-//             },
-//         });
-//         return config;
-//     },
-// };
-
-// export default nextConfig;
-
-/** @type {import('next').NextConfig} */
 const nextConfig = {
     webpack: (config, options) => {
         config.module.rules.push({
@@ -35,4 +9,16 @@ const nextConfig = {
         });
         return config;
     },
+    images: {
+        remotePatterns: [
+            {
+                protocol: "https",
+                hostname: "ipfs.io",
+                port: "",
+                pathname: "/ipfs/**",
+            },
+        ],
+    },
 };
+
+export default nextConfig;
