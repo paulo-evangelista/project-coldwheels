@@ -41,7 +41,7 @@ func (dapp *ColdWheels) Advance(
 		return utils.AdvanceError(env, err, fmt.Sprintf("failed to get company role: %s", err.Error()))
 	}
 
-	err = router.Advance(env, dapp.db, metadata, company, input)
+	err = router.Advance(env, dapp.db, metadata, deposit, company, input)
 	if err != nil {
 		return fmt.Errorf("ADVANCE FAILED: %w", err)
 	}
