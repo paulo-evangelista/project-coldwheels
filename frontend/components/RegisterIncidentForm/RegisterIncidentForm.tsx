@@ -2,6 +2,7 @@ import { useState } from "react";
 import { CSSTransition, SwitchTransition } from "react-transition-group";
 import { ethers } from "ethers";
 import "./formAnimations.css";
+import axios from "axios";
 
 interface Props {
 	dappAddress: string;
@@ -44,8 +45,23 @@ const RegisterIncidentForm: React.FC<Props> = (props) => {
 		// advanceInput(signer, dappAddress, input);
 	};
 
+	const getAllVehicles = async () => {
+		const response = await axios
+			.post("http://localhost:8080/inspect", {
+				kind: "company",
+				payload: { wallet },
+			})
+			.then((response) => {
+				return response;
+			})
+			.catch((error) => {
+				console.error("error is ", error);
+				return error;
+			});
+	}
+
 	return (
-		<div className="flex flex-col w-full p-6 border border-gray-300 rounded-lg shadow-sm h-full">
+		<div className="flex flex-col w-full p-6 rounded-lg shadow-lg h-full">
 			<SwitchTransition>
 				<CSSTransition key={step} timeout={300} classNames="fade">
 					<div>

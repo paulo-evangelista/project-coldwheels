@@ -1,0 +1,10 @@
+import { Voucher } from "../generated/graphql";
+import { PartialVoucher } from "../graphql/vouchers";
+import { Signer, ContractReceipt, BytesLike, BigNumberish } from "ethers";
+import { Provider } from "@ethersproject/providers";
+import { ProofStruct } from "@cartesi/rollups/dist/src/types/contracts/dapp/ICartesiDApp";
+export declare function getUnexecutedVouchers(signerOrProvider: Signer | Provider, dappAddress: string, cartesiNodeUrl?: string): Promise<PartialVoucher[]>;
+export declare function getVouchersReady(signerOrProvider: Signer | Provider, dappAddress: string, cartesiNodeUrl?: string): Promise<Voucher[]>;
+export declare function executeVoucher(signer: Signer, dappAddress: string, inputIndex: number, voucherIndex: number, cartesiNodeUrl?: string): Promise<ContractReceipt>;
+export declare function executeVoucherFromParams(signer: Signer, dappAddress: string, destination: string, payload: BytesLike, proof: ProofStruct): Promise<ContractReceipt>;
+export declare function wasVoucherExecutedFromParams(signer: Signer, dappAddress: string, inputIndex: BigNumberish, outputIndex: BigNumberish): Promise<boolean>;

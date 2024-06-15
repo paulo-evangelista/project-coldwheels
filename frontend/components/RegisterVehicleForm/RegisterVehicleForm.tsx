@@ -6,6 +6,7 @@ import "./formAnimations.css";
 import { toast } from "react-toastify";
 import lava from "@/assets/images/lava.jpeg";
 import { advanceInput } from "cartesi-client";
+import { useAccount } from "wagmi";
 
 interface Props {
 	dappAddress: string;
@@ -19,6 +20,7 @@ const RegisterVehicleForm: React.FC<Props> = (props) => {
 	const [kindId, setKindId] = useState("1");
 	const [odometer, setOdometer] = useState("12000");
 	const [images, setImages] = useState<File[]>([]);
+	const { address: wallet, isConnected } = useAccount();
 
 	const [isLoading, setIsLoading] = useState(false);
 
@@ -98,17 +100,27 @@ const RegisterVehicleForm: React.FC<Props> = (props) => {
 
 			const input = {
 				plate,
-				kindId,
-				odometer,
-				imagesUri,
+				kind_id: Number(kindId),
+				odometer: Number(odometer),
+				images: imagesUri,
+			};
+
+			const advanceInputJSON = {
+				kind: "create_vehicle",
+				payload: input,
 			};
 
 			console.log("adding input", input);
 			const signer = await provider.getSigner();
 
 			console.log("signer and input is ", signer, input);
-			let parsedInput = JSON.stringify(input);
-			advanceInput(signer, dappAddress, parsedInput);
+			let parsedInput = JSON.stringify(advanceInputJSON);
+			console.log("parsed input is ", parsedInput);
+
+			advanceInput(signer, dappAddress, parsedInput).then((res) => {
+				toast.success("Vehicle registered successfully");
+				setStep(0);
+			});
 		} catch (err) {
 			console.error(err);
 			toast.error("Error registering vehicle");
@@ -127,7 +139,7 @@ const RegisterVehicleForm: React.FC<Props> = (props) => {
 	};
 
 	return (
-		<div className="flex flex-col w-full p-6 border border-gray-300 rounded-lg shadow-sm h-full">
+		<div className="flex flex-col w-full p-6 rounded-lg shadow-lg h-full">
 			<SwitchTransition>
 				<CSSTransition
 					key={step}
