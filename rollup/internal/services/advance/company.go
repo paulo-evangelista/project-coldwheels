@@ -4,19 +4,8 @@ import (
 	"coldwheels/internal/db"
 	u "coldwheels/internal/utils"
 	"fmt"
-	"time"
-
-	"github.com/rollmelette/rollmelette"
-	"gorm.io/gorm"
 )
 
-type FuncArguments struct {
-	Env      rollmelette.Env
-	DB       *gorm.DB
-	Sender   *db.Company
-	Metadata rollmelette.Metadata
-	Payload  any
-}
 
 func RegisterCompany(args FuncArguments) error {
 	payload, err := u.ParsePayload(args.Payload)
@@ -41,8 +30,9 @@ func RegisterCompany(args FuncArguments) error {
 		Address:     address,
 	}
 
-	if err := args.DB.Create(&company).Error; err != nil {
-		return u.AdvanceError(args.Env, err, "failed to save company to db")
+	if err := db.CreateCompany(args.DB, &company); err != nil {
+		fmt.Printf("failed to create company: %v\n", err)
+		return u.AdvanceError(args.Env, fmt.Errorf("failed to create company: %v", err), "failed to create company")
 	}
 
 	return u.AdvanceSuccess(args.Env, fmt.Sprintf(`{"status": "success", "message": "success creating company with address %s"}`, company.Wallet))
@@ -69,7 +59,8 @@ func UpdateCompany(args FuncArguments) error {
 		args.Sender.Address = address
 	}
 
-	if err := args.DB.Save(&args.Sender).Error; err != nil {
+	if err := db.UpdateCompany(args.DB, args.Sender); err != nil {
+		fmt.Printf("failed to update company: %v\n", err)
 		return u.AdvanceError(args.Env, err, "Could not save company to DB")
 	}
 
@@ -78,11 +69,13 @@ func UpdateCompany(args FuncArguments) error {
 
 func PromoteCompany(args FuncArguments) error {
 	if args.Sender.Role < db.Affiliate {
+		fmt.Printf("only affiliates and above can update company data\n")
 		return u.AdvanceError(args.Env, fmt.Errorf("only affiliates and above can update company data"), "only affiliates and above can update company data")
 	}
 
 	payload, err := u.ParsePayload(args.Payload)
 	if err != nil {
+		fmt.Printf("payload malformed\n")
 		return u.AdvanceError(args.Env, err, "payload malformed")
 	}
 
@@ -90,67 +83,27 @@ func PromoteCompany(args FuncArguments) error {
 	role, ok2 := payload["role"].(uint)
 
 	if !ok1 || !ok2 {
+		fmt.Printf("payload malformed\n")
 		return u.AdvanceError(args.Env, fmt.Errorf("payload malformed"), "payload malformed")
 	}
 
 	if args.Sender.Role <= db.Role(role) {
+		fmt.Printf("cannot update company with higher role\n")
 		return u.AdvanceError(args.Env, fmt.Errorf("cannot update company with higher role"), "cannot update company with higher role")
 	}
 
-	var company db.Company
-
-	if err = args.DB.Where("wallet = ?", wallet).First(&company).Error; err != nil {
-		return u.AdvanceError(args.Env, fmt.Errorf("could not find target company"), "Could not find target company")
-	}
+	company, err := db.GetCompanyByWallet(args.DB, wallet)
+	if err != nil {
+		fmt.Printf("failed to get company by wallet: %v\n", err)
+		return u.AdvanceError(args.Env, fmt.Errorf("failed to get company by wallet"), "failed to get company by wallet")
+	}	
 
 	company.Role = db.Role(role)
 
-	if err := args.DB.Save(&company).Error; err != nil {
-		return u.AdvanceError(args.Env, fmt.Errorf("failed to promote company: %v", err), "failed to promote company")
+	if err := db.UpdateCompany(args.DB, &company); err != nil {
+		fmt.Printf("failed to update company: %v\n", err)
+		return u.AdvanceError(args.Env, fmt.Errorf("failed to update company: %v", err), "failed to update company")
 	}
 
 	return u.AdvanceSuccess(args.Env, fmt.Sprintf("company with wallet %s updated", args.Sender.Wallet))
-}
-
-func CreateIncident(args FuncArguments) error {
-
-	payload, err := u.ParsePayload(args.Payload)
-	if err != nil {
-		return u.AdvanceError(args.Env, err, "payload malformed")
-	}
-
-	incidentTypeID, ok1 := payload["incident_type_id"].(uint)
-	description, ok2 := payload["description"].(string)
-	incidentDate, ok3 := payload["incident_date"].(time.Time)
-	vehicleID, ok4 := payload["vehicle_id"].(uint)
-
-	if !ok1 || !ok2 || !ok3 || !ok4 {
-		return u.AdvanceError(args.Env, fmt.Errorf("failed getting incident data"), "failed getting incident data")
-	}
-
-	var incidentType db.IncidentType
-	if err := args.DB.First(&incidentType, incidentTypeID).Error; err != nil {
-		return u.AdvanceError(args.Env, fmt.Errorf("invalid incident_type_id"), "invalid incident_type_id")
-	}
-
-	var vehicle db.Vehicle
-	if err := args.DB.First(&vehicle, vehicleID).Error; err != nil {
-		return u.AdvanceError(args.Env, fmt.Errorf("invalid vehicle_id"), "invalid vehicle_id")
-	}
-
-	incident := db.Incident{
-		IncidentTypeID: incidentTypeID,
-		IncidentType:   incidentType,
-		Description:    description,
-		IncidentDate:   incidentDate,
-		VehicleID:      vehicleID,
-		Vehicle:        vehicle,
-	}
-
-	if err := args.DB.Create(&incident).Error; err != nil {
-		fmt.Printf("failed to create incident: %v\n", err)
-		return u.AdvanceError(args.Env, fmt.Errorf("failed to create incident: %v", err), "failed to create incident")
-	}
-
-	return u.AdvanceSuccess(args.Env, "incident created")
 }

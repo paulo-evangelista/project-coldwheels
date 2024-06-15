@@ -1,6 +1,7 @@
 package router
 
 import (
+	"coldwheels/internal/AI"
 	"coldwheels/internal/db"
 	"coldwheels/internal/services/advance"
 	"coldwheels/internal/services/inspect"
@@ -11,7 +12,7 @@ import (
 	"gorm.io/gorm"
 )
 
-func Advance(env rollmelette.Env, DB *gorm.DB, metadata rollmelette.Metadata, company *db.Company, input *utils.AdvaceInputDTO) error {
+func Advance(env rollmelette.Env, DB *gorm.DB, metadata rollmelette.Metadata, deposit rollmelette.Deposit, company *db.Company, input *utils.AdvaceInputDTO) error {
 	fmt.Println("[ROUTER] Advancing for kind ->", input.Kind)
 
 	kind, payload := input.Kind, input.Payload
@@ -21,6 +22,7 @@ func Advance(env rollmelette.Env, DB *gorm.DB, metadata rollmelette.Metadata, co
 		DB:       DB,
 		Sender:   company,
 		Metadata: metadata,
+		Deposit: deposit,
 		Payload:  payload,
 	}
 
@@ -30,6 +32,8 @@ func Advance(env rollmelette.Env, DB *gorm.DB, metadata rollmelette.Metadata, co
 	case "test_notice":
 		args.Env.Notice([]byte("notice is working"))
 		return nil
+	case "create_vehicle":
+		return advance.CreateVehicle(args)
 	case "register_company":
 		return advance.RegisterCompany(args)
 	case "promote_company":
@@ -43,7 +47,8 @@ func Advance(env rollmelette.Env, DB *gorm.DB, metadata rollmelette.Metadata, co
 	//////////////////////////// VEHICLES/FIPE ///////////////////////////
 	case "add_vehicle_kind":
 		return advance.AddVehicleKind(args)
-
+	case "voucher":
+		return advance.Payable(args)
 	default:
 		return fmt.Errorf("unknown kind: %s", kind)
 	}
@@ -72,6 +77,13 @@ func Inspect(env rollmelette.EnvInspector, DB *gorm.DB, input *utils.InspectInpu
 		return inspect.Favorites(args)
 	case "get_vehicle_kinds":
 		return inspect.GetAllVehicleKinds(args)
+	case "ai":
+		res, err := AI.Predict(2016, 150000, 1, 5, false, 2, false); if err != nil {
+			return err
+		}
+		utils.InspectSuccess(env, fmt.Sprint(res))
+		return nil
+
 	default:
 		return fmt.Errorf("unknown kind: %s", input.Kind)
 	}
