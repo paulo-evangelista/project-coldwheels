@@ -17,16 +17,7 @@ export default function BuyVehicleHeader() {
 
     return (
         <div className="w-full py-6 flex items-center justify-between">
-            <div className="flex items-center justify-between w-full">
-                {/* <div className="flex items-center">
-                    <p className="text-3xl font-bold text-black">
-                        <span className="text-[#EA580C]">Car</span>Tracker
-                    </p>
-                </div> */}
-                <Link href="/">
-                    <Logo />
-                </Link>
-
+            <div className="flex items-center justify-end w-full">
                 <div className="flex">
                     <div className="relative w-full max-w-lg">
                         <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
