@@ -30,11 +30,13 @@ export default function ({ width = "w-6/12", carData }: any) {
         return `${day}/${month}/${year}`;
     }
 
+    console.log({ carData });
+
     return (
         <div className={`${width} pb-10 h-full flex flex-col justify-between`}>
             {carData ? (
                 <>
-                    <div className="shadow-lg pb-6 rounded-xl bg-[#fff]">
+                    <div className="flex flex-col justify-between shadow-lg pb-6 rounded-xl bg-[#fff] flex-grow">
                         <div className="flex justify-between">
                             <div className="flex flex-col">
                                 <h1 className="font-bold pt-4 pl-4 text-2xl">
@@ -54,20 +56,18 @@ export default function ({ width = "w-6/12", carData }: any) {
                             </div>
                         </div>
                         <div className="flex justify-center pt-6">
-                            <Image
+                            <img
                                 src={
                                     "https://ipfs.io/ipfs/" +
                                     carData.images[0].ipfs_url
                                 }
                                 alt="Renegade"
-                                width={380}
-                                height={150}
-                                className="rounded-xl"
+                                className="rounded-xl w-3/6 h-full object-cover"
                             />
                         </div>
                     </div>
 
-                    <div className="flex flex-col justify-center">
+                    <div className="flex flex-col justify-center flex-shrink-0">
                         <div className="flex justify-between">
                             <VehicleInfoBox
                                 label="Year"
@@ -96,7 +96,7 @@ export default function ({ width = "w-6/12", carData }: any) {
                         </div>
                     </div>
 
-                    <div className="flex w-full pt-4">
+                    <div className="flex w-full pt-4 flex-shrink-0">
                         <div className="w-1/2">
                             <div className="w-4/6 h-full bg-[#FF9900] flex items-center justify-center rounded-xl shadow-lg">
                                 <FaRegCircleCheck className="text-black mr-4" />
@@ -115,9 +115,12 @@ export default function ({ width = "w-6/12", carData }: any) {
                                 Last update:{" "}
                                 {carData
                                     ? formatDate(
-                                          carData.incidents[
-                                              carData.incidents.length - 1
-                                          ].updated_at
+                                          carData.incidents &&
+                                              carData.incidents.length > 0
+                                              ? carData.incidents[
+                                                    carData.incidents.length - 1
+                                                ].updated_at
+                                              : carData.updated_at
                                       )
                                     : "23/11/2019"}
                             </p>

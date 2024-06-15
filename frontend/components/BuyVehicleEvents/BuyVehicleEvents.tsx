@@ -22,7 +22,7 @@ interface BuyVehicleEventsProps {
 }
 
 export default function BuyVehicleEvents({
-    width = "w-[37%]",
+    width = "w-[45%]",
     carPlate,
     carData,
 }: BuyVehicleEventsProps) {
