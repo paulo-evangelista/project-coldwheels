@@ -140,7 +140,7 @@ const RegisterIncidentForm: React.FC<Props> = (props) => {
 										htmlFor="incidentType"
 										className="block text-sm font-medium text-gray-700 mb-1"
 									>
-										incidentType:
+										Incident Type:
 									</label>
 									<select
 										id="incidentType"

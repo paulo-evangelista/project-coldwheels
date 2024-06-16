@@ -1,5 +1,5 @@
-'use client'
-import { advanceEtherDeposit, advanceInput } from "cartesi-client";
+"use client";
+import { advanceEtherDeposit, advanceInput, executeVoucher } from "cartesi-client";
 import { toast } from "react-toastify";
 import { ethers } from "ethers";
 import { useAccount } from "wagmi";
@@ -7,14 +7,14 @@ import { useEffect } from "react";
 import axios from "axios";
 
 const TesteVoucher = () => {
-    const provider = new ethers.providers.Web3Provider(window.ethereum);
-    const dappAddress = "0xab7528bb862fb57e8a2bcd567a2e929a0be56a5e";
-    const { address: wallet, isConnected } = useAccount();
-    
+	const provider = new ethers.providers.Web3Provider(window.ethereum);
+	const dappAddress = "0xab7528bb862fb57e8a2bcd567a2e929a0be56a5e";
+	const { address: wallet, isConnected } = useAccount();
+
 	const testVoucher = async () => {
 		try {
 			const input = {
-                "celin da o brioco": "celin da o brioco",
+				"celin da o brioco": "celin da o brioco",
 			};
 
 			const advanceInputJSON = {
@@ -27,16 +27,14 @@ const TesteVoucher = () => {
 			let parsedInput = JSON.stringify(advanceInputJSON);
 			console.log("parsed input is ", parsedInput);
 
-			advanceEtherDeposit(signer, dappAddress, 0.1).then((res) => {
-				toast.success("Success");
-			});
+            executeVoucher
 		} catch (err) {
 			console.error(err);
 			toast.error("Error");
 		}
 	};
 
-    const getWallet = async () => {
+	const getWallet = async () => {
 		var accountCreatedStatus = false;
 		const response = await axios
 			.post("http://localhost:8080/inspect", {
@@ -60,9 +58,8 @@ const TesteVoucher = () => {
 		return accountCreatedStatus;
 	};
 
-    useEffect(() => {
+	useEffect(() => {
 		const checkAccountStatus = async () => {
-
 			if (isConnected) {
 				const accountCreated = await getWallet();
 				if (!accountCreated) {
@@ -75,12 +72,12 @@ const TesteVoucher = () => {
 		checkAccountStatus();
 	}, [isConnected]);
 
-    return (
-        <div>
-        <h1>Teste Voucher</h1>
-        <button onClick={testVoucher}>Test Voucher</button>
-        </div>
-    )
-}
+	return (
+		<div>
+			<h1>Teste Voucher</h1>
+			<button onClick={testVoucher}>Test Voucher</button>
+		</div>
+	);
+};
 
 export default TesteVoucher;

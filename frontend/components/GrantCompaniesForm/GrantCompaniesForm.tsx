@@ -193,6 +193,7 @@ const GrantCompaniesForm: React.FC<Props> = (props) => {
 							id="role"
 							className="block w-full p-2 border border-gray-300 rounded-md"
 						>
+                            <option>Select Role</option>
 							{eligibleRoles.map(({ role, value }) => (
 								<option key={value} value={value}>
 									{role}
