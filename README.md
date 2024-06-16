@@ -19,7 +19,7 @@ As a result, if a car's condition does not match the documented alterations, buy
 ## Architechture
 
 <p align="center">
-<img src="./assets/architechture.jpg" width="80%">
+    <img src="./assets/architechture.jpg" width="80%">
 </p>
 
 -   Infrastructure
