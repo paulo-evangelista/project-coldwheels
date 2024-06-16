@@ -1,7 +1,6 @@
-    import { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { CSSTransition, SwitchTransition } from "react-transition-group";
 import { ethers } from "ethers";
-// import { advanceInput } from "cartesi-client";
 import "./formAnimations.css";
 import { toast } from "react-toastify";
 import lava from "@/assets/images/lava.jpeg";
