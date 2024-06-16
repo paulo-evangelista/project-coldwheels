@@ -49,6 +49,7 @@ As a result, if a car's condition does not match the documented alterations, buy
 
 ### Frontend
 
+```
 frontend
 ├── ABIs
 ├── app
@@ -57,9 +58,11 @@ frontend
 ├── components
 ├── lib
 └── public
+```
 
 ### Rollup
 
+```
 rollup
 ├── build
 ├── cmd
@@ -70,6 +73,7 @@ rollup
 │ ├── router
 │ ├── services
 │ └── utils
+```
 
 ## Running the project locally
 
