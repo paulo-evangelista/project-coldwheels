@@ -22,7 +22,7 @@ func Advance(env rollmelette.Env, DB *gorm.DB, metadata rollmelette.Metadata, de
 		DB:       DB,
 		Sender:   company,
 		Metadata: metadata,
-		Deposit: deposit,
+		Deposit:  deposit,
 		Payload:  payload,
 	}
 
@@ -42,11 +42,18 @@ func Advance(env rollmelette.Env, DB *gorm.DB, metadata rollmelette.Metadata, de
 		return advance.UpdateCompany(args)
 	case "create_incident":
 		return advance.CreateIncident(args)
-
 	case "add_vehicle_kind":
 		return advance.AddVehicleKind(args)
 	case "voucher":
 		return advance.Payable(args)
+	case "ai":
+		res, err := AI.Predict(2016, 150000, 1, 5, false, 2, false)
+		if err != nil {
+			return err
+		}
+		response := fmt.Sprintf("{prediction: %d}", res)
+		utils.InspectSuccess(env, fmt.Sprint(response))
+		return nil
 	default:
 		return fmt.Errorf("unknown kind: %s", kind)
 	}
@@ -54,7 +61,7 @@ func Advance(env rollmelette.Env, DB *gorm.DB, metadata rollmelette.Metadata, de
 
 func Inspect(env rollmelette.EnvInspector, DB *gorm.DB, input *utils.InspectInputDTO) error {
 	fmt.Println("[ROUTER] Inspecting -> ", input.Kind)
-	
+
 	fmt.Println("[ROUTER] Inspecting: ", input.Kind)
 
 	var args = inspect.FuncArguments{
@@ -67,7 +74,7 @@ func Inspect(env rollmelette.EnvInspector, DB *gorm.DB, input *utils.InspectInpu
 	case "all_companies":
 		return inspect.AllCompanies(args)
 	case "company":
-		fmt.Printf("Payload received: %+v\n", args.Payload)	
+		fmt.Printf("Payload received: %+v\n", args.Payload)
 		return inspect.Company(args)
 	case "get_vehicle_by_plate":
 		return inspect.GetVehicleByPlate(args)
@@ -79,17 +86,7 @@ func Inspect(env rollmelette.EnvInspector, DB *gorm.DB, input *utils.InspectInpu
 		return inspect.GetAllVehicles(args)
 	case "get_incident_types":
 		return inspect.GetIncidentTypes(args)
-	case "ai":
-		res, err := AI.Predict(2016, 150000, 1, 5, false, 2, false); if err != nil {
-			return err
-		}
-		utils.InspectSuccess(env, fmt.Sprint(res))
-		return nil
-
 	default:
 		return fmt.Errorf("unknown kind: %s", input.Kind)
 	}
 }
-
-
-
