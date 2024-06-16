@@ -22,7 +22,7 @@ interface BuyVehicleEventsProps {
 }
 
 export default function BuyVehicleEvents({
-    width = "w-[37%]",
+    width = "w-[45%]",
     carPlate,
     carData,
 }: BuyVehicleEventsProps) {
@@ -82,20 +82,21 @@ export default function BuyVehicleEvents({
         <div className={`${width} pb-10`}>
             <ScrollArea className="bg-white shadow-lg w-full h-full rounded-xl px-6 py-4">
                 <div className="w-full h-[80px] flex justify-between items-center mb-4">
-                    <div className="h-5/6 flex items-center justify-center bg-[#FF9900] p-4 rounded-xl shadow-sm">
-                        <MapPin className="mr-2" />
-                        {carData ? carData.location : "Juiz de Fora, MG"}
-                    </div>
+                    <p className="text-4xl font-bold">History</p>
 
-                    <div className="h-5/6 flex items-center justify-center bg-[#FF9900] p-4 rounded-xl shadow-sm">
-                        Última atualização:{" "}
-                        {carData
-                            ? formatDate(
-                                  carData.incidents[
-                                      carData.incidents.length - 1
-                                  ].updated_at
-                              )
-                            : "23/11/2019"}
+                    <div
+                        className="flex items-center justify-center p-2 rounded-lg shadow-lg cursor-pointer bg-[#1F91E3] hover:bg-[#0577C9]"
+                        onClick={() =>
+                            window.open(
+                                "https://etherscan.io/",
+                                "_blank",
+                                "noopener,noreferrer"
+                            )
+                        }
+                    >
+                        <p className="text-white text-xl font-semibold">
+                            Verify transactions
+                        </p>
                     </div>
 
                     {checkIfAtFavorites() ? (

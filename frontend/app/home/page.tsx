@@ -12,20 +12,22 @@ import GLBViewer from "@/components/Render3d/Render3d";
 
 export default function BuyVehiclePage({}) {
     return (
-        <div className="h-screen px-14 flex flex-col bg-[#E1E8F0]">
-            <div className="flex-shrink-0">
+        <div className="w-full h-screen flex bg-white">
+            <Sidebar />
+            <div className="w-full h-full flex flex-col px-14">
                 <Header />
-            </div>
-            <div className="flex justify-between flex-grow overflow-hidden">
-                <Sidebar />
-                <div className="flex flex-grow items-center justify-center text-xl font-semibold text-center text-black">
-                    <div className=" bg-white p-4 rounded-xl shadow-lg">
-                        <GLBViewer
-                            glbPath="/models/car2.glb"
-                            sensitivity={8.5}
-                            scale={0.06}
-                        />
-                        <p>Search for a car</p>
+                <div className="w-full h-full flex items-center justify-center">
+                    <div className="bg-white p-4 rounded-xl">
+                        <div className="">
+                            <GLBViewer
+                                glbPath="/models/car2.glb"
+                                sensitivity={8.5}
+                                scale={0.06}
+                            />
+                        </div>
+                        <p className="text-xl font-semibold text-center text-black">
+                            Search for a vehicle
+                        </p>
                     </div>
                 </div>
             </div>

@@ -1,11 +1,27 @@
 import axios from "axios";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { useAccount } from "wagmi";
 import { useForm, Controller } from "react-hook-form";
+import { hex2a } from "@/lib/utils";
+import { advanceInput, inspect } from "cartesi-client";
+import { ethers } from "ethers";
 
-const GrantCompaniesForm = () => {
+enum Role {
+	Untrusted = 1,
+	Trusted = 2,
+	Affiliate = 3,
+	Admin = 4,
+}
+
+interface Props {
+	dappAddress: string;
+}
+
+const GrantCompaniesForm: React.FC<Props> = (props) => {
+	const provider = new ethers.providers.Web3Provider(window.ethereum);
+	const dappAddress = props.dappAddress;
 	const [isChecking, setIsChecking] = useState<boolean>(true);
 
 	const roles = [
@@ -30,25 +46,38 @@ const GrantCompaniesForm = () => {
 	const router = useRouter();
 	const { address: wallet, isConnected } = useAccount();
 
-	const getWallet = async () => {
-		var accountCreatedStatus = false;
-		const response = await axios
-			.post("http://localhost:8080/inspect", {
+	const [inspectData, setInspectData] = useState<string>("");
+	const [reports, setReports] = useState<string[]>([]);
+	const [metadata, setMetadata] = useState<any>({});
+
+	const getWallet = async (): Promise<[boolean, any]> => {
+		let accountCreatedStatus = false;
+		let response;
+		try {
+			const payload = JSON.stringify({
 				kind: "company",
 				payload: { wallet },
-			})
-			.then((response) => {
-				return response;
-			})
-			.catch((error) => {
-				console.error("error is ", error);
-				return error;
 			});
 
-		if (response.data.status === "Accepted") {
-			accountCreatedStatus = true;
-		} else {
-			accountCreatedStatus = false;
+			const data = await inspect(payload, {
+				aggregate: false,
+				cache: "no-cache",
+				cartesiNodeUrl: "http://localhost:8080",
+				decodeTo: "utf-8",
+				method: "POST",
+			});
+
+			if (typeof data === "string") {
+				const parsedData = JSON.parse(data);
+				setMetadata(parsedData.message);
+				response = parsedData;
+				accountCreatedStatus = parsedData.status === "Accepted";
+
+				console.log("GRANTING", response.message);
+				setUserRole(response.message.role);
+			}
+		} catch (error) {
+			console.error("Error fetching data:", error);
 		}
 
 		return [accountCreatedStatus, response];
@@ -74,8 +103,47 @@ const GrantCompaniesForm = () => {
 		checkAccountStatus();
 	}, [isConnected]);
 
+	const [userRole, setUserRole] = useState<Role>(Role.Untrusted);
+	const [eligibleRoles, setEligibleRoles] = useState<
+		{ role: string; value: Role }[]
+	>([]);
+
+	useEffect(() => {
+		setEligibleRoles(roles.filter((r) => r.value < userRole));
+	}, [userRole]);
+
+	const [isLoading, setIsLoading] = useState<boolean>(false);
+
 	const onSubmit = async (data: any) => {
-		console.log(data);
+        setIsLoading(true);
+        
+		try {
+			const input = {
+				wallet: data.companyWallet,
+				role: Number(data.role),
+			};
+
+			const advanceInputJSON = {
+				kind: "promote_company",
+				payload: input,
+			};
+
+			console.log("adding input", input);
+			const signer = provider.getSigner();
+
+			console.log("signer and input is ", signer, input);
+			let parsedInput = JSON.stringify(advanceInputJSON);
+			console.log("parsed input is ", parsedInput);
+
+			await advanceInput(signer, dappAddress, parsedInput).then((res) => {
+				toast.success("Vehicle registered successfully");
+			});
+		} catch (err) {
+			console.error(err);
+			toast.error("Error registering vehicle");
+		} finally {
+			setIsLoading(false);
+		}
 	};
 
 	return (
@@ -83,7 +151,8 @@ const GrantCompaniesForm = () => {
 			onSubmit={handleSubmit(onSubmit)}
 			className="flex flex-col w-full p-6 rounded-lg shadow-lg h-full"
 		>
-			<h2 className="text-xl font-semibold mb-4">Grant Company</h2>
+			<h2 className="text-xl font-semibold">Grant Company</h2>
+
 			<Controller
 				name="companyWallet"
 				control={control}
@@ -114,15 +183,20 @@ const GrantCompaniesForm = () => {
 							className="block text-sm font-medium text-gray-700 mb-1"
 						>
 							Role
+							<p className="text-sm text-gray-500">
+								*Your role of {Role[userRole]} allows you to
+								grant the following roles:
+							</p>
 						</label>
 						<select
 							{...field}
 							id="role"
 							className="block w-full p-2 border border-gray-300 rounded-md"
 						>
-							{roles.map((role) => (
-								<option key={role.value} value={role.value}>
-									{role.role}
+                            <option>Select Role</option>
+							{eligibleRoles.map(({ role, value }) => (
+								<option key={value} value={value}>
+									{role}
 								</option>
 							))}
 						</select>
@@ -132,9 +206,10 @@ const GrantCompaniesForm = () => {
 			<div className="flex justify-end">
 				<button
 					type="submit"
-					className="p-2 bg-blue-500 text-white py-2 rounded-md hover:bg-blue-600"
+					disabled={isLoading}
+					className="p-2 bg-blue-500 text-white py-2 rounded-md hover:bg-blue-600 transition-all disabled:bg-gray-300 disabled:cursor-not-allowed"
 				>
-					Grant
+					{isLoading ? "Loading..." : "Submit"}
 				</button>
 			</div>
 		</form>

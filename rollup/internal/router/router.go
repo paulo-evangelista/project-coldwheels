@@ -40,11 +40,9 @@ func Advance(env rollmelette.Env, DB *gorm.DB, metadata rollmelette.Metadata, de
 		return advance.PromoteCompany(args)
 	case "update_company":
 		return advance.UpdateCompany(args)
-	// case "favorite_vehicle":
-	// 	return advance.FavoriteVehicle(args)
 	case "create_incident":
 		return advance.CreateIncident(args)
-	//////////////////////////// VEHICLES/FIPE ///////////////////////////
+
 	case "add_vehicle_kind":
 		return advance.AddVehicleKind(args)
 	case "voucher":
@@ -77,6 +75,10 @@ func Inspect(env rollmelette.EnvInspector, DB *gorm.DB, input *utils.InspectInpu
 		return inspect.Favorites(args)
 	case "get_vehicle_kinds":
 		return inspect.GetAllVehicleKinds(args)
+	case "get_vehicles":
+		return inspect.GetAllVehicles(args)
+	case "get_incident_types":
+		return inspect.GetIncidentTypes(args)
 	case "ai":
 		res, err := AI.Predict(2016, 150000, 1, 5, false, 2, false); if err != nil {
 			return err
