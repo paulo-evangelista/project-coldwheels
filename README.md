@@ -16,10 +16,10 @@ This approach ensures a reliable tracking system, making it possible to hold ent
 
 As a result, if a car's condition does not match the documented alterations, buyers will have grounds to be suspicious and can trust the documented history of the vehicle.
 
-## Architechture
+## Architecture
 
 <p align="center">
-    <img src="./assets/architechture.jpg" width="80%">
+    <img src="./assets/architecture.jpeg" width="80%">
 </p>
 
 -   Infrastructure
