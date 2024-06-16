@@ -2,6 +2,7 @@ package db
 
 import (
 	"fmt"
+
 	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
 )
@@ -12,7 +13,7 @@ func Setup() *gorm.DB {
 		panic("failed to connect database")
 	}
 
-	models := []interface{}{&Company{}, &Vehicle{}, &Incident{}, &IncidentType{}, &Image{}, &VehicleKind{}}
+	models := []interface{}{&Company{}, &Vehicle{}, &Incident{}, &IncidentType{}, &Image{}, &VehicleKind{}, &Prediction{}}
 	for _, model := range models {
 		err = dbClient.AutoMigrate(model)
 		if err != nil {

@@ -65,6 +65,15 @@ func GetVehicleKindByID(db *gorm.DB, kindID uint) (*VehicleKind, error) {
 	return &vehicleKind, nil
 }
 
+func GetIncidentsByVehicleID(db *gorm.DB, vehicleID uint) ([]Incident, error) {
+	var incidents []Incident
+	result := db.Where("vehicle_id = ?", vehicleID).Find(&incidents)
+	if result.Error != nil {
+		return nil, result.Error
+	}
+	return incidents, nil
+}
+
 func GetVehicleByPlate(db *gorm.DB, plate string) (Vehicle, error) {
 	var vehicle Vehicle
 	result := db.Preload("Incidents").

@@ -2,8 +2,8 @@ package AI
 
 import (
 	"fmt"
-	)
-	
+)
+
 // Generated with m2cgen
 func score(input []float64) float64 {
 	var var0 float64
@@ -15947,7 +15947,12 @@ func score(input []float64) float64 {
 	return var0
 }
 
-func Predict(year int, odometer int, n_previous_owners int, n_maintenances int, dealership_maintenances bool, n_accidents int, armoured bool) (int, error) {
+func Predict(year any, odometer int, n_previous_owners int, n_maintenances int, dealership_maintenances bool, n_accidents int, armoured bool) (int, error) {
+	// Make year a int
+	year_int, ok := year.(int)
+	if !ok {
+		return 0, fmt.Errorf("invalid year: %v", year)
+	}
 
 	armoured_int := 0
 	if armoured {
@@ -15959,36 +15964,36 @@ func Predict(year int, odometer int, n_previous_owners int, n_maintenances int, 
 		dealership_maintenances_int = 1
 	}
 
-    fipe := 0
-    switch year {
-    case 2021:
-        fipe = 135797.0;
-    case 2020:
-        fipe = 122618.0;
-    case 2019:
-        fipe = 109302.0;
-    case 2018:
-        fipe = 104161.0;
-    case 2017:
-        fipe = 89848.0;
-    case 2016:
-        fipe = 85595.0;
-    case 2015:
-        fipe = 82410.0;
-    default:
-        return 0, fmt.Errorf("invalid year")
-    }
+	fipe := 0
+	switch year_int {
+	case 2021:
+		fipe = 135797.0
+	case 2020:
+		fipe = 122618.0
+	case 2019:
+		fipe = 109302.0
+	case 2018:
+		fipe = 104161.0
+	case 2017:
+		fipe = 89848.0
+	case 2016:
+		fipe = 85595.0
+	case 2015:
+		fipe = 82410.0
+	default:
+		return 0, fmt.Errorf("invalid year: %v", year)
+	}
 
 	input := []float64{
 		1,
-        float64(year),
-        float64(odometer),
-        float64(n_previous_owners),
-        float64(n_maintenances),
-        float64(dealership_maintenances_int),
-        float64(n_accidents),
-        float64(armoured_int),
-        float64(fipe),
+		float64(year_int),
+		float64(odometer),
+		float64(n_previous_owners),
+		float64(n_maintenances),
+		float64(dealership_maintenances_int),
+		float64(n_accidents),
+		float64(armoured_int),
+		float64(fipe),
 	}
 
 	return int(score(input)), nil
