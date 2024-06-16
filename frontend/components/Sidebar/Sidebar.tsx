@@ -61,8 +61,16 @@ const Sidebar = () => {
 		return accountCreatedStatus;
 	};
 
+    const routes = [
+        {
+            name: "Dashboard",
+            href: "/dashboard",
+            icon: Home,
+        },
+    ]
+
 	return (
-		<div className="w-64 bg-white p-6 shadow-lg rounded-xl mb-8 h-full">
+		<div className="w-64 bg-white p-6 shadow-lg rounded-xl mb-8 h-full min-h-screen">
 			<div className="w-full h-full">
 				<div className="mb-6 flex-items-center">
 					<Link href="/">
@@ -98,12 +106,11 @@ const Sidebar = () => {
 					<div className="w-full border-b border-gray-300 my-4"></div>
 
 					<nav>
-						<p className="pb-4 font-bold">Company</p>
-						<ul className="">
-							<NavLink href="/dashboard" icon={Home}>
-								Dashboard
-							</NavLink>
-						</ul>
+                        {routes.map((route) => (
+                            <NavLink href={route.href} icon={route.icon} key={route.name}>
+                                {route.name}
+                            </NavLink>
+                        ))}
 					</nav>
 				</div>
 			</div>
