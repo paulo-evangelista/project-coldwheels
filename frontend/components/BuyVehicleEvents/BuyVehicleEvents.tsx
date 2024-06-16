@@ -117,25 +117,29 @@ export default function BuyVehicleEvents({
                 </div>
                 <div className="relative before:content-[''] before:absolute before:left-[40px] before:top-[35px] before:rounded-full before:w-[10px] before:bg-[#000] timeline">
                     {carData ? (
-                        carData.incidents.map(
-                            (incident: any, index: number) => {
-                                return (
-                                    <EventCard
-                                        key={index}
-                                        title={incident.incident_type.Name}
-                                        description={incident.description}
-                                        date={formatDate(
-                                            incident.incident_date
-                                        )}
-                                        icon={
-                                            <KeySquare
-                                                size={24}
-                                                color="black"
-                                            />
-                                        }
-                                    />
-                                );
-                            }
+                        carData.incidents ? (
+                            carData.incidents.map(
+                                (incident: any, index: number) => {
+                                    return (
+                                        <EventCard
+                                            key={index}
+                                            title={incident.incident_type.name}
+                                            description={incident.description}
+                                            date={formatDate(
+                                                incident.incident_date
+                                            )}
+                                            icon={
+                                                <KeySquare
+                                                    size={24}
+                                                    color="black"
+                                                />
+                                            }
+                                        />
+                                    );
+                                }
+                            )
+                        ) : (
+                            <p>No incidents have been recorded</p>
                         )
                     ) : (
                         <>
