@@ -8,8 +8,14 @@ import Truck from "../../assets/icons/Truck";
 import { FaRegCircleCheck } from "react-icons/fa6";
 
 import VehicleInfoBox from "./VehicleInfoBox";
+import { ethers } from "ethers";
+import { a2hex } from "@/lib/utils";
+import { abi } from "@/ABIs/etherPortal";
+import { toast } from "react-toastify";
 
 export default function ({ width = "w-6/12", carData }: any) {
+    const provider = new ethers.providers.Web3Provider(window.ethereum);
+
     function formatCurrencyBRL(value: number): string {
         return new Intl.NumberFormat("pt-BR", {
             style: "currency",
@@ -33,6 +39,46 @@ export default function ({ width = "w-6/12", carData }: any) {
     function handleCalcSuggestedPrice() {
         alert("Calculating suggested price...");
     }
+
+    const getSuggestedPrice = async () => {
+		try {
+			const signer = provider.getSigner();
+			console.log("signer", signer);
+
+			const contract = new ethers.Contract(
+				"0xFfdbe43d4c855BF7e0f105c400A50857f53AB044",
+				abi.abi,
+				signer
+			);
+
+			const options = { value: ethers.utils.parseEther("0.001") };
+
+			const payload = JSON.stringify({
+				kind: "voucher",
+				payload: { plate: carData.plate },
+			});
+			console.log(payload);
+
+			const hexPayload = a2hex(payload);
+			console.log(hexPayload);
+
+			await contract
+				.depositEther(
+					"0xab7528bb862fb57e8a2bcd567a2e929a0be56a5e",
+					"0x7b226b696e64223a22766f7563686572222c20227061796c6f6164223a226f69227d",
+					options
+				)
+				.then((tx: any) => {
+					console.log(tx);
+				})
+				.catch((err: any) => {
+					console.error(err);
+				});
+		} catch (err) {
+			console.error(err);
+			toast.error("Error");
+		}
+	};
 
     console.log({ carData });
 
@@ -65,9 +111,9 @@ export default function ({ width = "w-6/12", carData }: any) {
                                 ) : (
                                     <div
                                         className="h-full bg-[#1F91E3] flex items-center justify-center font-bold p-4 rounded-xl mr-8 mt-6 cursor-pointer hover:bg-[#0577C9] shadow-lg text-white"
-                                        onClick={handleCalcSuggestedPrice}
+                                        onClick={getSuggestedPrice}
                                     >
-                                        Get suggested price
+                                        Get Suggested Price
                                     </div>
                                 )}
                             </div>
