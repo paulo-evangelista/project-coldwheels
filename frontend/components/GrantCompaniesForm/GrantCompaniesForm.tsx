@@ -115,10 +115,12 @@ const GrantCompaniesForm: React.FC<Props> = (props) => {
 	const [isLoading, setIsLoading] = useState<boolean>(false);
 
 	const onSubmit = async (data: any) => {
+        setIsLoading(true);
+        
 		try {
 			const input = {
 				wallet: data.companyWallet,
-				role: data.role,
+				role: Number(data.role),
 			};
 
 			const advanceInputJSON = {
@@ -127,13 +129,13 @@ const GrantCompaniesForm: React.FC<Props> = (props) => {
 			};
 
 			console.log("adding input", input);
-			const signer = await provider.getSigner();
+			const signer = provider.getSigner();
 
 			console.log("signer and input is ", signer, input);
 			let parsedInput = JSON.stringify(advanceInputJSON);
 			console.log("parsed input is ", parsedInput);
 
-			advanceInput(signer, dappAddress, parsedInput).then((res) => {
+			await advanceInput(signer, dappAddress, parsedInput).then((res) => {
 				toast.success("Vehicle registered successfully");
 			});
 		} catch (err) {
@@ -150,15 +152,6 @@ const GrantCompaniesForm: React.FC<Props> = (props) => {
 			className="flex flex-col w-full p-6 rounded-lg shadow-lg h-full"
 		>
 			<h2 className="text-xl font-semibold">Grant Company</h2>
-			<p className="text-sm text-gray-500 mb-4">
-				*Your role of {Role[userRole]} allows you to grant the following
-				roles:
-				<ul>
-					{eligibleRoles.map(({ role, value }) => (
-						<li key={value}>{role}</li>
-					))}
-				</ul>
-			</p>
 
 			<Controller
 				name="companyWallet"
@@ -190,6 +183,10 @@ const GrantCompaniesForm: React.FC<Props> = (props) => {
 							className="block text-sm font-medium text-gray-700 mb-1"
 						>
 							Role
+							<p className="text-sm text-gray-500">
+								*Your role of {Role[userRole]} allows you to
+								grant the following roles:
+							</p>
 						</label>
 						<select
 							{...field}
@@ -209,9 +206,9 @@ const GrantCompaniesForm: React.FC<Props> = (props) => {
 				<button
 					type="submit"
 					disabled={isLoading}
-					className="p-2 bg-blue-500 text-white py-2 rounded-md hover:bg-blue-600"
+					className="p-2 bg-blue-500 text-white py-2 rounded-md hover:bg-blue-600 transition-all disabled:bg-gray-300 disabled:cursor-not-allowed"
 				>
-					Grant
+					{isLoading ? "Loading..." : "Submit"}
 				</button>
 			</div>
 		</form>

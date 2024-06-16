@@ -167,3 +167,19 @@ func GetAllVehicles(args FuncArguments) error {
 
 	return u.InspectSuccess(args.Env, string(jsonvehicles))
 }
+
+func GetIncidentTypes(args FuncArguments) error {
+	var incidentTypes []db.IncidentType
+
+	err := args.Db.Find(&incidentTypes).Error
+	if err != nil {
+		return u.InspectError(args.Env, err, "error getting incident types")
+	}
+
+	jsonincidentTypes, err := json.Marshal(incidentTypes)
+	if err != nil {
+		return u.InspectError(args.Env, err, "error marshaling json")
+	}
+
+	return u.InspectSuccess(args.Env, string(jsonincidentTypes))
+}
