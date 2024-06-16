@@ -25,7 +25,6 @@ type Company struct {
 	Favorites   []Vehicle  `gorm:"many2many:company_vehicles;" json:"favorites,omitempty"`
 }
 
-
 type Vehicle struct {
 	Model
 	Plate          string      `json:"plate,omitempty"`
@@ -37,6 +36,7 @@ type Vehicle struct {
 	Odometer       uint        `json:"odometer,omitempty"`
 	Color          string      `json:"color,omitempty"`
 	Location       string      `json:"location,omitempty"`
+	Armoured       bool        `json:"armoured,omitempty" gorm:"default:false"`
 }
 
 type Role int
@@ -79,4 +79,10 @@ type VehicleKind struct {
 	ShortName string  `json:"short_name,omitempty"`
 	Name      string  `json:"name,omitempty"`
 	Year      string  `json:"year,omitempty"`
+}
+
+type Prediction struct {
+	Model
+	VehicleID uint `json:"vehicle_id,omitempty"`
+	Price     int  `json:"price,omitempty"`
 }

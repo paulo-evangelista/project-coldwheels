@@ -183,3 +183,32 @@ func GetIncidentTypes(args FuncArguments) error {
 
 	return u.InspectSuccess(args.Env, string(jsonincidentTypes))
 }
+
+func GetPrediction(args FuncArguments) error {
+	payload, ok := args.Payload.(map[string]interface{})
+	if !ok {
+		return u.InspectError(args.Env, fmt.Errorf("failed to make payload into map"), "failed to make payload into map")
+	}
+
+	plate, ok1 := payload["plate"].(string)
+	if !ok1 {
+		return u.InspectError(args.Env, fmt.Errorf("failed to get vehicle plate from payload"), "failed to get vehicle plate from payload")
+	}
+
+	var vehicle db.Vehicle
+	if err := args.Db.Where("plate = ?", plate).First(&vehicle).Error; err != nil {
+		return u.InspectError(args.Env, err, "vehicle not found")
+	}
+
+	var prediction db.Prediction
+	if err := args.Db.Where("vehicle_id = ?", vehicle.ID).First(&prediction).Error; err != nil {
+		return u.InspectError(args.Env, err, "prediction not found")
+	}
+
+	jsonprediction, err := json.Marshal(prediction)
+	if err != nil {
+		return u.InspectError(args.Env, err, "error marshaling json")
+	}
+
+	return u.InspectSuccess(args.Env, string(jsonprediction))
+}

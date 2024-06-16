@@ -1,7 +1,6 @@
 package router
 
 import (
-	"coldwheels/internal/AI"
 	"coldwheels/internal/db"
 	"coldwheels/internal/services/advance"
 	"coldwheels/internal/services/inspect"
@@ -47,13 +46,7 @@ func Advance(env rollmelette.Env, DB *gorm.DB, metadata rollmelette.Metadata, de
 	case "voucher":
 		return advance.Payable(args)
 	case "ai":
-		res, err := AI.Predict(2016, 150000, 1, 5, false, 2, false)
-		if err != nil {
-			return err
-		}
-		response := fmt.Sprintf("{prediction: %d}", res)
-		utils.InspectSuccess(env, fmt.Sprint(response))
-		return nil
+		return advance.Predict(args)
 	default:
 		return fmt.Errorf("unknown kind: %s", kind)
 	}
@@ -86,6 +79,8 @@ func Inspect(env rollmelette.EnvInspector, DB *gorm.DB, input *utils.InspectInpu
 		return inspect.GetAllVehicles(args)
 	case "get_incident_types":
 		return inspect.GetIncidentTypes(args)
+	case "ai":
+		return inspect.GetPrediction(args)
 	default:
 		return fmt.Errorf("unknown kind: %s", input.Kind)
 	}
