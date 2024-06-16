@@ -90,6 +90,8 @@ const RegisterVehicleForm: React.FC<Props> = (props) => {
 	};
 
 	const registerVehicle = async () => {
+        setIsLoading(true);
+
 		try {
 			let imagesUri = [];
 			for (let i = 0; i < images.length; i++) {
@@ -330,7 +332,7 @@ const RegisterVehicleForm: React.FC<Props> = (props) => {
 
 									<button
 										onClick={registerVehicle}
-										className="p-2 bg-blue-500 text-white py-2 rounded-md hover:bg-blue-600"
+										className="p-2 bg-blue-500 text-white py-2 rounded-md hover:bg-blue-600 disabled:bg-gray-300 disabled:cursor-not-allowed"
 										disabled={!isFormValid() || isLoading}
 									>
 										{isLoading ? "Loading..." : "Register"}

@@ -15,16 +15,20 @@ const RegisterIncidentForm: React.FC<Props> = (props) => {
 	const dappAddress = props.dappAddress;
 	const [step, setStep] = useState(0);
 	const [incidentType, setIncidentType] = useState("");
-	const [description, setDescription] = useState("");
-	const [incidentDate, setIncidentDate] = useState("");
+	const [description, setDescription] = useState("teste");
+	const [incidentDate, setIncidentDate] = useState("2024-06-15");
 	const [vehicleId, setVehicleId] = useState("");
 	const [vehicles, setVehicles] = useState<any[]>([]);
-	const incidentTypes = [
-		{ role: "Untrusted", value: 1 },
-		{ role: "Trusted", value: 2 },
-		{ role: "Affiliate", value: 3 },
-		{ role: "Admin", value: 4 },
-	];
+
+	const [incidentTypes, setIncidentTypes] = useState<
+		{
+			id: number;
+			created_at: string;
+			updated_at: string;
+			deleted_at: null;
+			name: string;
+		}[]
+	>([]);
 
 	const handleNext = () => {
 		setStep((prevStep) => prevStep + 1);
@@ -40,11 +44,11 @@ const RegisterIncidentForm: React.FC<Props> = (props) => {
 			setter(event.target.value);
 		};
 
-	const handleSelectChange = (
-		event: React.ChangeEvent<HTMLSelectElement>
-	) => {
-		setVehicleId(event.target.value);
-	};
+	const handleSelectChange =
+		(setter: React.Dispatch<React.SetStateAction<string>>) =>
+		(event: React.ChangeEvent<HTMLSelectElement>) => {
+			setter(event.target.value);
+		};
 
 	const registerIncident = async () => {
 		const input = {
@@ -64,7 +68,7 @@ const RegisterIncidentForm: React.FC<Props> = (props) => {
 		advanceInput(signer, dappAddress, parsedInput).then((res) => {
 			toast.success("Incident registered successfully");
 			setStep(0);
-		});;
+		});
 	};
 
 	const getAllVehicles = async () => {
@@ -92,8 +96,33 @@ const RegisterIncidentForm: React.FC<Props> = (props) => {
 		}
 	};
 
+	const getIncidentTypes = async () => {
+		try {
+			const payload = JSON.stringify({
+				kind: "get_incident_types",
+				payload: {},
+			});
+
+			const data = await inspect(payload, {
+				aggregate: false,
+				cache: "no-cache",
+				cartesiNodeUrl: "http://localhost:8080",
+				decodeTo: "utf-8",
+				method: "POST",
+			});
+
+			if (typeof data === "string") {
+				const parsedData = JSON.parse(data);
+				setIncidentTypes(parsedData.message);
+			}
+		} catch (error) {
+			console.error("error is ", error);
+		}
+	};
+
 	useEffect(() => {
 		getAllVehicles();
+		getIncidentTypes();
 	}, []);
 
 	return (
@@ -113,15 +142,26 @@ const RegisterIncidentForm: React.FC<Props> = (props) => {
 									>
 										incidentType:
 									</label>
-									<input
-										type="text"
+									<select
 										id="incidentType"
 										value={incidentType}
-										onChange={handleInputChange(
+										onChange={handleSelectChange(
 											setIncidentType
 										)}
 										className="block w-full p-2 border border-gray-300 rounded-md"
-									/>
+									>
+										<option value="" disabled>
+											Select Incident Type
+										</option>
+										{incidentTypes.map((incidentType) => (
+											<option
+												key={incidentType.id}
+												value={incidentType.id}
+											>
+												{incidentType.name}
+											</option>
+										))}
+									</select>
 								</div>
 								<div className="flex justify-end">
 									<button
@@ -224,7 +264,9 @@ const RegisterIncidentForm: React.FC<Props> = (props) => {
 									<select
 										id="vehicleId"
 										value={vehicleId}
-										onChange={handleSelectChange}
+										onChange={handleSelectChange(
+											setVehicleId
+										)}
 										className="block w-full p-2 border border-gray-300 rounded-md"
 									>
 										<option value="" disabled>

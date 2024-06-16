@@ -6,7 +6,6 @@ import (
 	"fmt"
 )
 
-
 func RegisterCompany(args FuncArguments) error {
 	payload, err := u.ParsePayload(args.Payload)
 	if err != nil {
@@ -68,6 +67,9 @@ func UpdateCompany(args FuncArguments) error {
 }
 
 func PromoteCompany(args FuncArguments) error {
+	fmt.Printf("Promoting company with wallet %s\n", args.Sender.Wallet)
+	fmt.Printf("Payload: %+v\n", args.Payload)
+
 	if args.Sender.Role < db.Affiliate {
 		fmt.Printf("only affiliates and above can update company data\n")
 		return u.AdvanceError(args.Env, fmt.Errorf("only affiliates and above can update company data"), "only affiliates and above can update company data")
@@ -75,15 +77,18 @@ func PromoteCompany(args FuncArguments) error {
 
 	payload, err := u.ParsePayload(args.Payload)
 	if err != nil {
-		fmt.Printf("payload malformed\n")
-		return u.AdvanceError(args.Env, err, "payload malformed")
+		fmt.Printf("payload malformed: %+v\n", args.Payload)
+		return u.AdvanceError(args.Env, err, fmt.Sprintf("payload malformed: %v", args.Payload))
 	}
 
 	wallet, ok1 := payload["wallet"].(string)
-	role, ok2 := payload["role"].(uint)
+	roleFloat, ok2 := payload["role"].(float64)
+	role := uint(roleFloat)
 
 	if !ok1 || !ok2 {
 		fmt.Printf("payload malformed\n")
+		fmt.Printf("Wallet: %s\n", wallet)
+		fmt.Printf("Role: %d\n", role)
 		return u.AdvanceError(args.Env, fmt.Errorf("payload malformed"), "payload malformed")
 	}
 
@@ -96,7 +101,7 @@ func PromoteCompany(args FuncArguments) error {
 	if err != nil {
 		fmt.Printf("failed to get company by wallet: %v\n", err)
 		return u.AdvanceError(args.Env, fmt.Errorf("failed to get company by wallet"), "failed to get company by wallet")
-	}	
+	}
 
 	company.Role = db.Role(role)
 
