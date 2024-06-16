@@ -30,6 +30,10 @@ export default function ({ width = "w-6/12", carData }: any) {
         return `${day}/${month}/${year}`;
     }
 
+    function handleCalcSuggestedPrice() {
+        alert("Calculating suggested price...");
+    }
+
     console.log({ carData });
 
     return (
@@ -38,7 +42,7 @@ export default function ({ width = "w-6/12", carData }: any) {
                 <>
                     <div className="flex flex-col justify-between shadow-lg pb-6 rounded-xl bg-[#fff] flex-grow">
                         <div className="flex justify-between">
-                            <div className="flex flex-col">
+                            <div className="w-1/2 flex flex-col">
                                 <h1 className="font-bold pt-4 pl-4 text-2xl">
                                     {carData.kind.short_name}
                                 </h1>
@@ -47,12 +51,25 @@ export default function ({ width = "w-6/12", carData }: any) {
                                 </h1>
                             </div>
                             <div className="flex flex-col text-right">
-                                <h1 className="font-bold text-2xl pr-10 pt-4">
-                                    {formatCurrencyBRL(999)}
-                                </h1>
-                                <h1 className="font-bold text-base pr-11 text-[#9A9A9A]">
-                                    Suggested Price
-                                </h1>
+                                {carData.suggested_price ? (
+                                    <>
+                                        <h1 className="font-bold text-2xl pr-10 pt-4">
+                                            {formatCurrencyBRL(
+                                                carData.suggested_price
+                                            )}
+                                        </h1>
+                                        <h1 className="font-bold text-base pr-11 text-[#9A9A9A]">
+                                            Suggested Price
+                                        </h1>
+                                    </>
+                                ) : (
+                                    <div
+                                        className="h-full bg-[#1F91E3] flex items-center justify-center font-bold p-4 rounded-xl mr-8 mt-6 cursor-pointer hover:bg-[#0577C9] shadow-lg text-white"
+                                        onClick={handleCalcSuggestedPrice}
+                                    >
+                                        Get suggested price
+                                    </div>
+                                )}
                             </div>
                         </div>
                         <div className="flex justify-center pt-6">
