@@ -94,7 +94,7 @@ export default function BuyVehicleEvents({
                             )
                         }
                     >
-                        <p className="text-white text-xl font-semibold">
+                        <p className="text-white text-lg font-semibold px-4 py-1">
                             Verify transactions
                         </p>
                     </div>
