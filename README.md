@@ -47,16 +47,11 @@ Our vision for CarTracker is ambitious, and we are committed to continuous impro
 -   **Global Expansion:** Following a robust establishment in Brazil, we plan to scale Cartracker to other markets facing similar challenges, adapting our solution to meet local needs and regulations.
     By adhering to this roadmap, CarTracker will continue to strengthen the trust and transparency in the used car market, enabling buyers and sellers to make informed decisions confidently.
 
-## Architecture 🔧
+# Architecture 🔧
 
 <p align="center">
     <img src="./assets/architecture.jpeg" width="80%">
 </p>
-
--   Infrastructure
-
-    -   AWS
-
 -   Frontend
 
     -   Next.js
@@ -74,9 +69,9 @@ Our vision for CarTracker is ambitious, and we are committed to continuous impro
     -   Ethers.js
     -   IPFS
 
-## File tree
+# File tree
 
-### Frontend
+## Frontend
 
 ```
 frontend
@@ -89,7 +84,7 @@ frontend
 └── public
 ```
 
-### Rollup
+## Rollup
 
 ```
 rollup
@@ -104,13 +99,13 @@ rollup
 │ └── utils
 ```
 
-## Running the project locally
+# Running the project locally
 
 To run the application there are some dependencies that need to be installed due to the technologies used, they are:
 
 -   Node Js
 
-### Run frontend
+## Run frontend
 
 To run the frontend app it is necessary to enter the frontend repository named `frontend` and run the following commands to install the project dependencies and then to run the client.
 
@@ -119,7 +114,7 @@ To run the frontend app it is necessary to enter the frontend repository named `
   $ pnpm dev
 ```
 
-### Run rollup
+## Run rollup
 
 ```bash
 $ npm i -g @cartesi/cli
@@ -140,14 +135,14 @@ $ npm i -g @cartesi/cli
 > Your system is ready.
 > ```
 
-#### Build da aplicação:
+### Build da aplicação:
 
 ```shell
 $ cartesi build
 $ cartesi run
 ```
 
-## Our Team
+# Our Team
 
 <table>
   <tr>
