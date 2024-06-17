@@ -1,14 +1,14 @@
-<h1 align="center">CarTracker</h1>
+<h1 align="center">CarTracker 🚗</h1>
 <p align="center"><b>Know your car</b></p>
 <p align="center">
     <img src="./assets/mockup.png" alt="CarTracker"/>
 </p>
 
-# The Problem
+# The Problem 📊
 
 Car repair shops in Brazil face a significant trust issue. Many cars are sold with tampered odometers or undocumented alterations, leading to inaccurate representations of the car's value. This lack of transparency and honesty erodes consumer confidence and creates a challenging environment for both buyers and sellers.
 
-# Our Solution
+# Our Solution 💡
 
 Given the problem of the lack of trust in car repair shops, reputable companies such as insurance companies and manufacturers will be able to accredit these shops. Accredited shops will have the responsibility to meticulously document all services performed on a vehicle, including the odometer readings and any alterations made.
 
@@ -16,7 +16,7 @@ This approach ensures a reliable tracking system, making it possible to hold ent
 
 As a result, if a car's condition does not match the documented alterations, buyers will have grounds to be suspicious and can trust the documented history of the vehicle.
 
-## Architecture
+## Architecture :wrench:
 
 <p align="center">
     <img src="./assets/architecture.jpeg" width="80%">

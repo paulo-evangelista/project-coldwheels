@@ -37,7 +37,7 @@ func (dapp *ColdWheels) Advance(
 	}
 
 	company, err := mw.ValidateCompany(dapp.db, metadata.MsgSender.String())
-	if err != nil && input.Kind != "register_company" && input.Kind != "voucher" {
+	if err != nil && input.Kind != "register_company" {
 		return utils.AdvanceError(env, err, fmt.Sprintf("failed to get company role: %s", err.Error()))
 	}
 

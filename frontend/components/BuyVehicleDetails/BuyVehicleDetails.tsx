@@ -13,6 +13,7 @@ import { a2hex } from "@/lib/utils";
 import { toast } from "react-toastify";
 import { abi } from "@/ABIs/etherPortal";
 import { inspect } from "cartesi-client";
+import { useState } from "react";
 
 export default function ({ width = "w-6/12", carData }: any) {
 	const provider = new ethers.providers.Web3Provider(window.ethereum);
@@ -41,34 +42,16 @@ export default function ({ width = "w-6/12", carData }: any) {
 
 	const getSuggestedPrice = async () => {
 		try {
-			// const provider = new ethers.providers.JsonRpcProvider(
-			// 	"http://localhost:8545"
-			// );
-
 			const signer = provider.getSigner();
-			// console.log("signer", signer);
-
-			// const wallet = new ethers.Wallet(
-			// 	"ac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80",
-			// 	provider
-			// );
 			const contract = new ethers.Contract(
 				"0xFfdbe43d4c855BF7e0f105c400A50857f53AB044",
 				abi.abi,
 				signer
 			);
 
-			// const contract = new ethers.Contract(
-			// 	"0xFfdbe43d4c855BF7e0f105c400A50857f53AB044",
-			// 	abi.abi,
-			// 	signer
-			// );
-
-			const plate = "ABC1234";
-
 			const payload = JSON.stringify({
-				kind: "voucher",
-				payload: { plate: carData.plat },
+				kind: "ai",
+				payload: { plate: carData.plate },
 			});
 			console.log(payload);
 
@@ -77,20 +60,24 @@ export default function ({ width = "w-6/12", carData }: any) {
 			);
 			console.log(hexPayload);
 
-			const options = { value: ethers.utils.parseEther("0.0069") };
+			const options = { value: ethers.utils.parseEther("0.05") };
 			await contract
 				.depositEther(
 					"0xab7528bb862fb57e8a2bcd567a2e929a0be56a5e",
-					"0x7b226b696e64223a22766f7563686572222c20227061796c6f6164223a226f69227d",
+					hexPayload,
 					options
 				)
 				.then(async (tx: any) => {
-					console.log("tx", tx);
+					await tx.wait();
+					const plate = carData.plate;
 
 					const inspectPayload = JSON.stringify({
 						kind: "ai",
-						payload: { plate: plate },
+						payload: {
+							plate: plate,
+						},
 					});
+					console.log("inspectPayload", inspectPayload);
 
 					const data = await inspect(inspectPayload, {
 						aggregate: false,
@@ -99,45 +86,16 @@ export default function ({ width = "w-6/12", carData }: any) {
 						decodeTo: "utf-8",
 						method: "POST",
 					});
-					console.log(data);
+					console.log(
+						"Predicted price: ",
+						JSON.parse(data.toString()).message.price
+					);
+
+					setPrediction(JSON.parse(data.toString()).message.price);
 				})
 				.catch((err: any) => {
-					console.error("Error on depositEther:", err);
+					console.error(err);
 				});
-
-			// const receipt = await tx;
-			// console.log("receipt", receipt);
-
-			// toast.success("Voucher created");
-			// console.log("Voucher created");
-			// await contract
-			// 	.depositEther(
-			// 		"0xab7528bb862fb57e8a2bcd567a2e929a0be56a5e",
-			// 		"0x7b226b696e64223a22766f7563686572222c20227061796c6f6164223a226f69227d",
-			// 		options
-			// 	)
-			// 	.then(async () => {
-			// 		toast.success("Voucher created");
-			// 		console.log("Voucher created");
-
-			// 		const inspectPayload = JSON.stringify({
-			// 			kind: "ai",
-			// 			payload: { plate: carData.plate },
-			// 		});
-
-			// 		const data = await inspect(inspectPayload, {
-			// 			aggregate: false,
-			// 			cache: "no-cache",
-			// 			cartesiNodeUrl: "http://localhost:8080",
-			// 			decodeTo: "utf-8",
-			// 			method: "POST",
-			// 		});
-			// 		console.log(data);
-			// 	})
-			// 	.catch((err: any) => {
-			// 		console.log("Error creating voucher", err);
-			// 		toast.error("Error creating voucher");
-			// 	});
 		} catch (err) {
 			console.error(err);
 			toast.error("Error");
@@ -172,7 +130,7 @@ export default function ({ width = "w-6/12", carData }: any) {
 			);
 			console.log(hexPayload);
 
-			const options = { value: ethers.utils.parseEther("0.05") };
+			const options = { value: ethers.utils.parseEther("0.0005") };
 			await contract
 				.depositEther(
 					"0xab7528bb862fb57e8a2bcd567a2e929a0be56a5e",
@@ -205,6 +163,8 @@ export default function ({ width = "w-6/12", carData }: any) {
 		}
 	};
 
+	const [prediction, setPrediction] = useState();
+
 	return (
 		<div className={`${width} pb-4 h-full flex flex-col justify-between`}>
 			{carData ? (
@@ -220,12 +180,10 @@ export default function ({ width = "w-6/12", carData }: any) {
 								</h1>
 							</div>
 							<div className="flex flex-col text-right">
-								{carData.suggested_price ? (
+								{prediction ? (
 									<>
 										<h1 className="font-bold text-2xl pr-10 pt-4">
-											{formatCurrencyBRL(
-												carData.suggested_price
-											)}
+											{formatCurrencyBRL(prediction)}
 										</h1>
 										<h1 className="font-bold text-base pr-11 text-[#9A9A9A]">
 											Suggested Price
@@ -238,16 +196,6 @@ export default function ({ width = "w-6/12", carData }: any) {
 											onClick={getSuggestedPrice}
 										>
 											Get suggested price
-										</div>
-										<div>
-											<button
-												className="h-full bg-[#1F91E3] flex items-center justify-center font-bold p-4 rounded-xl mr-8 mt-6 cursor-pointer hover:bg-[#0577C9] shadow-lg text-white"
-												onClick={
-													getSuggestedPriceHardcode
-												}
-											>
-												Get suggested price (hardcode)
-											</button>
 										</div>
 									</>
 								)}
