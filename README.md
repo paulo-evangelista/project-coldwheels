@@ -27,7 +27,7 @@ In Brazil's used car market, a significant challenge is the widespread issue of 
 
 By aligning the interests of automakers, insurance companies, and consumers, **CarTracker** addresses a critical pain point in the automotive industry. Our solution restores confidence in the used car market, enabling both buyers and sellers to engage in transactions that are fair, transparent, and based on factual data.
 
-## Roadmap 🗺️
+# Roadmap 🗺️
 
 Our vision for CarTracker is ambitious, and we are committed to continuous improvement and expansion. Here's what's on the horizon for CarTracker:
 
@@ -69,7 +69,7 @@ Our vision for CarTracker is ambitious, and we are committed to continuous impro
     -   Ethers.js
     -   IPFS
 
-# File tree
+# File tree 🌳
 
 ## Frontend
 
@@ -99,7 +99,7 @@ rollup
 │ └── utils
 ```
 
-# Running the project locally
+# Running the project locally 🔥
 
 To run the application there are some dependencies that need to be installed due to the technologies used, they are:
 
