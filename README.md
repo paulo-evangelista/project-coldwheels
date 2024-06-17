@@ -27,7 +27,27 @@ In Brazil's used car market, a significant challenge is the widespread issue of 
 
 By aligning the interests of automakers, insurance companies, and consumers, **CarTracker** addresses a critical pain point in the automotive industry. Our solution restores confidence in the used car market, enabling both buyers and sellers to engage in transactions that are fair, transparent, and based on factual data.
 
-## Architecture :wrench:
+## Roadmap 🗺️
+
+Our vision for CarTracker is ambitious, and we are committed to continuous improvement and expansion. Here's what's on the horizon for CarTracker:
+
+### Short Term Goals
+
+-   **Expand Accreditation:** While insurance companies and automakers are our initial partners, we plan to incorporate consumer feedback into the accreditation process soon. By leveraging popular opinion, we aim to enhance the reliability ratings of service shops, further reinforcing transparency and trust.
+-   **Partnership Development:** We will continue to actively seek partnerships with additional insurance providers to increase the network of accredited service shops. This expansion will ensure more comprehensive coverage across various regions and car brands.
+
+### Mid Term Goals
+
+-   **Enhance Documentation Process:** We intend to improve the user interface and experience for the documentation upload process, making it more intuitive and accessible for service shops. These enhancements will help ensure that data entry is as error-free and efficient as possible.
+-   **Integration of AI for Fraud Detection:** We will implement AI algorithms to analyze service records for patterns that might indicate fraudulent activities, such as tampering with odometer readings or unauthorized modifications.
+
+### Long Term Goals
+
+-   **Optimize Blockchain Usage:** Although blockchain technology is already integrated, we aim to optimize its use to maximize security and efficiency. Enhancements will focus on scalability and managing increased transaction volumes as our network grows.
+-   **Global Expansion:** Following a robust establishment in Brazil, we plan to scale Cartracker to other markets facing similar challenges, adapting our solution to meet local needs and regulations.
+    By adhering to this roadmap, CarTracker will continue to strengthen the trust and transparency in the used car market, enabling buyers and sellers to make informed decisions confidently.
+
+## Architecture 🔧
 
 <p align="center">
     <img src="./assets/architecture.jpeg" width="80%">
