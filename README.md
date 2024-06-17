@@ -49,6 +49,8 @@ Our vision for CarTracker is ambitious, and we are committed to continuous impro
 
 # Architecture 🔧
 
+Everything happens 
+
 <p align="center">
     <img src="./assets/architecture.jpeg" width="80%">
 </p>
@@ -66,6 +68,7 @@ Our vision for CarTracker is ambitious, and we are committed to continuous impro
     -   PostgreSQL
 
 -   Blockchain
+-   
     -   Cartesi(Execution Layer)
     -   Ethers.js
     -   IPFS
@@ -136,7 +139,7 @@ $ npm i -g @cartesi/cli
 > Your system is ready.
 > ```
 
-### Build da aplicação:
+### Build:
 
 ```shell
 $ cartesi build
