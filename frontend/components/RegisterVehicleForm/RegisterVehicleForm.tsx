@@ -4,7 +4,7 @@ import { ethers } from "ethers";
 import "./formAnimations.css";
 import { toast } from "react-toastify";
 import lava from "@/assets/images/lava.jpeg";
-import { advanceInput } from "cartesi-client";
+import { advanceInput, inspect } from "cartesi-client";
 import { useAccount } from "wagmi";
 
 interface Props {
@@ -14,10 +14,10 @@ interface Props {
 const RegisterVehicleForm: React.FC<Props> = (props) => {
 	const provider = new ethers.providers.Web3Provider(window.ethereum);
 	const dappAddress = props.dappAddress;
-	const [step, setStep] = useState(3);
-	const [plate, setPlate] = useState("teste");
-	const [kindId, setKindId] = useState("1");
-	const [odometer, setOdometer] = useState("12000");
+	const [step, setStep] = useState(0);
+	const [plate, setPlate] = useState("");
+	const [kindId, setKindId] = useState("");
+	const [odometer, setOdometer] = useState("");
 	const [images, setImages] = useState<File[]>([]);
 	const { address: wallet, isConnected } = useAccount();
 
@@ -47,6 +47,12 @@ const RegisterVehicleForm: React.FC<Props> = (props) => {
 				newFiles[index] = new File([], "");
 			}
 			setImages(newFiles);
+		};
+
+	const handleSelectChange =
+		(setter: React.Dispatch<React.SetStateAction<string>>) =>
+		(event: React.ChangeEvent<HTMLSelectElement>) => {
+			setter(event.target.value);
 		};
 
 	const addImageInput = () => {
@@ -90,7 +96,7 @@ const RegisterVehicleForm: React.FC<Props> = (props) => {
 	};
 
 	const registerVehicle = async () => {
-        setIsLoading(true);
+		setIsLoading(true);
 
 		try {
 			let imagesUri = [];
@@ -139,6 +145,59 @@ const RegisterVehicleForm: React.FC<Props> = (props) => {
 		);
 	};
 
+	// kind=get_vehicle_kinds
+	const [vehicleKinds, setVehicleKinds] = useState([]);
+
+	const getVehicleKinds = async () => {
+		// try {
+		// 	const payload = JSON.stringify({
+		// 		kind: "get_incident_types",
+		// 		payload: {},
+		// 	});
+
+		// 	const data = await inspect(payload, {
+		// 		aggregate: false,
+		// 		cache: "no-cache",
+		// 		cartesiNodeUrl: "http://localhost:8080",
+		// 		decodeTo: "utf-8",
+		// 		method: "POST",
+		// 	});
+
+		// 	if (typeof data === "string") {
+		// 		const parsedData = JSON.parse(data);
+		// 		setIncidentTypes(parsedData.message);
+		// 	}
+		// } catch (error) {
+		// 	console.error("error is ", error);
+		// }
+
+		try {
+			const payload = JSON.stringify({
+				kind: "get_vehicle_kinds",
+				payload: {},
+			});
+
+			const data = await inspect(payload, {
+				aggregate: false,
+				cache: "no-cache",
+				cartesiNodeUrl: "http://localhost:8080",
+				decodeTo: "utf-8",
+				method: "POST",
+			});
+
+			if (typeof data === "string") {
+				const parsedData = JSON.parse(data);
+				setVehicleKinds(parsedData.message);
+			}
+		} catch (error) {
+			console.error("error is ", error);
+		}
+	};
+
+	useEffect(() => {
+		getVehicleKinds();
+	}, []);
+
 	return (
 		<div className="flex flex-col w-full p-6 rounded-lg shadow-lg h-full">
 			<SwitchTransition>
@@ -165,6 +224,7 @@ const RegisterVehicleForm: React.FC<Props> = (props) => {
 										id="plate"
 										value={plate}
 										onChange={handleInputChange(setPlate)}
+										placeholder="Enter your plate number"
 										className="block w-full p-2 border border-gray-300 rounded-md"
 									/>
 								</div>
@@ -196,20 +256,31 @@ const RegisterVehicleForm: React.FC<Props> = (props) => {
 									>
 										Vehicle Kind:
 									</label>
-									<input
+									{/* <input
 										type="text"
 										id="kindId"
 										value={kindId}
 										onChange={handleInputChange(setKindId)}
+										placeholder="Enter your vehicle kind"
 										className="block w-full p-2 border border-gray-300 rounded-md"
-									/>
+									/> */}
+									<select
+										id="kindId"
+										value={kindId}
+										onChange={handleSelectChange(setKindId)}
+										className="block w-full p-2 border border-gray-300 rounded-md"
+									>
+										<option value="">
+											Select your vehicle kind
+										</option>
+										{vehicleKinds.map((kind, index) => (
+											<option key={index} value={index}>
+												{kind.name}
+											</option>
+										))}
+									</select>
 								</div>
-								{/* <button
-									onClick={handleNext}
-									className="w-full bg-blue-500 text-white py-2 rounded-md hover:bg-blue-600"
-								>
-									Next
-								</button> */}
+
 								<div className="flex justify-between">
 									<button
 										onClick={handleBack}
@@ -242,6 +313,7 @@ const RegisterVehicleForm: React.FC<Props> = (props) => {
 										type="text"
 										id="odometer"
 										value={odometer}
+										placeholder="Enter your odometer"
 										onChange={handleInputChange(
 											setOdometer
 										)}
@@ -283,38 +355,65 @@ const RegisterVehicleForm: React.FC<Props> = (props) => {
 										Vehicle Image:
 									</label>
 
-									{images.length > 0 ? (
-										images.map((image, index) => (
-											<div
-												key={index}
-												className={`flex gap-4 ${
-													index > 0 ? "mt-4" : ""
-												}`}
-											>
-												<input
-													type="file"
-													onChange={handleFileChange(
-														index
-													)}
-													className="block w-full p-2 border border-gray-300 rounded-md"
-												/>
-												{images.length > 1 && (
-													<button
-														onClick={() =>
-															removeImage(index)
-														}
-														className="p-2 bg-red-500 text-white py-2 rounded-md hover:bg-red-600"
+									<div className="grid grid-cols-4 gap-4">
+										{images.length > 0 ? (
+											images.map((image, index) => (
+												<div
+													key={index}
+													className={`flex flex-col gap-4`}
+												>
+													<label
+														className="block w-full p-2 border border-gray-300 rounded-md bg-white text-center cursor-pointer hover:bg-gray-100"
+														style={{
+															lineHeight: "150px",
+														}}
 													>
-														Remove
-													</button>
-												)}
-											</div>
-										))
-									) : (
-										<p className="text-gray-500">
-											No images added
-										</p>
-									)}
+														<input
+															type="file"
+															onChange={handleFileChange(
+																index
+															)}
+															className="hidden"
+														/>
+														{images[index] &&
+														images[index].name ? (
+															<img
+																src={URL.createObjectURL(
+																	images[
+																		index
+																	]
+																)}
+																alt="preview"
+																className="object-cover w-full h-full rounded-md"
+															/>
+														) : (
+															<span>
+																Select your
+																image
+															</span>
+														)}
+													</label>
+													{images.length > 1 && (
+														<button
+															onClick={() =>
+																removeImage(
+																	index
+																)
+															}
+															className="p-2 bg-red-500 text-white py-2 rounded-md hover:bg-red-600"
+														>
+															Remove
+														</button>
+													)}
+												</div>
+											))
+										) : (
+											<p className="text-gray-500">
+												No images added
+											</p>
+										)}
+									</div>
+
 									<button
 										onClick={addImageInput}
 										className="mt-2 text-end rounded-md text-blue-400 hover:text-blue-600 hover:underline"

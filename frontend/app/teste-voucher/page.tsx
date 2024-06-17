@@ -30,7 +30,7 @@ const TesteVoucher = () => {
 			const plate = "ABC1234";
 
 			const payload = JSON.stringify({
-				kind: "voucher",
+				kind: "ai",
 				payload: { plate: plate },
 			});
 			console.log(payload);

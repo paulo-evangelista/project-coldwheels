@@ -43,8 +43,6 @@ func Advance(env rollmelette.Env, DB *gorm.DB, metadata rollmelette.Metadata, de
 		return advance.CreateIncident(args)
 	case "add_vehicle_kind":
 		return advance.AddVehicleKind(args)
-	case "voucher":
-		return advance.Payable(args)
 	case "ai":
 		return advance.Predict(args)
 	default:
