@@ -7,6 +7,7 @@ import BuyVehicleEvents from "@/components/BuyVehicleEvents/BuyVehicleEvents";
 import BuyVehicleDetails from "@/components/BuyVehicleDetails/BuyVehicleDetails";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useRouter } from "next/navigation";
+import WhiteLogo from "@/assets/icons/WhiteLogo";
 
 const Home = () => {
     const router = useRouter();
@@ -105,8 +106,8 @@ const Home = () => {
             {/* div com imagem do carro */}
             <div className="sticky top-0 left-0 flex flex-col items-center justify-between max-w-full h-screen bg-[url('/background/carro-landing.png')] bg-cover bg-no-repeat px-20 z-10">
                 <div className="w-full h-1/6 flex flex-col justify-center items-center">
-                    <p className="my-4 text-3xl font-bold text-white">
-                        <span className="text-[#EA580C]">Car</span>Tracker
+                    <p className="my-4 text-3xl font-bold text-white pb-4">
+                        <WhiteLogo></WhiteLogo>
                     </p>
                     <div className="w-1/2 h-px bg-gradient-to-r from-transparent via-white to-transparent"></div>
                 </div>
