@@ -16,7 +16,7 @@ type Model struct {
 type Company struct {
 	Model
 	Name        string     `json:"name,omitempty"`
-	Kind        string     `json:"kind,omitempty"`
+	  Kind        string     `json:"kind,omitempty"`
 	Description string     `json:"description,omitempty"`
 	Wallet      string     `gorm:"unique" json:"wallet,omitempty"`
 	Address     string     `json:"address,omitempty"`

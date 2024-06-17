@@ -41,8 +41,6 @@ export default function ({ width = "w-6/12", carData }: any) {
 	}
 
 	const getSuggestedPrice = async () => {
-		const plate = "ABC1234";
-
 		try {
 			const signer = provider.getSigner();
 			const contract = new ethers.Contract(
@@ -53,7 +51,7 @@ export default function ({ width = "w-6/12", carData }: any) {
 
 			const payload = JSON.stringify({
 				kind: "ai",
-				payload: { plate: carData.plat },
+				payload: { plate: carData.plate },
 			});
 			console.log(payload);
 
@@ -66,10 +64,11 @@ export default function ({ width = "w-6/12", carData }: any) {
 			await contract
 				.depositEther(
 					"0xab7528bb862fb57e8a2bcd567a2e929a0be56a5e",
-					"0x7b226b696e64223a22766f7563686572222c20227061796c6f6164223a226f69227d",
+					hexPayload,
 					options
 				)
 				.then(async (tx: any) => {
+					await tx.wait();
 					const plate = carData.plate;
 
 					const inspectPayload = JSON.stringify({
@@ -131,7 +130,7 @@ export default function ({ width = "w-6/12", carData }: any) {
 			);
 			console.log(hexPayload);
 
-			const options = { value: ethers.utils.parseEther("0.05") };
+			const options = { value: ethers.utils.parseEther("0.0005") };
 			await contract
 				.depositEther(
 					"0xab7528bb862fb57e8a2bcd567a2e929a0be56a5e",

@@ -70,11 +70,6 @@ func PromoteCompany(args FuncArguments) error {
 	fmt.Printf("Promoting company with wallet %s\n", args.Sender.Wallet)
 	fmt.Printf("Payload: %+v\n", args.Payload)
 
-	if args.Sender.Role < db.Affiliate {
-		fmt.Printf("only affiliates and above can update company data\n")
-		return u.AdvanceError(args.Env, fmt.Errorf("only affiliates and above can update company data"), "only affiliates and above can update company data")
-	}
-
 	payload, err := u.ParsePayload(args.Payload)
 	if err != nil {
 		fmt.Printf("payload malformed: %+v\n", args.Payload)
@@ -90,11 +85,6 @@ func PromoteCompany(args FuncArguments) error {
 		fmt.Printf("Wallet: %s\n", wallet)
 		fmt.Printf("Role: %d\n", role)
 		return u.AdvanceError(args.Env, fmt.Errorf("payload malformed"), "payload malformed")
-	}
-
-	if args.Sender.Role <= db.Role(role) {
-		fmt.Printf("cannot update company with higher role\n")
-		return u.AdvanceError(args.Env, fmt.Errorf("cannot update company with higher role"), "cannot update company with higher role")
 	}
 
 	company, err := db.GetCompanyByWallet(args.DB, wallet)
