@@ -52,6 +52,7 @@ Our vision for CarTracker is ambitious, and we are committed to continuous impro
 <p align="center">
     <img src="./assets/architecture.jpeg" width="80%">
 </p>
+
 -   Frontend
 
     -   Next.js
