@@ -1,0 +1,34 @@
+app = "mugen-cartracker"
+
+[build]
+image = "registry.fly.io/mugen-cartracker:latest"
+
+[http_service]
+internal_port = 10000
+force_https = true
+
+[http_service.concurrency]
+type = "requests"
+soft_limit = 200
+hard_limit = 250
+
+[[http_service.checks]]
+grace_period = "10s"
+interval = "30s"
+method = "GET"
+timeout = "5s"
+path = "/healthz"
+
+[[vm]]
+size = "shared-cpu-1x"
+memory = "2gb"
+
+[env]
+CARTESI_BLOCKCHAIN_FINALITY_OFFSET = "1"
+CARTESI_BLOCKCHAIN_ID = "421614"
+CARTESI_CONTRACTS_APPLICATION_ADDRESS = "0xA1A7A4D9D58690CfB005bffF898152635AAb0e20"
+CARTESI_CONTRACTS_AUTHORITY_ADDRESS = "0xD171573DfE19adE9a8E6Db80e5112491BE1abDf4"
+CARTESI_CONTRACTS_HISTORY_ADDRESS = "0x1BCf657fc5fCa0E4412569945Ea55A317eaCFaDf"
+CARTESI_CONTRACTS_INPUT_BOX_ADDRESS = "0x59b22D57D4f067708AB0c00552767405926dc768"
+CARTESI_CONTRACTS_INPUT_BOX_DEPLOYMENT_BLOCK_NUMBER = "2838409"
+CARTESI_EPOCH_LENGTH = "43200"
